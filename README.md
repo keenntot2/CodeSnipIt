@@ -1,17 +1,17 @@
 In your CLI, execute the following:
 
-> `cd /path/to/your/capstone`  
-`python -m venv venv`  
-Activate virtual environtment: 
-  - for windows: `venv/Scripts/activate` ; 
-  - for Unix/MacOS: `source venv/bin/activate`  
+1. `cd /path/to/your/capstone`  
+2. `python -m venv venv`  
+3. Activate virtual environtment: 
+    - for windows: `venv/Scripts/activate` ; 
+    - for Unix/MacOS: `source venv/bin/activate`  
 
-Download all requirements `pip install -r requirements.txt`  
+4. Download all requirements `pip install -r requirements.txt`  
 
-Django directory `cd capstone`  
-Run Django server `python manage.py runserver`  
+6. Django directory `cd capstone`  
+7. Run Django server `python manage.py runserver`  
 
-React directory `cd frontend`  
-Download all modules `npm install`  
-Run React server `npm run dev`  
+8. React directory `cd frontend`  
+9. Download all modules `npm install`  
+10. Run React server `npm run dev`  
 
