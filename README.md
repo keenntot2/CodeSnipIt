@@ -1,6 +1,6 @@
 In your CLI, execute the following:
 
-`cd /path/to/your/capstone`  
+> `cd /path/to/your/capstone`  
 `python -m venv venv`  
 Activate virtual environtment: 
   - for windows: `venv/Scripts/activate` ; 
