@@ -5,6 +5,7 @@ In your CLI, execute the following:
 Activate virtual environtment: 
   - for windows: `venv/Scripts/activate` ; 
   - for Unix/MacOS: `source venv/bin/activate`  
+
 Download all requirements `pip install -r requirements.txt`  
 
 Django directory `cd capstone`  
