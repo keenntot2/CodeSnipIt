@@ -1,7 +1,7 @@
 In your CLI, execute the following:
 
-1. `cd /path/to/your/capstone`  
-2. `python -m venv venv`  
+1. Go to project directory `cd /path/to/your/capstone`  
+2. Create virtual environment `python -m venv venv`  
 3. Activate virtual environtment: 
     - for windows: `venv/Scripts/activate` ; 
     - for Unix/MacOS: `source venv/bin/activate`  
