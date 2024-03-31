@@ -75,4 +75,16 @@ class RefreshTokenAPI(APIView):
         except TokenError:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
+class VerifyUsernameAPIVIew(APIView):
+
+    def post(self, request):
+        data = request.data
+        username = data['username']  
+        try: 
+            User.objects.get(username=username)  
+            return Response(status=status.HTTP_409_CONFLICT) 
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_200_OK)
+
         
+    

@@ -25,7 +25,6 @@ const Login = () => {
   return (
     <Flex padding={5} h="100dvh" alignItems="center" justifyContent="center">
       <form
-        action=""
         className="authForm"
         onSubmit={(e) => {
           e.preventDefault();
@@ -49,7 +48,9 @@ const Login = () => {
             {isError && (
               <FormErrorMessage>Invalid username or password.</FormErrorMessage>
             )}
-            <Button type="submit">{isPending ? <Spinner /> : "Login"}</Button>
+            <Button mt={5} type="submit">
+              {isPending ? <Spinner /> : "Login"}
+            </Button>
           </VStack>
         </FormControl>
       </form>
