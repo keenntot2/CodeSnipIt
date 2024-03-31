@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.db.utils import IntegrityError
 
 from .serializers import UserSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
@@ -13,6 +14,8 @@ from rest_framework.response import Response
 
 from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+
+import re
 
 # Create your views here.
 
@@ -75,7 +78,7 @@ class RefreshTokenAPI(APIView):
         except TokenError:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-class VerifyUsernameAPIVIew(APIView):
+class VerifyUsernameAPIView(APIView):
 
     def post(self, request):
         data = request.data
@@ -85,6 +88,37 @@ class VerifyUsernameAPIVIew(APIView):
             return Response(status=status.HTTP_409_CONFLICT) 
         except User.DoesNotExist:
             return Response(status=status.HTTP_200_OK)
+        
+class RegisterAPIView(APIView):
+
+    def post(self, request):
+        data = request.data
+        first_name = data['firstName']
+        last_name = data['lastName']
+        username = data['username']
+        password = data['password']
+        confirmation_password = data['confirmationPassword']
+
+        PASSWORD_REGEX = r'^(?=.*\d).{6,}$' # minimum of 6 characters and at least 1 numerical character
+
+        if re.match(PASSWORD_REGEX, password) is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        if password != confirmation_password:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user = User.objects.create_user(first_name = first_name,
+                                            last_name = last_name,
+                                            username= username,
+                                            password = password)
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        except IntegrityError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
+
+
+
 
         
     
