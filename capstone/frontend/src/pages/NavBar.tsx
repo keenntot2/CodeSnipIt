@@ -1,9 +1,9 @@
 import { Button, HStack, Spinner, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import ColorModeSwitch from "../components/ColorModeSwitch";
 import useLogout from "../hooks/useLogout";
 import useUserStore from "../hooks/useUserStore";
-import ColorModeSwitch from "../components/ColorModeSwitch";
 
 const NavBar = () => {
   const user = useUserStore((s) => s.user);
@@ -19,12 +19,14 @@ const NavBar = () => {
   };
 
   return (
-    <HStack>
+    <HStack justifyContent={"space-between"}>
       <Text>Hi, {`${user.first_name} ${user.last_name}`}</Text>
-      <ColorModeSwitch />
-      <Button variant="ghost" onClick={handleClick}>
-        {logout ? <Spinner /> : "Logout"}
-      </Button>
+      <HStack>
+        <ColorModeSwitch />
+        <Button variant="ghost" onClick={handleClick}>
+          {logout ? <Spinner /> : "Logout"}
+        </Button>
+      </HStack>
     </HStack>
   );
 };
