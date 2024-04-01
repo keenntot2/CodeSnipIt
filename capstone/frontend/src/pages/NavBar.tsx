@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useUserStore from "../hooks/useUserStore";
+import ColorModeSwitch from "../components/ColorModeSwitch";
 
 const NavBar = () => {
   const user = useUserStore((s) => s.user);
@@ -20,6 +21,7 @@ const NavBar = () => {
   return (
     <HStack>
       <Text>Hi, {`${user.first_name} ${user.last_name}`}</Text>
+      <ColorModeSwitch />
       <Button variant="ghost" onClick={handleClick}>
         {logout ? <Spinner /> : "Logout"}
       </Button>
