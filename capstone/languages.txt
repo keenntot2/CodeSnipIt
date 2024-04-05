@@ -1,0 +1,20 @@
+Python
+JavaScript
+Java
+C#
+C++
+Ruby
+Swift
+Kotlin
+PHP
+TypeScript
+Go
+Rust
+HTML/CSS (for web development)
+SQL (for database management)
+MATLAB
+R
+Shell scripting languages (e.g., Bash, PowerShell)
+Perl
+Scala
+Dart
