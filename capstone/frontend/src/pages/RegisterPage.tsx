@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { z } from "zod";
@@ -54,10 +54,7 @@ type Schema = z.infer<typeof schema>;
 const RegisterPage = () => {
   const { mutate, isSuccess, isPending, error } = useVerifyUsername();
   const { mutate: registerUser } = useRegister();
-
-  const [isMin, setIsMin] = useState(false);
-
-  const isCheck = isSuccess && isMin;
+  const [username, setUsername] = useState<string>("");
 
   let timeoutId: number;
 
@@ -70,19 +67,49 @@ const RegisterPage = () => {
     resolver: zodResolver(schema),
   });
 
+  const isMin = username.length >= USERNAME_MIN_CHAR;
+  const isCheck = isSuccess && USERNAME_REGEX.test(username);
+
   const onSubmit = (data: Schema) => {
     if (watch("password") == watch("confirmationPassword")) {
       registerUser(data);
     }
   };
 
-  let usernameTaken = error?.response?.status == 409;
+  const usernameTaken = error?.response?.status == 409 || undefined;
+
+  const isFilled = (obj: Schema) => {
+    const arr = Object.values(obj);
+    return arr.find((i) => i == "") == undefined;
+  };
+
+  let isValid =
+    isFilled(watch()) &&
+    watch("password") === watch("confirmationPassword") &&
+    USERNAME_REGEX.test(username) &&
+    PASSWORD_REGEX.test(watch("password")) &&
+    isSuccess;
+
+  useEffect(() => {
+    if (isMin) {
+      timeoutId = setTimeout(() => {
+        mutate({ username: username });
+      }, 500);
+    }
+  }, [username || undefined]);
 
   return (
     <Flex padding={5} h="100dvh" alignItems="center" justifyContent="center">
       <form onSubmit={handleSubmit(onSubmit)} className="authForm">
         <VStack gap={5}>
-          <FormControl isInvalid={!!errors.firstName}>
+          <FormControl
+            isInvalid={
+              !!errors.firstName ||
+              (watch("firstName")
+                ? !NAME_REGEX.test(watch("firstName"))
+                : false)
+            }
+          >
             <HStack>
               <Input
                 {...register("firstName")}
@@ -94,13 +121,17 @@ const RegisterPage = () => {
                 <Icon as={FaCheckCircle} color="green.400"></Icon>
               )}
             </HStack>
-
-            {errors.firstName && (
-              <FormErrorMessage>{errors.firstName.message}</FormErrorMessage>
-            )}
+            <FormErrorMessage>
+              {errors.firstName?.message || "Invalid name."}
+            </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.lastName}>
+          <FormControl
+            isInvalid={
+              !!errors.lastName ||
+              (watch("lastName") ? !NAME_REGEX.test(watch("lastName")) : false)
+            }
+          >
             <HStack>
               <Input
                 {...register("lastName")}
@@ -112,12 +143,19 @@ const RegisterPage = () => {
                 <Icon as={FaCheckCircle} color="green.400"></Icon>
               )}
             </HStack>
-            {errors.lastName && (
-              <FormErrorMessage>{errors.lastName.message}</FormErrorMessage>
-            )}
+
+            <FormErrorMessage>
+              {errors.lastName?.message || "Invalid name."}
+            </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.username || usernameTaken}>
+          <FormControl
+            isInvalid={
+              !!errors.username ||
+              usernameTaken ||
+              (username.length >= 1 && !isMin)
+            }
+          >
             <HStack>
               <Input
                 {...register("username")}
@@ -126,20 +164,14 @@ const RegisterPage = () => {
                 w="90%"
                 onChange={(e) => {
                   const username = e.target.value;
+                  setUsername(username);
                   clearTimeout(timeoutId);
-                  if (username.length >= USERNAME_MIN_CHAR) {
-                    setIsMin(true);
-                    timeoutId = setTimeout(() => {
-                      mutate({ username: username });
-                    }, 500);
-                  }
-                  if (username.length < USERNAME_MIN_CHAR) setIsMin(false);
                 }}
               />
-              {isCheck ? (
-                <Icon as={FaCheckCircle} color="green.400"></Icon>
-              ) : (
-                isPending && isMin && <Spinner color="green.400" />
+              {isCheck && <Icon as={FaCheckCircle} color="green.400"></Icon>}
+
+              {isPending && watch("username").length >= USERNAME_MIN_CHAR && (
+                <Spinner color="green.400" />
               )}
               {usernameTaken && (
                 <Icon as={FaExclamationCircle} color="red.400" />
@@ -152,18 +184,16 @@ const RegisterPage = () => {
                 </ListItem>
               </UnorderedList>
             </FormHelperText>
-            {(usernameTaken || !isMin) && (
-              <FormErrorMessage>
-                <UnorderedList>
-                  {!isMin && (
-                    <ListItem>{`Username must consist of at least ${USERNAME_MIN_CHAR} characters.`}</ListItem>
-                  )}
-                  {usernameTaken && isMin && (
-                    <ListItem>"Username is already taken."</ListItem>
-                  )}
-                </UnorderedList>
-              </FormErrorMessage>
-            )}
+            <FormErrorMessage>
+              <UnorderedList>
+                {username.length >= 1 && !isMin && (
+                  <ListItem>{`Username must consist of at least ${USERNAME_MIN_CHAR} characters.`}</ListItem>
+                )}
+                {usernameTaken && isMin && (
+                  <ListItem>"Username is already taken."</ListItem>
+                )}
+              </UnorderedList>
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl isInvalid={!!errors.password}>
@@ -218,21 +248,7 @@ const RegisterPage = () => {
             </FormErrorMessage>
           </FormControl>
 
-          <Button
-            mt={5}
-            type="submit"
-            isDisabled={
-              !!!(
-                watch([
-                  "firstName",
-                  "lastName",
-                  "username",
-                  "password",
-                  "confirmationPassword",
-                ]).filter((i) => i).length == 5
-              )
-            }
-          >
+          <Button mt={5} type="submit" isDisabled={!isValid}>
             Register
           </Button>
         </VStack>
