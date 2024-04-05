@@ -11,6 +11,7 @@ import {
   Spinner,
   UnorderedList,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { z } from "zod";
 import useRegister from "../hooks/useRegister";
 import useVerifyUsername from "../hooks/useVerifyUsername";
+import { useNavigate } from "react-router-dom";
 
 const USERNAME_MIN_CHAR = 5;
 const PASSWORD_MIN_CHAR = 6;
@@ -52,9 +54,30 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 const RegisterPage = () => {
+  console.log("registerpage");
   const { mutate, isSuccess, isPending, error } = useVerifyUsername();
-  const { mutate: registerUser } = useRegister();
+  const {
+    mutate: registerUser,
+    isSuccess: registerSuccess,
+    isPending: isRegistering,
+  } = useRegister();
   const [username, setUsername] = useState<string>("");
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  if (registerSuccess) {
+    setTimeout(() => {
+      toast({
+        title: "Account setup is complete.",
+        description: "You'll be guided to the login page in a moment.",
+        status: "success",
+        duration: 2000,
+        position: "top",
+        onCloseComplete: () => navigate("/login"),
+      });
+    }, 500);
+  }
 
   let timeoutId: number;
 
@@ -249,7 +272,7 @@ const RegisterPage = () => {
           </FormControl>
 
           <Button mt={5} type="submit" isDisabled={!isValid}>
-            Register
+            {isRegistering ? <Spinner /> : "Register"}
           </Button>
         </VStack>
       </form>

@@ -14,8 +14,7 @@ const apiClient = new APIClient<Register>("/register");
 
 const useRegister = () =>
   useMutation<Register, AxiosError, Register>({
-    mutationFn: apiClient.post,
-    onSuccess: (data) => console.log(data),
+    mutationFn: apiClient.post
   });
 
 export default useRegister;
