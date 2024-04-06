@@ -4,7 +4,8 @@ from .views import (LoginView,
                     UserAPIView, 
                     RefreshTokenAPI, 
                     VerifyUsernameAPIView,
-                    RegisterAPIView)
+                    RegisterAPIView,
+                    LanguageList)
 
 urlpatterns = [
     path('login', LoginView.as_view(), name='login-view'),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('user', UserAPIView.as_view(), name='user'),
     path('refresh-token', RefreshTokenAPI.as_view(), name='refresh-token'),
     path('verify-username', VerifyUsernameAPIView.as_view(), name='verify-username'),
-    path('register', RegisterAPIView.as_view(), name='register')
+    path('register', RegisterAPIView.as_view(), name='register'),
+    path('languages', LanguageList.as_view(), name='language-list')
 ]

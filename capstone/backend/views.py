@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db.utils import IntegrityError
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, LanguageSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
 from .utils import set_cookie_token, get_tokens_for_user,delete_cookie_token
+from .models import Language
 
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -117,7 +118,10 @@ class RegisterAPIView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
             
 
-
+class LanguageList(generics.ListAPIView):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
+    permission_classes = [IsAuthenticated]
 
 
         

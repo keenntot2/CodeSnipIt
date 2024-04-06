@@ -16,6 +16,8 @@ class APIClient<T> {
 
   post = (data: T) =>
     axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
+
+  getAll = () => axiosInstance.get<T>(this.endpoint).then(res=> res.data);
 }
 
 export default APIClient;
