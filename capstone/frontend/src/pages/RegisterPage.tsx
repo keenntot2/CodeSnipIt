@@ -193,7 +193,7 @@ const RegisterPage = () => {
               />
               {isCheck && <Icon as={FaCheckCircle} color="green.400"></Icon>}
 
-              {isPending && watch("username").length >= USERNAME_MIN_CHAR && (
+              {isPending && username.length >= USERNAME_MIN_CHAR && (
                 <Spinner color="green.400" />
               )}
               {usernameTaken && (
