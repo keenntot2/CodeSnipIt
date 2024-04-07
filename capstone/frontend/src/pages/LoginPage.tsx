@@ -11,16 +11,15 @@ import { useRef } from "react";
 import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-import useIsLoggedIn from "../hooks/useIsLoggedIn";
-
-const Login = () => {
+const LoginPage = () => {
   const { mutate, isError, isPending, isSuccess } = useAuth();
-  const { isSuccess: isLoggedin, isFetching } = useIsLoggedIn();
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  if (isFetching) return null;
-  if (isSuccess || isLoggedin) return <Navigate to="/" />;
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+  if (isSuccess || isLoggedIn) return <Navigate to="/" />;
 
   return (
     <Flex padding={5} h="100dvh" alignItems="center" justifyContent="center">
@@ -58,4 +57,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

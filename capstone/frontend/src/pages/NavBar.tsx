@@ -1,6 +1,6 @@
 import { Button, HStack, Spinner, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ColorModeSwitch from "../components/ColorModeSwitch";
 import useLogout from "../hooks/useLogout";
 import useUserStore from "../hooks/useUserStore";
@@ -10,7 +10,13 @@ const NavBar = () => {
   const { mutate, isSuccess } = useLogout();
   const [logout, setLogout] = useState(false);
 
-  if (isSuccess) return <Navigate to="/login" />;
+  const navigate = useNavigate();
+
+  if (isSuccess) {
+    navigate("/login");
+    sessionStorage.removeItem("isLoggedIn");
+  }
+
   if (!user) return null;
 
   const handleClick = () => {
