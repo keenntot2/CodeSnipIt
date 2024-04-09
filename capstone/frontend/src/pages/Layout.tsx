@@ -24,7 +24,9 @@ const Layout = () => {
   }
   return (
     <Box p={2}>
-      <NavBar />
+      <Box mb={10}>
+        <NavBar />
+      </Box>
       <Outlet />
     </Box>
   );

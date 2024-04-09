@@ -2,7 +2,9 @@ import { Button, VStack } from "@chakra-ui/react";
 import useLanguage from "../hooks/useLanguage";
 
 const LanguageList = () => {
-  const { isSuccess, data } = useLanguage();
+  const { data, isError } = useLanguage();
+
+  if (isError) return null;
 
   return (
     <VStack alignItems={"start"}>
