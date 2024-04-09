@@ -51,8 +51,13 @@ const LoginPage = () => {
             {isError && (
               <FormErrorMessage>Invalid username or password.</FormErrorMessage>
             )}
-            <Button mt={5} type="submit">
-              {isPending ? <Spinner /> : "Login"}
+            <Button
+              mt={5}
+              type="submit"
+              isLoading={isPending}
+              loadingText="Logging in"
+            >
+              Login
             </Button>
           </VStack>
         </FormControl>
