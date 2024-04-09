@@ -13,7 +13,7 @@ const NavBar = () => {
     localStorage.removeItem("lastLoginTime");
     const intervalId = localStorage.getItem("intervalId");
     if (intervalId) {
-      clearTimeout(parseInt(intervalId));
+      clearInterval(parseInt(intervalId));
       localStorage.removeItem("intervalId");
     }
     return <Navigate to="/login" />;
