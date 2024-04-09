@@ -1,19 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import _ from "lodash";
+
 
 const apiClient = new APIClient<null>("/refresh-token");
 
 export const REFRESH_TOKEN_LIFETIME = 4 * 60 * 1000; // 4 minutes
 
-const useRefreshToken = (isSuccess: boolean) =>
+const useRefreshToken = () =>
   useQuery({
     queryKey: ["refreshToken"],
-    queryFn: () => setTimeout(() => apiClient.get(), REFRESH_TOKEN_LIFETIME),
+    queryFn: () => apiClient.get(),
     refetchInterval: REFRESH_TOKEN_LIFETIME,
     refetchIntervalInBackground: true,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
     staleTime: REFRESH_TOKEN_LIFETIME,
-    enabled: isSuccess,
+    enabled: false
   });
 
 export default useRefreshToken;

@@ -4,11 +4,12 @@ import useLanguage from "../hooks/useLanguage";
 const LanguageList = () => {
   const { isSuccess, data } = useLanguage();
 
-  if (isSuccess) console.log(data);
   return (
     <VStack alignItems={"start"}>
       {data.results.map((language) => (
-        <Button key={language.id}>{language.language}</Button>
+        <Button key={language.id} size={"sm"} variant={"ghost"}>
+          {language.language}
+        </Button>
       ))}
     </VStack>
   );

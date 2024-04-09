@@ -4,11 +4,12 @@ import NavBar from "../components/NavBar";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
 import useUserStore from "../hooks/useUserStore";
+import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
 
 const Layout = () => {
   const { data, isError, isLoading, isSuccess } = useUser();
   const setUser = useUserStore((s) => s.setUser);
-  useRefreshToken(isSuccess);
+  const { refetch } = useRefreshToken();
 
   if (isLoading) return null;
   if (isError) {
@@ -19,6 +20,7 @@ const Layout = () => {
   if (isSuccess) {
     setUser(data);
     sessionStorage.setItem("isLoggedIn", "true");
+    checkBackgroundRequestTime(refetch);
   }
   return (
     <Box p={2}>

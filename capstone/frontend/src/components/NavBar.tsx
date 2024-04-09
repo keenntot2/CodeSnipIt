@@ -1,4 +1,4 @@
-import { Button, HStack, Spinner, Text } from "@chakra-ui/react";
+import { Button, HStack, Text } from "@chakra-ui/react";
 import { Navigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useUserStore from "../hooks/useUserStore";
@@ -10,6 +10,12 @@ const NavBar = () => {
 
   if (isSuccess) {
     sessionStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("lastLoginTime");
+    const intervalId = localStorage.getItem("intervalId");
+    if (intervalId) {
+      clearTimeout(parseInt(intervalId));
+      localStorage.removeItem("intervalId");
+    }
     return <Navigate to="/login" />;
   }
 
@@ -20,8 +26,13 @@ const NavBar = () => {
       <Text>Hi, {`${user.first_name} ${user.last_name}`}</Text>
       <HStack>
         <ColorModeSwitch />
-        <Button variant="ghost" onClick={() => mutate(null)}>
-          {isPending ? <Spinner /> : "Logout"}
+        <Button
+          variant="ghost"
+          onClick={() => mutate(null)}
+          isLoading={isPending}
+          loadingText="Logging out"
+        >
+          Logout
         </Button>
       </HStack>
     </HStack>

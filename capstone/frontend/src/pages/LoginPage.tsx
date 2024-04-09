@@ -19,7 +19,11 @@ const LoginPage = () => {
 
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
-  if (isSuccess || isLoggedIn) return <Navigate to="/" />;
+  if (isSuccess || isLoggedIn) {
+    const lastLoginTime = new Date().getTime();
+    localStorage.setItem("lastLoginTime", lastLoginTime.toString());
+    return <Navigate to="/" />;
+  }
 
   return (
     <Flex padding={5} h="100dvh" alignItems="center" justifyContent="center">
