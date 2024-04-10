@@ -54,7 +54,6 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 const RegisterPage = () => {
-  console.log("registerpage");
   const { mutate, isSuccess, isPending, error } = useVerifyUsername();
   const {
     mutate: registerUser,

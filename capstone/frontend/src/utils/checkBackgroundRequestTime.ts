@@ -15,7 +15,6 @@ const checkBackgroundRequestTime = (refetch: () => void) => {
         refetch();
       }, REFRESH_TOKEN_LIFETIME);
       localStorage.setItem("intervalId", intervalId.toString());
-      console.log(intervalId);
     }, timeLeft);
   }
 };

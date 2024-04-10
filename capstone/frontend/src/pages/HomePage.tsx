@@ -1,6 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import LanguageList from "../components/LanguageList";
-import Main from "../components/Main";
+import MainSection from "../components/MainSection";
 
 const HomePage = () => {
   return (
@@ -9,7 +9,7 @@ const HomePage = () => {
         <LanguageList />
       </GridItem>
       <GridItem>
-        <Main />
+        <MainSection />
       </GridItem>
     </Grid>
   );

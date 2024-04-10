@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { Navigate, Outlet } from "react-router-dom";
-import NavBar from "../components/NavBar";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
 import useUserStore from "../hooks/useUserStore";
 import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
 import { useEffect } from "react";
+import NavBar from "../components/NavBar";
 
 const Layout = () => {
   const { data, isError, isLoading, isSuccess } = useUser();
