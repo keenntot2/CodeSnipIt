@@ -4,10 +4,13 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Button,
+  Text,
 } from "@chakra-ui/react";
 import useLanguage from "../hooks/useLanguage";
 
 import { FaAngleDown } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 
 const LanguageList = () => {
   const { data, isError } = useLanguage();
@@ -25,7 +28,13 @@ const LanguageList = () => {
             <FaAngleDown />
           </AccordionButton>
 
-          <AccordionPanel ml={5}>{language.slug}</AccordionPanel>
+          <AccordionPanel ml={5}>
+            <Text>{language.slug}</Text>
+            <Button variant={"outline"} size={"xs"} gap={2} mt={5}>
+              <IoMdAdd />
+              Add snippet
+            </Button>
+          </AccordionPanel>
         </AccordionItem>
       ))}
     </Accordion>
