@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
+import AddSnippetPage from "./pages/AddSnippetPage";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -10,7 +11,15 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [{ index: true, element: <HomePage /> }],
+    children: [
+      {
+        path: "",
+        element: <HomePage />,
+        children: [
+          { path: ":languageSlug/add-snippet", element: <AddSnippetPage /> },
+        ],
+      },
+    ],
   },
 ]);
 
