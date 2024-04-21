@@ -28,7 +28,7 @@ const Layout = () => {
   }
 
   return (
-    <Box p={2}>
+    <Box p={5}>
       <Box mb={10}>
         <NavBar />
       </Box>
