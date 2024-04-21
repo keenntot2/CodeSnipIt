@@ -5,6 +5,7 @@ import {
   AccordionPanel,
   Box,
   Button,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import useLanguage from "../hooks/useLanguage";
@@ -13,9 +14,10 @@ import { FaAngleDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 
 const LanguageList = () => {
-  const { data, isError } = useLanguage();
+  const { data, isError, isFetching } = useLanguage();
 
   if (isError) return null;
+  if (isFetching) return <Spinner />;
 
   return (
     <Accordion allowToggle>

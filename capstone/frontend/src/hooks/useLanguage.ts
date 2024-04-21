@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
 import { AxiosError } from "axios";
+import APIClient from "../services/apiClient";
 
-import { languageData } from "../initialData/languageData";
 import fetchAllResponse from "../entities/FetchAllResponse";
+import { languageData } from "../initialData/languageData";
 
-interface Language {
+export interface Language {
   id: number;
   language: string;
   slug: string;
@@ -13,8 +13,8 @@ interface Language {
 
 const apiClient = new APIClient<fetchAllResponse<Language>>("/languages");
 
-const useLanguage = () =>
-  useQuery<
+const useLanguage = () => {
+  return useQuery<
     fetchAllResponse<Language>,
     AxiosError,
     fetchAllResponse<Language>,
@@ -22,8 +22,12 @@ const useLanguage = () =>
   >({
     queryKey: ["languages"],
     queryFn: apiClient.getAll,
-    staleTime: 24 * 60 * 1000,
-    initialData: languageData,
+    staleTime: 24 * 60 * 60 * 1000,
+    initialData: () => {
+      return languageData;
+    },
+    refetchOnWindowFocus: false,
   });
+};
 
 export default useLanguage;
