@@ -10,6 +10,7 @@ import {
   Text,
   Textarea,
   VStack,
+  border,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -18,6 +19,10 @@ import { languageData } from "../initialData/languageData";
 
 const AddSnippetPage = () => {
   const color = useColorModeValue("gray.200", "whiteAlpha.300");
+  const defaultBorderColor = useColorModeValue(
+    "#e2e8f0",
+    "rgba(255,255,255,0.16)"
+  );
   const borderColor = useColorModeValue("#3182ce", "#63b3ed");
   const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
   const params = useParams();
@@ -104,7 +109,11 @@ const AddSnippetPage = () => {
                     ? `2px solid ${errorBorderColor}`
                     : "2px solid transparent"
                 }
-                border={state.code ? `1px solid ${errorBorderColor}` : "1px"}
+                border={
+                  state.code
+                    ? `1px solid ${errorBorderColor}`
+                    : `1px solid ${defaultBorderColor}`
+                }
                 boxShadow={state.code ? `0 0 1px ${errorBorderColor}` : "none"}
                 paddingBlock="16px"
                 borderRadius="6px"
