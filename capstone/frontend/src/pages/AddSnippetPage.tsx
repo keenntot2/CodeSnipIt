@@ -10,7 +10,6 @@ import {
   Text,
   Textarea,
   VStack,
-  border,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
@@ -18,7 +17,6 @@ import { useParams } from "react-router-dom";
 import { languageData } from "../initialData/languageData";
 
 const AddSnippetPage = () => {
-  const color = useColorModeValue("gray.200", "whiteAlpha.300");
   const defaultBorderColor = useColorModeValue(
     "#e2e8f0",
     "rgba(255,255,255,0.16)"
