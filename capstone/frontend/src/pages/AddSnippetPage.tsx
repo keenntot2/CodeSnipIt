@@ -19,6 +19,7 @@ import { languageData } from "../initialData/languageData";
 const AddSnippetPage = () => {
   const color = useColorModeValue("gray.200", "whiteAlpha.300");
   const borderColor = useColorModeValue("#3182ce", "#63b3ed");
+  const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
   const params = useParams();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -98,9 +99,13 @@ const AddSnippetPage = () => {
                   boxShadow: `0 0 1px ${borderColor}`,
                   outline: `2px solid ${borderColor}`,
                 }}
-                outline="2px solid transparent"
-                border="1px solid"
-                borderColor={color}
+                outline={
+                  state.code
+                    ? `2px solid ${errorBorderColor}`
+                    : "2px solid transparent"
+                }
+                border={state.code ? `1px solid ${errorBorderColor}` : "1px"}
+                boxShadow={state.code ? `0 0 1px ${errorBorderColor}` : "none"}
                 paddingBlock="16px"
                 borderRadius="6px"
                 paddingInline="32px"
