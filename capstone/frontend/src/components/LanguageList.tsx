@@ -24,7 +24,7 @@ const LanguageList = () => {
   if (isFetching) return <Spinner />;
 
   return (
-    <HStack h={"100%"}>
+    <HStack spacing={10} h="100%" alignItems="start">
       <Accordion allowToggle>
         {data.results.map((language) => (
           <AccordionItem key={language.id} borderRadius={5}>
@@ -51,7 +51,7 @@ const LanguageList = () => {
           </AccordionItem>
         ))}
       </Accordion>
-      <Divider orientation="vertical" size={"md"} ml={5} />
+      <Divider orientation="vertical" h="inherit" />
     </HStack>
   );
 };

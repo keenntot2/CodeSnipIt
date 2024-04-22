@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 const MainSection = () => {
   return (
-    <Box paddingInline={5}>
+    <Box paddingInline={5} ml={5}>
       <Outlet />
     </Box>
   );

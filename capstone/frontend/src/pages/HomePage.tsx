@@ -4,7 +4,7 @@ import MainSection from "../components/MainSection";
 
 const HomePage = () => {
   return (
-    <Grid templateAreas={`"side main"`} gridTemplateColumns={"250px 1fr"}>
+    <Grid templateAreas={`"side main"`} gridTemplateColumns={"300px 1fr"}>
       <GridItem>
         <LanguageList />
       </GridItem>
