@@ -57,10 +57,8 @@ const AddSnippetPage = () => {
 
     if (e.target.value.trim().length == 0) {
       setCodeError(true);
-      // setState({ ...state, code: true });
     } else {
       setCodeError(false);
-      // setState({ ...state, code: false });
     }
   };
 
@@ -68,10 +66,8 @@ const AddSnippetPage = () => {
     setTitle(e.target.value);
     if (e.target.value.trim().length == 0) {
       setTitleError(true);
-      // setState({ ...state, title: true });
     } else {
       setTitleError(false);
-      // setState({ ...state, title: false });
     }
   };
 

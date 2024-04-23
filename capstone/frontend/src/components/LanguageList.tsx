@@ -14,14 +14,14 @@ import useLanguage from "../hooks/useLanguage";
 
 import { FaAngleDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 const LanguageList = () => {
-  console.log("langlist");
   const { data, isError, isFetching } = useLanguage();
   const reset = useAddSnippetValueStore((s) => s.reset);
   const navigate = useNavigate();
+  const params = useParams();
 
   if (isError) return null;
   if (isFetching) return <Spinner />;
@@ -46,8 +46,10 @@ const LanguageList = () => {
                 gap={2}
                 mt={5}
                 onClick={() => {
-                  reset();
-                  navigate(`/${language.slug}/add-snippet`);
+                  if (params.languageSlug != language.slug) {
+                    reset();
+                    navigate(`/${language.slug}/add-snippet`);
+                  }
                 }}
               >
                 <IoMdAdd />
