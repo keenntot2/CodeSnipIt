@@ -40,6 +40,12 @@ const AddSnippetPage = () => {
 
   const [noOfLines, setNoOfLines] = useState(5);
 
+  const isDisabled =
+    errors.title ||
+    errors.code ||
+    titleValue.trim().length == 0 ||
+    codeValue.trim().length == 0;
+
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCode(e.target.value);
     const textarea = textareaRef.current;
@@ -165,7 +171,13 @@ const AddSnippetPage = () => {
               <FormErrorMessage>Field cannot be empty.</FormErrorMessage>
             </FormControl>
           </Box>
-          <Button type="submit" w={"max-content"} alignSelf={"end"} size={"lg"}>
+          <Button
+            type="submit"
+            w={"max-content"}
+            alignSelf={"end"}
+            size={"lg"}
+            isDisabled={isDisabled}
+          >
             Save
           </Button>
         </form>
