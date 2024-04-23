@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-class APIClient<T> {
+class APIClient<T = undefined, D = undefined> {
   endpoint: string;
 
   constructor(endpoint: string) {
@@ -15,9 +15,9 @@ class APIClient<T> {
   get = () => axiosInstance.get<T>(this.endpoint).then((res) => res.data);
 
   post = (data: T) =>
-    axiosInstance.post<T>(this.endpoint, data).then((res) => res.data);
+    axiosInstance.post<D>(this.endpoint, data).then((res) => res.data);
 
-  getAll = () => axiosInstance.get<T>(this.endpoint).then(res=> res.data);
+  getAll = () => axiosInstance.get<T>(this.endpoint).then((res) => res.data);
 }
 
 export default APIClient;

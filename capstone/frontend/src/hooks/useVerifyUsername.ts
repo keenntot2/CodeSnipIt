@@ -9,7 +9,7 @@ interface Username {
 const apiClient = new APIClient<Username>("/verify-username");
 
 const useVerifyUsername = () =>
-  useMutation<any, AxiosError, Username>({
+  useMutation<undefined, AxiosError, Username>({
     mutationFn: apiClient.post,
     retry: false,
   });

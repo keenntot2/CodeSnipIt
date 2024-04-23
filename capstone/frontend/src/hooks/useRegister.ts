@@ -13,8 +13,8 @@ interface Register {
 const apiClient = new APIClient<Register>("/register");
 
 const useRegister = () =>
-  useMutation<Register, AxiosError, Register>({
-    mutationFn: apiClient.post
+  useMutation<undefined, AxiosError, Register>({
+    mutationFn: apiClient.post,
   });
 
 export default useRegister;
