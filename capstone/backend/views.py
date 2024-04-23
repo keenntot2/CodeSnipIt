@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db.utils import IntegrityError
 
-from .serializers import UserSerializer, LanguageSerializer
+from .serializers import UserSerializer, LanguageSerializer, SnippetSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
 from .utils import set_cookie_token, get_tokens_for_user,delete_cookie_token
-from .models import Language
+from .models import Language, Snippet
 from .pagination import LanguageResultsSetPagination
 
 from rest_framework import status, generics
@@ -125,6 +125,31 @@ class LanguageList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     pagination_class = LanguageResultsSetPagination
 
+class AddSnippetAPI(APIView):
+    permission_classes=[IsAuthenticated]
+    
+    def post(self,request):
+        access_token_b64 = request.COOKIES.get('access')
+        access = AccessToken(access_token_b64)
+        user_id = access['user_id']
 
+        data = request.data
+
+        response = Response()
+        
+        user = User.objects.get(pk=user_id)
+        language = data['language_slug']
+        title = data['title']
+        code = data['code']
+
+        if title == '' or code == '':
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        
+        snippet = Snippet.objects.create(user=user, language=language, title=title, code=code)
+        response.data = SnippetSerializer(snippet)
+        return response
+
+
+        
         
     
