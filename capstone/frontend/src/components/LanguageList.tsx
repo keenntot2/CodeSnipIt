@@ -15,9 +15,12 @@ import useLanguage from "../hooks/useLanguage";
 import { FaAngleDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 const LanguageList = () => {
+  console.log("langlist");
   const { data, isError, isFetching } = useLanguage();
+  const reset = useAddSnippetValueStore((s) => s.reset);
   const navigate = useNavigate();
 
   if (isError) return null;
@@ -42,7 +45,10 @@ const LanguageList = () => {
                 size={"xs"}
                 gap={2}
                 mt={5}
-                onClick={() => navigate(`/${language.slug}/add-snippet`)}
+                onClick={() => {
+                  reset();
+                  navigate(`/${language.slug}/add-snippet`);
+                }}
               >
                 <IoMdAdd />
                 Add snippet

@@ -15,6 +15,7 @@ import {
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { languageData } from "../initialData/languageData";
+import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 const AddSnippetPage = () => {
   const defaultBorderColor = useColorModeValue(
@@ -23,14 +24,24 @@ const AddSnippetPage = () => {
   );
   const borderColor = useColorModeValue("#3182ce", "#63b3ed");
   const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
+
   const params = useParams();
+  const {
+    titleValue,
+    codeValue,
+    errors,
+    setTitle,
+    setCode,
+    setTitleError,
+    setCodeError,
+  } = useAddSnippetValueStore();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [noOfLines, setNoOfLines] = useState(5);
-  const [state, setState] = useState({ title: false, code: false });
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCode(e.target.value);
     const textarea = textareaRef.current;
 
     if (textarea) {
@@ -45,17 +56,22 @@ const AddSnippetPage = () => {
     }
 
     if (e.target.value.trim().length == 0) {
-      setState({ ...state, code: true });
+      setCodeError(true);
+      // setState({ ...state, code: true });
     } else {
-      setState({ ...state, code: false });
+      setCodeError(false);
+      // setState({ ...state, code: false });
     }
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
     if (e.target.value.trim().length == 0) {
-      setState({ ...state, title: true });
+      setTitleError(true);
+      // setState({ ...state, title: true });
     } else {
-      setState({ ...state, title: false });
+      setTitleError(false);
+      // setState({ ...state, title: false });
     }
   };
 
@@ -76,26 +92,29 @@ const AddSnippetPage = () => {
       <Box>
         <form className="code-form" onSubmit={(e) => handleSubmit(e)}>
           <Box>
-            <FormControl isInvalid={state.title}>
+            <FormControl isInvalid={errors.title}>
               <FormLabel>
                 <Heading as="h2" size="md">
                   Title:
                 </Heading>
               </FormLabel>
-              <Input type="text" onChange={(e) => handleTitleChange(e)} />
+              <Input
+                type="text"
+                value={titleValue}
+                onChange={(e) => handleTitleChange(e)}
+              />
               <FormErrorMessage>Field cannot be empty.</FormErrorMessage>
             </FormControl>
           </Box>
 
           <Box>
-            <FormControl isInvalid={state.code}>
+            <FormControl isInvalid={errors.code}>
               <FormLabel>
                 <Heading as="h2" size="md">
                   Code:
                 </Heading>
               </FormLabel>
               <HStack
-                // ringColor="rgba(66, 153, 225, 0.6)"
                 _focusWithin={{
                   border: "1px solid #ffffff00",
                   zIndex: "1",
@@ -103,16 +122,16 @@ const AddSnippetPage = () => {
                   outline: `2px solid ${borderColor}`,
                 }}
                 outline={
-                  state.code
+                  errors.code
                     ? `2px solid ${errorBorderColor}`
                     : "2px solid transparent"
                 }
                 border={
-                  state.code
+                  errors.code
                     ? `1px solid ${errorBorderColor}`
                     : `1px solid ${defaultBorderColor}`
                 }
-                boxShadow={state.code ? `0 0 1px ${errorBorderColor}` : "none"}
+                boxShadow={errors.code ? `0 0 1px ${errorBorderColor}` : "none"}
                 paddingBlock="16px"
                 borderRadius="6px"
                 paddingInline="32px"
@@ -144,6 +163,7 @@ const AddSnippetPage = () => {
                   ml={5}
                   spellCheck={false}
                   lineHeight={"30px"}
+                  value={codeValue}
                 />
               </HStack>
               <FormErrorMessage>Field cannot be empty.</FormErrorMessage>
