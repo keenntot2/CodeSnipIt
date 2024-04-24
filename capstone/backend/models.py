@@ -18,7 +18,7 @@ class Language(models.Model):
 
 class Snippet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    language = models.ForeignKey(Language, on_delete= models.CASCADE, related_name='codesnippet')
+    language = models.ForeignKey(Language, on_delete= models.CASCADE, related_name='snippet_language')
     title = models.CharField(max_length=64)
     code = models.TextField()
     slug = models.CharField(max_length=64, unique=True, blank=True)

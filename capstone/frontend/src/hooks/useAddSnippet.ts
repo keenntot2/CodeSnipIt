@@ -23,6 +23,7 @@ const apiClient = new APIClient<SnippetMutate, Snippet>("/add-snippet");
 const useAddSnippet = () =>
   useMutation<Snippet, AxiosError, SnippetMutate>({
     mutationFn: apiClient.post,
+    onSuccess: (data) => console.log(data),
   });
 
 export default useAddSnippet;

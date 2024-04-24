@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db.utils import IntegrityError
+from django.utils.text import slugify
 
 from .serializers import UserSerializer, LanguageSerializer, SnippetSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
@@ -18,6 +19,7 @@ from rest_framework_simplejwt.tokens import AccessToken,RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 import re
+import time
 
 # Create your views here.
 
@@ -132,13 +134,16 @@ class AddSnippetAPI(APIView):
         access_token_b64 = request.COOKIES.get('access')
         access = AccessToken(access_token_b64)
         user_id = access['user_id']
+        
 
         data = request.data
 
         response = Response()
-        
+
+        language_slug = data['language_slug']
         user = User.objects.get(pk=user_id)
-        language = data['language_slug']
+
+        language = Language.objects.get(slug=language_slug)
         title = data['title']
         code = data['code']
 
@@ -146,7 +151,8 @@ class AddSnippetAPI(APIView):
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         
         snippet = Snippet.objects.create(user=user, language=language, title=title, code=code)
-        response.data = SnippetSerializer(snippet)
+        serializer = SnippetSerializer(snippet)
+        response.data = serializer.data
         return response
 
 

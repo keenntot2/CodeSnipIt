@@ -13,6 +13,8 @@ class LanguageSerializer(serializers.ModelSerializer):
         fields = ['id', 'language', 'slug']
 
 class SnippetSerializer(serializers.ModelSerializer):
+    language = serializers.CharField(source='language.slug', read_only=True)
+
     class Meta:
         model = Snippet
         fields = ['id', 'language', 'title', 'code', 'slug', 'created_at', 'edited_at']

@@ -16,8 +16,10 @@ import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { languageData } from "../initialData/languageData";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
+import useAddSnippet from "../hooks/useAddSnippet";
 
 const AddSnippetPage = () => {
+  const { mutate } = useAddSnippet();
   const defaultBorderColor = useColorModeValue(
     "#e2e8f0",
     "rgba(255,255,255,0.16)"
@@ -84,6 +86,13 @@ const AddSnippetPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isDisabled && params.languageSlug) {
+      mutate({
+        language_slug: params.languageSlug,
+        title: titleValue,
+        code: codeValue,
+      });
+    }
   };
 
   return (
