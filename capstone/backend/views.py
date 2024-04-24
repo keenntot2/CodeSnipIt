@@ -147,6 +147,12 @@ class AddSnippetAPI(APIView):
         title = data['title']
         code = data['code']
 
+        try:
+            Snippet.objects.get(language=language, title=title)
+            return Response(status=status.HTTP_409_CONFLICT)
+        except:
+            pass
+
         if title == '' or code == '':
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         

@@ -12,14 +12,28 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { languageData } from "../initialData/languageData";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 import useAddSnippet from "../hooks/useAddSnippet";
 
 const AddSnippetPage = () => {
-  const { mutate } = useAddSnippet();
+  console.log("render");
+  const { mutate, isPending, error } = useAddSnippet();
+  const [isConflict, setIsConflict] = useState(false);
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    if (error?.response?.status == 409) {
+      setIsConflict(true);
+    } else {
+      console.log("no conflict");
+      setIsConflict(false);
+    }
+  }, [error]);
+
   const defaultBorderColor = useColorModeValue(
     "#e2e8f0",
     "rgba(255,255,255,0.16)"
@@ -42,11 +56,21 @@ const AddSnippetPage = () => {
 
   const [noOfLines, setNoOfLines] = useState(5);
 
-  const isDisabled =
-    errors.title ||
-    errors.code ||
-    titleValue.trim().length == 0 ||
-    codeValue.trim().length == 0;
+  useEffect(() => {
+    const isDisabledError =
+      errors.title ||
+      errors.code ||
+      titleValue.trim().length == 0 ||
+      codeValue.trim().length == 0 ||
+      isConflict;
+
+    if (isDisabledError) {
+      setIsDisabled(true);
+    } else {
+      console.log("false");
+      setIsDisabled(false);
+    }
+  }, [errors, titleValue, codeValue, isConflict]);
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCode(e.target.value);
@@ -65,16 +89,17 @@ const AddSnippetPage = () => {
 
     if (e.target.value.trim().length == 0) {
       setCodeError(true);
-    } else {
+    } else if (errors.code && e.target.value.trim().length > 0) {
       setCodeError(false);
     }
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    setIsConflict(false);
     if (e.target.value.trim().length == 0) {
       setTitleError(true);
-    } else {
+    } else if (errors.title && e.target.value.trim().length > 0) {
       setTitleError(false);
     }
   };
@@ -86,7 +111,7 @@ const AddSnippetPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isDisabled && params.languageSlug) {
+    if (!isDisabled && params.languageSlug && !isConflict) {
       mutate({
         language_slug: params.languageSlug,
         title: titleValue,
@@ -103,7 +128,7 @@ const AddSnippetPage = () => {
       <Box>
         <form className="code-form" onSubmit={(e) => handleSubmit(e)}>
           <Box>
-            <FormControl isInvalid={errors.title}>
+            <FormControl isInvalid={errors.title || isConflict}>
               <FormLabel>
                 <Heading as="h2" size="md">
                   Title:
@@ -114,7 +139,11 @@ const AddSnippetPage = () => {
                 value={titleValue}
                 onChange={(e) => handleTitleChange(e)}
               />
-              <FormErrorMessage>Field cannot be empty.</FormErrorMessage>
+              <FormErrorMessage>
+                {errors.title
+                  ? "Field cannot be empty."
+                  : "This title is already existing."}
+              </FormErrorMessage>
             </FormControl>
           </Box>
 
@@ -186,6 +215,8 @@ const AddSnippetPage = () => {
             alignSelf={"end"}
             size={"lg"}
             isDisabled={isDisabled}
+            isLoading={isPending}
+            loadingText="Saving"
           >
             Save
           </Button>
