@@ -178,7 +178,6 @@ const AddSnippetPage = () => {
                   {[...Array(noOfLines).keys()].map((index) => (
                     <Text
                       key={index}
-                      borderBlock={0}
                       lineHeight={"30px"}
                       color="gray.400"
                       cursor={"default"}
