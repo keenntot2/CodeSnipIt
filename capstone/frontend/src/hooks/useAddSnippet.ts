@@ -8,7 +8,7 @@ interface SnippetMutate {
   code: string;
 }
 
-interface Snippet {
+export interface Snippet {
   id: number;
   language: string;
   title: string;

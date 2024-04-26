@@ -8,7 +8,7 @@ import {
   Divider,
   HStack,
   Spinner,
-  Text,
+  VStack,
 } from "@chakra-ui/react";
 import useLanguage from "../hooks/useLanguage";
 
@@ -16,6 +16,7 @@ import { FaAngleDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
+import SnippetList from "./SnippetList";
 
 const LanguageList = () => {
   const { data, isError, isFetching } = useLanguage();
@@ -39,7 +40,10 @@ const LanguageList = () => {
             </AccordionButton>
 
             <AccordionPanel ml={5}>
-              <Text>{language.slug}</Text>
+              <VStack spacing={2} alignItems="start">
+                <SnippetList language={language.slug} />
+              </VStack>
+
               <Button
                 variant={"outline"}
                 size={"xs"}

@@ -19,7 +19,6 @@ import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 import useAddSnippet from "../hooks/useAddSnippet";
 
 const AddSnippetPage = () => {
-  console.log("render");
   const { mutate, isPending, error } = useAddSnippet();
   const [isConflict, setIsConflict] = useState(false);
 
@@ -29,7 +28,6 @@ const AddSnippetPage = () => {
     if (error?.response?.status == 409) {
       setIsConflict(true);
     } else {
-      console.log("no conflict");
       setIsConflict(false);
     }
   }, [error]);
@@ -67,7 +65,6 @@ const AddSnippetPage = () => {
     if (isDisabledError) {
       setIsDisabled(true);
     } else {
-      console.log("false");
       setIsDisabled(false);
     }
   }, [errors, titleValue, codeValue, isConflict]);

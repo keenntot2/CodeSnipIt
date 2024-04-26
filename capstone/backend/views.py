@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db.utils import IntegrityError
-from django.utils.text import slugify
 
 from .serializers import UserSerializer, LanguageSerializer, SnippetSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
@@ -10,7 +9,7 @@ from .utils import set_cookie_token, get_tokens_for_user,delete_cookie_token
 from .models import Language, Snippet
 from .pagination import LanguageResultsSetPagination
 
-from rest_framework import status, generics
+from rest_framework import status, generics, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -161,7 +160,19 @@ class AddSnippetAPI(APIView):
         response.data = serializer.data
         return response
 
+class ViewSnippetList(generics.ListAPIView):
+    permission_classes=[IsAuthenticated]
+    serializer_class = SnippetSerializer
 
-        
-        
     
+    def get_queryset(self):
+        access_64 = self.request.COOKIES.get('access')
+        access = AccessToken(access_64)
+        user_id = access['user_id']
+
+        try:
+            user = User.objects.get(pk=user_id)
+            queryset = Snippet.objects.filter(user=user)
+            return queryset
+        except User.DoesNotExist:
+            return Snippet.objects.none()

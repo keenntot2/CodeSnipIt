@@ -6,7 +6,8 @@ from .views import (LoginView,
                     VerifyUsernameAPIView,
                     RegisterAPIView,
                     LanguageList,
-                    AddSnippetAPI)
+                    AddSnippetAPI,
+                    ViewSnippetList)
 
 urlpatterns = [
     path('login', LoginView.as_view(), name='login-view'),
@@ -16,5 +17,6 @@ urlpatterns = [
     path('verify-username', VerifyUsernameAPIView.as_view(), name='verify-username'),
     path('register', RegisterAPIView.as_view(), name='register'),
     path('languages', LanguageList.as_view(), name='language-list'),
-    path('add-snippet', AddSnippetAPI.as_view(), name='add-snippet')
+    path('add-snippet', AddSnippetAPI.as_view(), name='add-snippet'),
+    path('snippet-list', ViewSnippetList.as_view(), name='snippet-list')
 ]

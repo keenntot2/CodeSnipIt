@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api",
@@ -17,7 +17,8 @@ class APIClient<T = undefined, D = undefined> {
   post = (data: T) =>
     axiosInstance.post<D>(this.endpoint, data).then((res) => res.data);
 
-  getAll = () => axiosInstance.get<T>(this.endpoint).then((res) => res.data);
+  getAll = (config?: AxiosRequestConfig) =>
+    axiosInstance.get<T>(this.endpoint, config).then((res) => res.data);
 }
 
 export default APIClient;
