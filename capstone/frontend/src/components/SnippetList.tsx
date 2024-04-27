@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import useSnippetList from "../hooks/useSnippetList";
 import { useEffect } from "react";
 import useSnippetListStore from "../hooks/useSnippetListStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Props {
   language: string;
@@ -13,6 +13,7 @@ const SnippetList = ({ language }: Props) => {
   const addSnippets = useSnippetListStore((s) => s.addSnippets);
   const setIsSuccess = useSnippetListStore((s) => s.setIsSuccess);
   const navigate = useNavigate();
+  const params = useParams();
 
   useEffect(() => {
     if (isSuccess) {
@@ -28,6 +29,7 @@ const SnippetList = ({ language }: Props) => {
           .filter((snippet) => snippet.language === language)
           .map((snippet) => (
             <Button
+              isActive={params.snippetSlug === snippet.slug}
               key={snippet.id}
               size="sm"
               onClick={() => navigate(`/${snippet.language}/${snippet.slug}`)}
