@@ -1,6 +1,7 @@
 import { Box, Heading, useColorModeValue } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import CodeBlock from "../components/CodeBlock";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import useSnippetListStore from "../hooks/useSnippetListStore";
 
 const SnippetPage = () => {
@@ -27,7 +28,22 @@ const SnippetPage = () => {
             >
               {snippet?.title}
             </Heading>
-            <CodeBlock code={snippet?.code} />
+
+            <Box
+              padding={5}
+              backgroundColor="rgb(1, 22, 39)"
+              borderRadius="0px 0px 10px 10px"
+            >
+              {snippet?.code && (
+                <SyntaxHighlighter
+                  language={snippet?.language}
+                  style={nightOwl}
+                  showLineNumbers
+                >
+                  {snippet?.code}
+                </SyntaxHighlighter>
+              )}
+            </Box>
           </>
         )}
       </Box>

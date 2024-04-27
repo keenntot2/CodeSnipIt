@@ -6,7 +6,7 @@ export const languageData = {
     { id: 4, language: "Python", slug: "python" },
     { id: 5, language: "JavaScript", slug: "javascript" },
     { id: 6, language: "Java", slug: "java" },
-    { id: 7, language: "C#", slug: "c-sharp" },
+    { id: 7, language: "C#", slug: "csharp" },
     { id: 8, language: "C++", slug: "cpp" },
     { id: 9, language: "Ruby", slug: "ruby" },
     { id: 10, language: "Swift", slug: "swift" },
@@ -23,7 +23,7 @@ export const languageData = {
     {
       id: 21,
       language: "Shell Scripting Languages",
-      slug: "shell-scripting-languages",
+      slug: "shell",
     },
     { id: 22, language: "Perl", slug: "perl" },
     { id: 23, language: "Scala", slug: "scala" },
