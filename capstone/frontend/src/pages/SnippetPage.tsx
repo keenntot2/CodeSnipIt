@@ -32,7 +32,8 @@ const SnippetPage = () => {
         {isSuccess && (
           <>
             <HStack
-              padding={5}
+              paddingBlock={3}
+              paddingInline={5}
               backgroundColor={headingBcolor}
               borderRadius="10px 10px 0px 0px"
               justifyContent="space-between"

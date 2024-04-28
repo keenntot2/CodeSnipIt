@@ -1,6 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import fetchAllResponse from "../entities/FetchAllResponse";
+import APIClient from "../services/apiClient";
+import useSnippetListStore from "./useSnippetListStore";
 
 interface SnippetMutate {
   language_slug: string;
@@ -20,10 +22,32 @@ export interface Snippet {
 
 const apiClient = new APIClient<SnippetMutate, Snippet>("/add-snippet");
 
-const useAddSnippet = () =>
-  useMutation<Snippet, AxiosError, SnippetMutate>({
+const useAddSnippet = () => {
+  const queryClient = useQueryClient();
+  const addSnippets = useSnippetListStore((s) => s.addSnippets);
+  return useMutation<Snippet, AxiosError, SnippetMutate>({
     mutationFn: apiClient.post,
-    onSuccess: (data) => console.log(data),
+    onSuccess: (data) => {
+      const snippetData = queryClient.getQueryData<fetchAllResponse<Snippet>>([
+        "snippets",
+      ]);
+      queryClient.setQueryData<fetchAllResponse<Snippet>>(
+        ["snippets"],
+        (snippets) => ({
+          ...(snippets || ({} as fetchAllResponse<Snippet>)),
+          count: snippets?.count ? snippets.count + 1 : 1,
+          results: [data, ...(snippets?.results || [])],
+        })
+      );
+
+      if (snippetData) {
+        addSnippets({
+          ...snippetData,
+          results: [data, ...snippetData.results],
+        });
+      }
+    },
   });
+};
 
 export default useAddSnippet;

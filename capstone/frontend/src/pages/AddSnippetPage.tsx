@@ -13,33 +13,14 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { languageData } from "../initialData/languageData";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
-import useAddSnippet from "../hooks/useAddSnippet";
+import useAddSnippet, { Snippet } from "../hooks/useAddSnippet";
+import { useQueryClient } from "@tanstack/react-query";
+import fetchAllResponse from "../entities/FetchAllResponse";
 
 const AddSnippetPage = () => {
-  const { mutate, isPending, error } = useAddSnippet();
-  const [isConflict, setIsConflict] = useState(false);
-
-  const [isDisabled, setIsDisabled] = useState(true);
-
-  useEffect(() => {
-    if (error?.response?.status == 409) {
-      setIsConflict(true);
-    } else {
-      setIsConflict(false);
-    }
-  }, [error]);
-
-  const defaultBorderColor = useColorModeValue(
-    "#e2e8f0",
-    "rgba(255,255,255,0.16)"
-  );
-  const borderColor = useColorModeValue("#3182ce", "#63b3ed");
-  const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
-
-  const params = useParams();
   const {
     titleValue,
     codeValue,
@@ -50,9 +31,40 @@ const AddSnippetPage = () => {
     setCodeError,
   } = useAddSnippetValueStore();
 
+  const { mutate, isPending, error, data, isSuccess } = useAddSnippet();
+  const [isConflict, setIsConflict] = useState(false);
+  const [noOfLines, setNoOfLines] = useState(5);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const params = useParams();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const defaultBorderColor = useColorModeValue(
+    "#e2e8f0",
+    "rgba(255,255,255,0.16)"
+  );
+  const borderColor = useColorModeValue("#3182ce", "#63b3ed");
+  const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const [noOfLines, setNoOfLines] = useState(5);
+  useEffect(() => {
+    const snippets =
+      queryClient.getQueryData<fetchAllResponse<Snippet>>(["snippets"]) ||
+      ({} as fetchAllResponse<Snippet>);
+
+    if (snippets.results.find((s) => s.slug === data?.slug)) {
+      navigate(`/${data?.language}/${data?.slug}`);
+    }
+  }, [isSuccess, data]);
+
+  useEffect(() => {
+    if (error?.response?.status == 409) {
+      setIsConflict(true);
+    } else {
+      setIsConflict(false);
+    }
+  }, [error]);
 
   useEffect(() => {
     const isDisabledError =
@@ -116,6 +128,8 @@ const AddSnippetPage = () => {
       });
     }
   };
+
+  if (isSuccess) return <Navigate to={`/${data.language}/${data.slug}`} />;
 
   return (
     <>
