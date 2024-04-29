@@ -13,12 +13,10 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { languageData } from "../initialData/languageData";
+import { useNavigate, useParams } from "react-router-dom";
+import useAddSnippet from "../hooks/useAddSnippet";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
-import useAddSnippet, { Snippet } from "../hooks/useAddSnippet";
-import { useQueryClient } from "@tanstack/react-query";
-import fetchAllResponse from "../entities/FetchAllResponse";
+import { languageData } from "../initialData/languageData";
 
 const AddSnippetPage = () => {
   const {
@@ -29,6 +27,7 @@ const AddSnippetPage = () => {
     setCode,
     setTitleError,
     setCodeError,
+    reset,
   } = useAddSnippetValueStore();
 
   const { mutate, isPending, error, data, isSuccess } = useAddSnippet();
@@ -36,7 +35,7 @@ const AddSnippetPage = () => {
   const [noOfLines, setNoOfLines] = useState(5);
   const [isDisabled, setIsDisabled] = useState(true);
   const params = useParams();
-  const queryClient = useQueryClient();
+
   const navigate = useNavigate();
 
   const defaultBorderColor = useColorModeValue(
@@ -47,16 +46,6 @@ const AddSnippetPage = () => {
   const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    const snippets =
-      queryClient.getQueryData<fetchAllResponse<Snippet>>(["snippets"]) ||
-      ({} as fetchAllResponse<Snippet>);
-
-    if (snippets.results.find((s) => s.slug === data?.slug)) {
-      navigate(`/${data?.language}/${data?.slug}`);
-    }
-  }, [isSuccess, data]);
 
   useEffect(() => {
     if (error?.response?.status == 409) {
@@ -80,6 +69,13 @@ const AddSnippetPage = () => {
       setIsDisabled(false);
     }
   }, [errors, titleValue, codeValue, isConflict]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      navigate(`/${data.language}/${data.slug}`);
+    }
+  }, [isSuccess]);
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCode(e.target.value);
@@ -128,8 +124,6 @@ const AddSnippetPage = () => {
       });
     }
   };
-
-  if (isSuccess) return <Navigate to={`/${data.language}/${data.slug}`} />;
 
   return (
     <>
@@ -187,6 +181,7 @@ const AddSnippetPage = () => {
                 borderRadius="6px"
                 paddingInline="32px"
                 transition=" 0.2s ease-in-out"
+                backgroundColor="rgb(1, 22, 39)"
               >
                 <VStack spacing={0}>
                   {[...Array(noOfLines).keys()].map((index) => (
