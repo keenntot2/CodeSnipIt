@@ -19,6 +19,8 @@ class APIClient<T = undefined, D = undefined> {
 
   getAll = (config?: AxiosRequestConfig) =>
     axiosInstance.get<T>(this.endpoint, config).then((res) => res.data);
+
+  delete = () => axiosInstance.delete<T>(this.endpoint).then((res) => res.data);
 }
 
 export default APIClient;

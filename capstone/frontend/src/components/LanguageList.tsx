@@ -9,6 +9,7 @@ import {
   HStack,
   Spinner,
   VStack,
+  Text,
 } from "@chakra-ui/react";
 import useLanguage from "../hooks/useLanguage";
 
@@ -17,6 +18,7 @@ import { IoMdAdd } from "react-icons/io";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 import SnippetList from "./SnippetList";
+import LanguageIcon from "./LanguageIcon";
 
 const LanguageList = () => {
   const { data, isError, isFetching } = useLanguage();
@@ -37,7 +39,10 @@ const LanguageList = () => {
           <AccordionItem key={language.id} borderRadius={5}>
             <AccordionButton>
               <Box as="span" flex="1" textAlign="left" paddingBlock={2}>
-                {language.language}
+                <HStack>
+                  <LanguageIcon language={language.slug} />
+                  <Text>{language.language}</Text>
+                </HStack>
               </Box>
               <FaAngleDown />
             </AccordionButton>

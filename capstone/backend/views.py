@@ -172,7 +172,20 @@ class ViewSnippetList(generics.ListAPIView):
 
         try:
             user = User.objects.get(pk=user_id)
-            queryset = Snippet.objects.filter(user=user)
+            queryset = Snippet.objects.filter(user=user).order_by('title')
             return queryset
         except User.DoesNotExist:
             return Snippet.objects.none()
+        
+class DeleteSnippetAPI(APIView):
+    permission_classes=[IsAuthenticated]
+
+    def delete(self, request, snippet_slug):
+
+        try:
+            snippet = Snippet.objects.get(slug=snippet_slug)
+            snippet.delete()
+            return Response(status=status.HTTP_200_OK)
+        except Snippet.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+

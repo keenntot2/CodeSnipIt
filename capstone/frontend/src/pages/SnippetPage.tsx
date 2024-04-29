@@ -1,17 +1,18 @@
 import {
   Box,
+  Button,
   HStack,
   Heading,
-  useColorModeValue,
-  Text,
-  Button,
   Icon,
+  Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
+import { IoMdCopy } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import DeleteSnippetAlert from "../components/DeleteSnippetAlert";
 import useSnippetListStore from "../hooks/useSnippetListStore";
-import { IoMdCopy } from "react-icons/io";
 
 const SnippetPage = () => {
   const { snippets, isSuccess } = useSnippetListStore();
@@ -41,18 +42,21 @@ const SnippetPage = () => {
               <Heading as="h1" size="md">
                 {snippet?.title}
               </Heading>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  if (snippet?.code)
-                    navigator.clipboard.writeText(snippet?.code);
-                }}
-              >
-                <HStack>
-                  <Icon as={IoMdCopy} boxSize={5} />
-                  <Text>Copy</Text>
-                </HStack>
-              </Button>
+              <HStack>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (snippet?.code)
+                      navigator.clipboard.writeText(snippet?.code);
+                  }}
+                >
+                  <HStack>
+                    <Icon as={IoMdCopy} boxSize={5} />
+                    <Text>Copy</Text>
+                  </HStack>
+                </Button>
+                <DeleteSnippetAlert snippet={snippet} />
+              </HStack>
             </HStack>
 
             <Box

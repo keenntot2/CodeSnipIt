@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Spinner } from "@chakra-ui/react";
 import useSnippetList from "../hooks/useSnippetList";
 import { useEffect } from "react";
 import useSnippetListStore from "../hooks/useSnippetListStore";
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const SnippetList = ({ language }: Props) => {
-  const { data, isSuccess } = useSnippetList();
+  const { data, isSuccess, isLoading } = useSnippetList();
   const addSnippets = useSnippetListStore((s) => s.addSnippets);
   const setIsSuccess = useSnippetListStore((s) => s.setIsSuccess);
   const navigate = useNavigate();
@@ -21,6 +21,8 @@ const SnippetList = ({ language }: Props) => {
       setIsSuccess(isSuccess);
     }
   }, [isSuccess]);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <>

@@ -7,7 +7,8 @@ from .views import (LoginView,
                     RegisterAPIView,
                     LanguageList,
                     AddSnippetAPI,
-                    ViewSnippetList)
+                    ViewSnippetList,
+                    DeleteSnippetAPI)
 
 urlpatterns = [
     path('login', LoginView.as_view(), name='login-view'),
@@ -18,5 +19,6 @@ urlpatterns = [
     path('register', RegisterAPIView.as_view(), name='register'),
     path('languages', LanguageList.as_view(), name='language-list'),
     path('add-snippet', AddSnippetAPI.as_view(), name='add-snippet'),
-    path('snippet-list', ViewSnippetList.as_view(), name='snippet-list')
+    path('snippet-list', ViewSnippetList.as_view(), name='snippet-list'),
+    path('delete-snippet/<slug:snippet_slug>', DeleteSnippetAPI.as_view(), name='delete-snippet')
 ]
