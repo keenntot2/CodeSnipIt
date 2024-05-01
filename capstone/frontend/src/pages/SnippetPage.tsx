@@ -4,18 +4,27 @@ import {
   HStack,
   Heading,
   Icon,
-  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { FaRegEdit } from "react-icons/fa";
 import { IoMdCopy } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import DeleteSnippetAlert from "../components/DeleteSnippetAlert";
+import DiscardEditAlert from "../components/DiscardEditAlert";
+import EditTitle from "../components/EditTitle";
+import SaveSnippetAlert from "../components/SaveSnippetAlert";
 import useSnippetListStore from "../hooks/useSnippetListStore";
+import EditCodeBlock from "../components/EditCodeBlock";
+import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 const SnippetPage = () => {
+  const [isEdit, setIsEdit] = useState(false);
   const { snippets, isSuccess } = useSnippetListStore();
+  const { reset, setCode, setTitle } = useAddSnippetValueStore();
+
   const params = useParams();
 
   const headingBcolor = useColorModeValue(
@@ -26,6 +35,18 @@ const SnippetPage = () => {
   const snippet =
     (isSuccess && snippets.results.find((s) => s.slug == params.snippetSlug)) ||
     undefined;
+
+  const setEdit = (bool: boolean) => setIsEdit(bool);
+
+  useEffect(() => {
+    if (isEdit && snippet) {
+      setTitle(snippet?.title);
+      setCode(snippet?.code);
+    }
+    if (!isEdit) {
+      reset();
+    }
+  }, [isEdit]);
 
   return (
     <Box>
@@ -39,23 +60,41 @@ const SnippetPage = () => {
               borderRadius="10px 10px 0px 0px"
               justifyContent="space-between"
             >
-              <Heading as="h1" size="md">
-                {snippet?.title}
-              </Heading>
+              {!isEdit ? (
+                <Heading as="h1" size="md">
+                  {snippet?.title}
+                </Heading>
+              ) : (
+                <EditTitle />
+              )}
               <HStack>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    if (snippet?.code)
-                      navigator.clipboard.writeText(snippet?.code);
-                  }}
-                >
-                  <HStack>
-                    <Icon as={IoMdCopy} boxSize={5} />
-                    <Text>Copy</Text>
-                  </HStack>
-                </Button>
-                <DeleteSnippetAlert snippet={snippet} />
+                {!isEdit ? (
+                  <>
+                    <Button onClick={() => setIsEdit(true)}>
+                      <Icon as={FaRegEdit} />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        if (snippet?.code)
+                          navigator.clipboard.writeText(snippet?.code);
+                      }}
+                    >
+                      <HStack>
+                        <Icon as={IoMdCopy} boxSize={5} />
+                      </HStack>
+                    </Button>
+                    <DeleteSnippetAlert snippet={snippet} />
+                  </>
+                ) : (
+                  <>
+                    <DiscardEditAlert
+                      setIsEdit={setEdit}
+                      title={snippet?.title}
+                      code={snippet?.code}
+                    />
+                    <SaveSnippetAlert setIsEdit={setEdit} />
+                  </>
+                )}
               </HStack>
             </HStack>
 
@@ -64,7 +103,7 @@ const SnippetPage = () => {
               backgroundColor="rgb(1, 22, 39)"
               borderRadius="0px 0px 10px 10px"
             >
-              {snippet?.code && (
+              {!isEdit ? (
                 <SyntaxHighlighter
                   language={snippet?.language}
                   style={nightOwl}
@@ -72,6 +111,8 @@ const SnippetPage = () => {
                 >
                   {snippet?.code}
                 </SyntaxHighlighter>
+              ) : (
+                <EditCodeBlock />
               )}
             </Box>
           </>

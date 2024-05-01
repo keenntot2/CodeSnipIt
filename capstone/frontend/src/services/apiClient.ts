@@ -21,6 +21,9 @@ class APIClient<T = undefined, D = undefined> {
     axiosInstance.get<T>(this.endpoint, config).then((res) => res.data);
 
   delete = () => axiosInstance.delete<T>(this.endpoint).then((res) => res.data);
+
+  patch = (data: T) =>
+    axiosInstance.patch<D>(this.endpoint, data).then((res) => res.data);
 }
 
 export default APIClient;

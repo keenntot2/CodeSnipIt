@@ -16,7 +16,7 @@ const useDeleteSnippet = () => {
   const queryClient = useQueryClient();
   return useMutation<unknown, AxiosError, VariablesProp, SnippetsContext>({
     mutationFn: (data) => {
-      const apiClient = new APIClient(`/delete-snippet/${data.slug}`);
+      const apiClient = new APIClient(`/snippet/${data.slug}`);
       return apiClient.delete();
     },
     onMutate: (data) => {
@@ -34,6 +34,7 @@ const useDeleteSnippet = () => {
       return { snippetsContext };
     },
     onError: (_error, _variables, context) => {
+      if (!context?.snippetsContext) return;
       queryClient.setQueryData<fetchAllResponse<Snippet>>(
         ["snippets"],
         context?.snippetsContext

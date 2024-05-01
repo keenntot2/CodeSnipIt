@@ -7,29 +7,45 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  Icon,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef } from "react";
-import { MdDeleteOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { Snippet } from "../hooks/useAddSnippet";
-import useDeleteSnippet from "../hooks/useDeleteSnippet";
+import React, { useEffect, useState } from "react";
+import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 interface Props {
-  snippet?: Snippet;
+  setIsEdit: (bool: boolean) => void;
+
+  title?: string;
+  code?: string;
 }
 
-const DeleteSnippetAlert = ({ snippet }: Props) => {
+const DiscardEditAlert = ({ setIsEdit, title, code }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
-  const { mutate } = useDeleteSnippet();
-  const navigate = useNavigate();
+  const { titleValue, codeValue } = useAddSnippetValueStore();
+  const [isSame, setIsSame] = useState(true);
+  const cancelRef = React.useRef(null);
+
+  useEffect(() => {
+    if (titleValue != title || codeValue != code) {
+      setIsSame(false);
+    } else {
+      setIsSame(true);
+    }
+  }, [title, code, titleValue, codeValue]);
 
   return (
     <>
-      <Button colorScheme="red" onClick={onOpen}>
-        <Icon as={MdDeleteOutline} boxSize={5} />
+      <Button
+        colorScheme="red"
+        onClick={() => {
+          if (isSame) {
+            setIsEdit(false);
+          } else {
+            onOpen();
+          }
+        }}
+      >
+        Discard
       </Button>
       <AlertDialog
         motionPreset="slideInBottom"
@@ -41,10 +57,10 @@ const DeleteSnippetAlert = ({ snippet }: Props) => {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>{`Delete "${snippet?.title}"?`}</AlertDialogHeader>
+          <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Are you sure you want to delete this code snippet?
+            Are you sure you want to discard the changes made?
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
@@ -54,8 +70,7 @@ const DeleteSnippetAlert = ({ snippet }: Props) => {
               colorScheme="red"
               ml={3}
               onClick={() => {
-                mutate({ slug: snippet?.slug });
-                navigate("/");
+                setIsEdit(false);
               }}
             >
               Yes
@@ -67,4 +82,4 @@ const DeleteSnippetAlert = ({ snippet }: Props) => {
   );
 };
 
-export default DeleteSnippetAlert;
+export default DiscardEditAlert;

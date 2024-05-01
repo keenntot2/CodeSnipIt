@@ -197,7 +197,6 @@ const AddSnippetPage = () => {
                   ))}
                 </VStack>
                 <Textarea
-                  fontFamily="Monaco,Consolas,monospace"
                   letterSpacing="1px"
                   resize="none"
                   ref={textareaRef}

@@ -177,7 +177,7 @@ class ViewSnippetList(generics.ListAPIView):
         except User.DoesNotExist:
             return Snippet.objects.none()
         
-class DeleteSnippetAPI(APIView):
+class SnippetAPI(APIView):
     permission_classes=[IsAuthenticated]
 
     def delete(self, request, snippet_slug):
@@ -188,4 +188,19 @@ class DeleteSnippetAPI(APIView):
             return Response(status=status.HTTP_200_OK)
         except Snippet.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    def patch(self,request, snippet_slug):
 
+        data = request.data
+        title = data['title']
+        code = data['code']
+
+        try:
+            snippet = Snippet.objects.get(slug = snippet_slug)
+            snippet.title = title
+            snippet.code = code
+            # snippet.save()
+            serializer = SnippetSerializer(snippet)
+            return Response(serializer.data)
+        except Snippet.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
