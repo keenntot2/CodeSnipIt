@@ -21,6 +21,7 @@ const usePatchSnippet = (slug?: string) => {
 
   const queryClient = useQueryClient();
   const udpateSnippet = useSnippetListStore((s) => s.updateSnippet);
+  const addSnippets = useSnippetListStore((s) => s.addSnippets);
 
   return useMutation<
     Snippet,
@@ -61,6 +62,7 @@ const usePatchSnippet = (slug?: string) => {
         ["snippets"],
         context.prevSnippets
       );
+      addSnippets(context.prevSnippets);
     },
   });
 };
