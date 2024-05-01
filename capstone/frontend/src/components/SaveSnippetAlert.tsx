@@ -13,12 +13,10 @@ import React from "react";
 import usePatchSnippet from "../hooks/usePatchSnippet";
 import { useParams } from "react-router-dom";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
+import useIsEditStore from "../hooks/useIsEditStore";
 
-interface Props {
-  setIsEdit: (bool: boolean) => void;
-}
-
-const SaveSnippetAlert = ({ setIsEdit }: Props) => {
+const SaveSnippetAlert = () => {
+  const setIsEdit = useIsEditStore((s) => s.setIsEdit);
   const { titleValue, codeValue, errors, reset } = useAddSnippetValueStore();
 
   const { isOpen, onOpen, onClose } = useDisclosure();

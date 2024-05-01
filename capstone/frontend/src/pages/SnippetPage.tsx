@@ -6,7 +6,7 @@ import {
   Icon,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { IoMdCopy } from "react-icons/io";
 import { useParams } from "react-router-dom";
@@ -14,16 +14,17 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import DeleteSnippetAlert from "../components/DeleteSnippetAlert";
 import DiscardEditAlert from "../components/DiscardEditAlert";
+import EditCodeBlock from "../components/EditCodeBlock";
 import EditTitle from "../components/EditTitle";
 import SaveSnippetAlert from "../components/SaveSnippetAlert";
-import useSnippetListStore from "../hooks/useSnippetListStore";
-import EditCodeBlock from "../components/EditCodeBlock";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
+import useIsEditStore from "../hooks/useIsEditStore";
+import useSnippetListStore from "../hooks/useSnippetListStore";
 
 const SnippetPage = () => {
-  const [isEdit, setIsEdit] = useState(false);
   const { snippets, isSuccess } = useSnippetListStore();
   const { reset, setCode, setTitle } = useAddSnippetValueStore();
+  const { isEdit, setIsEdit } = useIsEditStore();
 
   const params = useParams();
 
@@ -35,8 +36,6 @@ const SnippetPage = () => {
   const snippet =
     (isSuccess && snippets.results.find((s) => s.slug == params.snippetSlug)) ||
     undefined;
-
-  const setEdit = (bool: boolean) => setIsEdit(bool);
 
   useEffect(() => {
     if (isEdit && snippet) {
@@ -88,11 +87,10 @@ const SnippetPage = () => {
                 ) : (
                   <>
                     <DiscardEditAlert
-                      setIsEdit={setEdit}
                       title={snippet?.title}
                       code={snippet?.code}
                     />
-                    <SaveSnippetAlert setIsEdit={setEdit} />
+                    <SaveSnippetAlert />
                   </>
                 )}
               </HStack>

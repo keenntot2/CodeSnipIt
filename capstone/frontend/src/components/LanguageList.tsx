@@ -8,8 +8,8 @@ import {
   Divider,
   HStack,
   Spinner,
-  VStack,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import useLanguage from "../hooks/useLanguage";
 
@@ -17,8 +17,8 @@ import { FaAngleDown } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
-import SnippetList from "./SnippetList";
 import LanguageIcon from "./LanguageIcon";
+import SnippetList from "./SnippetList";
 
 const LanguageList = () => {
   const { data, isError, isFetching } = useLanguage();

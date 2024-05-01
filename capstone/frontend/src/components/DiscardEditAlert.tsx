@@ -11,19 +11,36 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
+import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Props {
-  setIsEdit: (bool: boolean) => void;
-
   title?: string;
   code?: string;
 }
 
-const DiscardEditAlert = ({ setIsEdit, title, code }: Props) => {
+const DiscardEditAlert = ({ title, code }: Props) => {
+  const { setIsEdit, slug: langSlug } = useIsEditStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { titleValue, codeValue } = useAddSnippetValueStore();
   const [isSame, setIsSame] = useState(true);
   const cancelRef = React.useRef(null);
+  const navigate = useNavigate();
+  const params = useParams<Readonly<LanguageSlugParams>>();
+  const [isLangSlugSame, setIsLangSlugSame] = useState(true);
+
+  useEffect(() => {
+    if (
+      langSlug.languageSlug != params.languageSlug ||
+      langSlug.snippetSlug != params.snippetSlug
+    ) {
+      setIsLangSlugSame(false);
+      onOpen();
+      if (!isOpen) {
+        navigate(`/${langSlug.languageSlug}/${langSlug.snippetSlug}`);
+      }
+    }
+  }, [langSlug]);
 
   useEffect(() => {
     if (titleValue != title || codeValue != code) {
@@ -57,10 +74,14 @@ const DiscardEditAlert = ({ setIsEdit, title, code }: Props) => {
         <AlertDialogOverlay />
 
         <AlertDialogContent>
-          <AlertDialogHeader>Discard Changes?</AlertDialogHeader>
+          <AlertDialogHeader>
+            {isLangSlugSame ? "Discard Changes?" : "Exit edit mode?"}
+          </AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
-            Are you sure you want to discard the changes made?
+            {isLangSlugSame
+              ? "Are you sure you want to discard the changes made?"
+              : "Are you sure you want to exit edit mode?"}
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
