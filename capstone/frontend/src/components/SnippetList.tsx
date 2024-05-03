@@ -1,10 +1,11 @@
-import { Button, Spinner } from "@chakra-ui/react";
+import { Button, Icon, Spinner, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import useSnippetList from "../hooks/useSnippetList";
 import useSnippetListStore from "../hooks/useSnippetListStore";
 import useSnippetStore from "../hooks/useSnippetStore";
+import { FaFileCode } from "react-icons/fa";
 
 interface Props {
   language: string;
@@ -33,6 +34,7 @@ const SnippetList = ({ language }: Props) => {
           .filter((snippet) => snippet.language === language)
           .map((snippet) => (
             <Button
+              variant="ghost"
               isActive={params.snippetSlug === snippet.slug}
               key={snippet.id}
               size="sm"
@@ -47,7 +49,8 @@ const SnippetList = ({ language }: Props) => {
                 }
               }}
             >
-              {snippet.title}
+              <Icon as={FaFileCode} boxSize={5} mr={2} />
+              <Text>{snippet.title}</Text>
             </Button>
           ))}
     </>
