@@ -73,6 +73,7 @@ const AddSnippetPage = () => {
   useEffect(() => {
     if (isSuccess) {
       reset();
+      window.scrollTo({ top: 0, behavior: "smooth" });
       navigate(`/${data.language}/${data.slug}`);
     }
   }, [isSuccess]);
@@ -216,7 +217,7 @@ const AddSnippetPage = () => {
           <Button
             type="submit"
             w={"max-content"}
-            alignSelf={"end"}
+            alignSelf={"start"}
             size={"lg"}
             isDisabled={isDisabled}
             isLoading={isPending}

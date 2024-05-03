@@ -4,7 +4,7 @@ import { PatchSnippetMutate } from "./usePatchSnippet";
 
 interface SnippetStore {
   snippet: Snippet | undefined;
-  setSnippet: (snippet: Snippet | undefined) => void;
+  setSnippet: (snippet: Snippet) => void;
   updateSnippet: (editedSnippet: PatchSnippetMutate) => void;
 }
 
