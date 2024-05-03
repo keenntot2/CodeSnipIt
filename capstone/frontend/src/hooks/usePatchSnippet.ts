@@ -23,7 +23,7 @@ const usePatchSnippet = (slug?: string) => {
   const queryClient = useQueryClient();
   const udpateSnippets = useSnippetListStore((s) => s.updateSnippet);
   const addSnippets = useSnippetListStore((s) => s.addSnippets);
-  const updateSnippet = useSnippetStore((s) => s.udpateSnippet);
+  const updateSnippet = useSnippetStore((s) => s.updateSnippet);
 
   return useMutation<
     Snippet,

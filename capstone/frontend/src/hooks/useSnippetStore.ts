@@ -4,14 +4,14 @@ import { PatchSnippetMutate } from "./usePatchSnippet";
 
 interface SnippetStore {
   snippet: Snippet | undefined;
-  setSnippet: (snippet: Snippet) => void;
-  udpateSnippet: (editedSnippet: PatchSnippetMutate) => void;
+  setSnippet: (snippet: Snippet | undefined) => void;
+  updateSnippet: (editedSnippet: PatchSnippetMutate) => void;
 }
 
 const useSnippetStore = create<SnippetStore>((set) => ({
   snippet: undefined,
   setSnippet: (snippet) => set({ snippet: snippet }),
-  udpateSnippet: (editedSnippet) =>
+  updateSnippet: (editedSnippet) =>
     set((state) => ({
       snippet: {
         ...(state.snippet || ({} as Snippet)),

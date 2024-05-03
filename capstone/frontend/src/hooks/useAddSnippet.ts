@@ -4,6 +4,7 @@ import fetchAllResponse from "../entities/FetchAllResponse";
 import APIClient from "../services/apiClient";
 import useSnippetListStore from "./useSnippetListStore";
 import useIsEditStore from "./useIsEditStore";
+import useSnippetStore from "./useSnippetStore";
 
 interface SnippetMutate {
   language_slug: string;
@@ -26,10 +27,12 @@ const apiClient = new APIClient<SnippetMutate, Snippet>("/add-snippet");
 const useAddSnippet = () => {
   const queryClient = useQueryClient();
   const addSnippets = useSnippetListStore((s) => s.addSnippets);
+  const { setSnippet } = useSnippetStore();
   const setSlug = useIsEditStore((s) => s.setSlug);
   return useMutation<Snippet, AxiosError, SnippetMutate>({
     mutationFn: apiClient.post,
     onSuccess: (data) => {
+      setSnippet(data);
       setSlug({ languageSlug: data.language, snippetSlug: data.slug });
       const snippetData = queryClient.getQueryData<fetchAllResponse<Snippet>>([
         "snippets",
@@ -43,7 +46,7 @@ const useAddSnippet = () => {
         })
       );
 
-      if (snippetData) {
+      if (snippetData?.results) {
         addSnippets({
           ...snippetData,
           results: [data, ...snippetData.results],

@@ -181,7 +181,6 @@ class SnippetAPI(APIView):
     permission_classes=[IsAuthenticated]
 
     def delete(self, request, snippet_slug):
-
         try:
             snippet = Snippet.objects.get(slug=snippet_slug)
             snippet.delete()

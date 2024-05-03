@@ -54,8 +54,10 @@ const DeleteSnippetAlert = ({ snippet }: Props) => {
               colorScheme="red"
               ml={3}
               onClick={() => {
-                mutate({ slug: snippet?.slug });
-                navigate("/");
+                if (snippet) {
+                  mutate({ slug: snippet?.slug });
+                  navigate("/");
+                }
               }}
             >
               Yes

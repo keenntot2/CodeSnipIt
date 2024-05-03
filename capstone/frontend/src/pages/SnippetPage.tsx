@@ -75,10 +75,6 @@ const SnippetPage = () => {
     }
   }, [queryClient, params]);
 
-  // const snippet =
-  //   (isSuccess && snippets.results.find((s) => s.slug == params.snippetSlug)) ||
-  //   undefined;
-
   useEffect(() => {
     if (isEdit && snippet) {
       setTitle(snippet?.title);
