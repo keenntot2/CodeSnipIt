@@ -1,11 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Icon } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import LanguageList from "../components/LanguageList";
+import NavBar from "../components/NavBar";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
 import useUserStore from "../hooks/useUserStore";
 import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
-import { useEffect } from "react";
-import NavBar from "../components/NavBar";
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 const Layout = () => {
   const { data, isError, isLoading, isSuccess } = useUser();
@@ -32,7 +34,26 @@ const Layout = () => {
       <Box mb={10}>
         <NavBar />
       </Box>
-      <Outlet />
+      <Grid templateAreas={`"side main"`} gridTemplateColumns={"300px 1fr"}>
+        <GridItem>
+          <LanguageList />
+        </GridItem>
+        <GridItem>
+          <Box paddingInline={5} ml={5}>
+            <Outlet />
+            <Button
+              position="fixed"
+              colorScheme="telegram"
+              zIndex={999}
+              bottom={5}
+              right={5}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              <Icon as={MdKeyboardDoubleArrowUp} boxSize={6} />
+            </Button>
+          </Box>
+        </GridItem>
+      </Grid>
     </Box>
   );
 };

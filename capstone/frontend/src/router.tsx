@@ -14,13 +14,12 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "",
+        index: true,
         element: <HomePage />,
-        children: [
-          { path: ":languageSlug/add-snippet", element: <AddSnippetPage /> },
-          { path: ":languageSlug/:snippetSlug", element: <SnippetPage /> },
-        ],
       },
+
+      { path: ":languageSlug/add-snippet", element: <AddSnippetPage /> },
+      { path: ":languageSlug/:snippetSlug", element: <SnippetPage /> },
     ],
   },
 ]);
