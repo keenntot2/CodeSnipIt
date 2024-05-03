@@ -4,9 +4,11 @@ import {
   HStack,
   Heading,
   Icon,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { IoMdCopy } from "react-icons/io";
 import { useParams } from "react-router-dom";
@@ -17,25 +19,65 @@ import DiscardEditAlert from "../components/DiscardEditAlert";
 import EditCodeBlock from "../components/EditCodeBlock";
 import EditTitle from "../components/EditTitle";
 import SaveSnippetAlert from "../components/SaveSnippetAlert";
+import fetchAllResponse from "../entities/FetchAllResponse";
+import { Snippet } from "../hooks/useAddSnippet";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
-import useIsEditStore from "../hooks/useIsEditStore";
+import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
+import { Language } from "../hooks/useLanguage";
 import useSnippetListStore from "../hooks/useSnippetListStore";
+import useSnippetStore from "../hooks/useSnippetStore";
 
 const SnippetPage = () => {
-  const { snippets, isSuccess } = useSnippetListStore();
+  const snippetStore = useSnippetStore((s) => s.snippet);
+  const { snippets } = useSnippetListStore();
   const { reset, setCode, setTitle } = useAddSnippetValueStore();
   const { isEdit, setIsEdit } = useIsEditStore();
-
-  const params = useParams();
+  const [snippet, setSnippet] = useState<Snippet>();
+  const params = useParams<Readonly<LanguageSlugParams>>();
+  const queryClient = useQueryClient();
+  const [stateParams, setStateParams] = useState({
+    isLanguage: true,
+    isSnippet: true,
+  });
 
   const headingBcolor = useColorModeValue(
     "RGBA(0, 0, 0, 0.36)",
     "rgba(255,255,255,0.16)"
   );
 
-  const snippet =
-    (isSuccess && snippets.results.find((s) => s.slug == params.snippetSlug)) ||
-    undefined;
+  useEffect(() => {
+    if (snippetStore) {
+      setSnippet(snippetStore);
+    }
+    if (snippets.results && !snippetStore) {
+      const findSnippet = snippets.results.find(
+        (s) => s.slug == params.snippetSlug
+      );
+      if (!findSnippet) {
+        setStateParams({ ...stateParams, isSnippet: false });
+      }
+      setSnippet(findSnippet);
+    }
+  }, [snippets, params, snippetStore]);
+
+  useEffect(() => {
+    setStateParams({ isLanguage: true, isSnippet: true });
+    if (queryClient.getQueryData(["languages"])) {
+      const languages = queryClient.getQueryData<fetchAllResponse<Language>>([
+        "languages",
+      ]);
+      const isLanguage = languages?.results.find(
+        (l) => l.slug === params.languageSlug
+      );
+      if (!isLanguage) {
+        setStateParams({ ...stateParams, isLanguage: false });
+      }
+    }
+  }, [queryClient, params]);
+
+  // const snippet =
+  //   (isSuccess && snippets.results.find((s) => s.slug == params.snippetSlug)) ||
+  //   undefined;
 
   useEffect(() => {
     if (isEdit && snippet) {
@@ -47,10 +89,13 @@ const SnippetPage = () => {
     }
   }, [isEdit]);
 
+  if (!stateParams.isLanguage || !stateParams.isSnippet)
+    return <Text>Invalid page.</Text>;
+
   return (
     <Box>
       <Box>
-        {isSuccess && (
+        {snippet && (
           <>
             <HStack
               paddingBlock={3}

@@ -4,9 +4,7 @@ import { Snippet } from "./useAddSnippet";
 
 interface SnippetListStore {
   snippets: fetchAllResponse<Snippet>;
-  isSuccess: boolean;
   addSnippets: (data: fetchAllResponse<Snippet>) => void;
-  setIsSuccess: (isSuccess: boolean) => void;
   updateSnippet: (data: Snippet) => void;
 }
 
@@ -14,7 +12,6 @@ const useSnippetListStore = create<SnippetListStore>((set) => ({
   snippets: {} as fetchAllResponse<Snippet>,
   isSuccess: false,
   addSnippets: (data) => set({ snippets: data }),
-  setIsSuccess: (isSuccess) => set({ isSuccess: isSuccess }),
   updateSnippet: (data) =>
     set((state) => ({
       snippets: {

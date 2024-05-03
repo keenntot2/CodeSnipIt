@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import useSnippetList from "../hooks/useSnippetList";
 import useSnippetListStore from "../hooks/useSnippetListStore";
+import useSnippetStore from "../hooks/useSnippetStore";
 
 interface Props {
   language: string;
@@ -12,15 +13,14 @@ interface Props {
 const SnippetList = ({ language }: Props) => {
   const { data, isSuccess, isLoading } = useSnippetList();
   const addSnippets = useSnippetListStore((s) => s.addSnippets);
-  const setIsSuccess = useSnippetListStore((s) => s.setIsSuccess);
   const navigate = useNavigate();
   const params = useParams<Readonly<LanguageSlugParams>>();
   const { isEdit, setSlug } = useIsEditStore();
+  const setSnippet = useSnippetStore((s) => s.setSnippet);
 
   useEffect(() => {
     if (isSuccess) {
       addSnippets(data);
-      setIsSuccess(isSuccess);
     }
   }, [isSuccess]);
 
@@ -41,6 +41,7 @@ const SnippetList = ({ language }: Props) => {
                   languageSlug: snippet.language,
                   snippetSlug: snippet.slug,
                 });
+                setSnippet(snippet);
                 if (!isEdit) {
                   navigate(`/${snippet.language}/${snippet.slug}`);
                 }
