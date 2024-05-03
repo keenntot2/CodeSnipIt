@@ -199,7 +199,7 @@ class SnippetAPI(APIView):
             snippet = Snippet.objects.get(slug = snippet_slug)
             snippet.title = title
             snippet.code = code
-            # snippet.save()
+            snippet.save()
             serializer = SnippetSerializer(snippet)
             return Response(serializer.data)
         except Snippet.DoesNotExist:

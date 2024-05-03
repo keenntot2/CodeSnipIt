@@ -4,8 +4,9 @@ import fetchAllResponse from "../entities/FetchAllResponse";
 import APIClient from "../services/apiClient";
 import { Snippet } from "./useAddSnippet";
 import useSnippetListStore from "./useSnippetListStore";
+import useSnippetStore from "./useSnippetStore";
 
-interface PatchSnippetMutate {
+export interface PatchSnippetMutate {
   title: string;
   code: string;
 }
@@ -20,8 +21,9 @@ const usePatchSnippet = (slug?: string) => {
   );
 
   const queryClient = useQueryClient();
-  const udpateSnippet = useSnippetListStore((s) => s.updateSnippet);
+  const udpateSnippets = useSnippetListStore((s) => s.updateSnippet);
   const addSnippets = useSnippetListStore((s) => s.addSnippets);
+  const updateSnippet = useSnippetStore((s) => s.udpateSnippet);
 
   return useMutation<
     Snippet,
@@ -34,7 +36,8 @@ const usePatchSnippet = (slug?: string) => {
       const prevSnippets = queryClient.getQueryData<fetchAllResponse<Snippet>>([
         "snippets",
       ]);
-      udpateSnippet({
+      updateSnippet(variables);
+      udpateSnippets({
         ...(prevSnippets?.results.find((s) => s.slug === slug) ||
           ({} as Snippet)),
         title: variables.title,
