@@ -15,6 +15,7 @@ import { languageMap } from "../initialData/languageData";
 import timeFormat from "../utils/timeFormat";
 import { useNavigate } from "react-router-dom";
 import shortenText from "../utils/shortenText";
+import useIsEditStore from "../hooks/useIsEditStore";
 
 interface Props {
   snippet: Snippet;
@@ -22,18 +23,23 @@ interface Props {
 
 const SnippetCard = ({ snippet }: Props) => {
   const navigate = useNavigate();
+  const { setSlug } = useIsEditStore();
   return (
     <Card
       overflow="hidden"
       _hover={{ transform: "scale(1.03)", cursor: "pointer" }}
       transition={"transform 0.15s ease-in"}
-      onClick={() => navigate(`/${snippet.language}/${snippet.slug}`)}
+      onClick={() => {
+        setSlug({ languageSlug: snippet.language, snippetSlug: snippet.slug });
+        navigate(`/${snippet.language}/${snippet.slug}`);
+      }}
     >
       <Box padding={5} backgroundColor="rgb(1, 22, 39)" minH="125px">
         <SyntaxHighlighter
           language={snippet?.language}
           style={nightOwl}
           showLineNumbers
+          customStyle={{ overflow: "hidden" }}
         >
           {shortenText(snippet.code, 20)}
         </SyntaxHighlighter>
