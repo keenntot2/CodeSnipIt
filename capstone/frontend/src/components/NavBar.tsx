@@ -4,11 +4,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useUserStore from "../hooks/useUserStore";
 import ColorModeSwitch from "./ColorModeSwitch";
-import useLanguageStore from "../hooks/useLanguageStore";
+import useIsEditStore from "../hooks/useIsEditStore";
 
 const NavBar = () => {
   const { mutate, isSuccess, isPending } = useLogout();
-  const setLanguage = useLanguageStore((s) => s.setLanguage);
+  const { setPrompt, isEdit } = useIsEditStore();
+
   const user = useUserStore((s) => s.user);
   const navigate = useNavigate();
 
@@ -32,8 +33,11 @@ const NavBar = () => {
           variant="ghost"
           padding={2}
           onClick={() => {
-            setLanguage("");
-            navigate("/");
+            if (isEdit) {
+              setPrompt(true);
+            } else {
+              navigate("/");
+            }
           }}
         >
           <Icon as={FaHome} boxSize={5} />
@@ -44,7 +48,13 @@ const NavBar = () => {
         <ColorModeSwitch />
         <Button
           variant="ghost"
-          onClick={() => mutate(undefined)}
+          onClick={() => {
+            if (isEdit) {
+              setPrompt(true);
+            } else {
+              mutate(undefined);
+            }
+          }}
           isLoading={isPending}
           loadingText="Logging out"
         >

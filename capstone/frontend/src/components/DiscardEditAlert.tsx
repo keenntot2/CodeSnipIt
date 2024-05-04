@@ -20,7 +20,7 @@ interface Props {
 }
 
 const DiscardEditAlert = ({ title, code }: Props) => {
-  const { setIsEdit, slug: langSlug } = useIsEditStore();
+  const { setIsEdit, slug: langSlug, prompt, setPrompt } = useIsEditStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { titleValue, codeValue } = useAddSnippetValueStore();
   const [isSame, setIsSame] = useState(true);
@@ -41,6 +41,12 @@ const DiscardEditAlert = ({ title, code }: Props) => {
       }
     }
   }, [langSlug]);
+
+  useEffect(() => {
+    if (prompt) {
+      onOpen();
+    }
+  }, [prompt]);
 
   useEffect(() => {
     if (titleValue != title || codeValue != code) {
@@ -84,13 +90,20 @@ const DiscardEditAlert = ({ title, code }: Props) => {
               : "Are you sure you want to exit edit mode?"}
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
+            <Button
+              ref={cancelRef}
+              onClick={() => {
+                setPrompt(false);
+                onClose();
+              }}
+            >
               No
             </Button>
             <Button
               colorScheme="red"
               ml={3}
               onClick={() => {
+                setPrompt(false);
                 setIsEdit(false);
               }}
             >
