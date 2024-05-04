@@ -1,8 +1,6 @@
-export const MIN_CHAR = 15;
-
-const shortenText = (text: string) => {
-  if (text.length > 15) {
-    return `${text.slice(0, MIN_CHAR)}...`;
+const shortenText = (text: string, minChar: number) => {
+  if (text.length > minChar) {
+    return `${text.slice(0, minChar)}...`;
   }
   return text;
 };

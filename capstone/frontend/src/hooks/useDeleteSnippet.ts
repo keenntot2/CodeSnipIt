@@ -3,8 +3,9 @@ import APIClient from "../services/apiClient";
 import fetchAllResponse from "../entities/FetchAllResponse";
 import { Snippet } from "./useAddSnippet";
 import { AxiosError } from "axios";
+import useSnippetListStore from "./useSnippetListStore";
 
-interface VariablesProp {
+export interface VariablesProp {
   [k: string]: string | undefined;
 }
 
@@ -14,6 +15,7 @@ interface SnippetsContext {
 
 const useDeleteSnippet = () => {
   const queryClient = useQueryClient();
+  const deleteSnippet = useSnippetListStore((s) => s.deleteSnippet);
   return useMutation<unknown, AxiosError, VariablesProp, SnippetsContext>({
     mutationFn: (data) => {
       const apiClient = new APIClient(`/snippet/${data.slug}`);
@@ -31,6 +33,8 @@ const useDeleteSnippet = () => {
             snippetData?.results.filter((s) => s.slug != data.slug) || [],
         })
       );
+
+      deleteSnippet(data);
       return { snippetsContext };
     },
     onError: (_error, _variables, context) => {

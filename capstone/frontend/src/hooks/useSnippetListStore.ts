@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import fetchAllResponse from "../entities/FetchAllResponse";
 import { Snippet } from "./useAddSnippet";
+import { VariablesProp } from "./useDeleteSnippet";
 
 interface SnippetListStore {
   snippets: fetchAllResponse<Snippet>;
   addSnippets: (data: fetchAllResponse<Snippet>) => void;
   updateSnippet: (data: Snippet) => void;
+  deleteSnippet: (snippet: VariablesProp) => void;
 }
 
 const useSnippetListStore = create<SnippetListStore>((set) => ({
@@ -22,6 +24,14 @@ const useSnippetListStore = create<SnippetListStore>((set) => ({
           }
           return s;
         }),
+      },
+    })),
+  deleteSnippet: (snippet) =>
+    set((state) => ({
+      snippets: {
+        ...state.snippets,
+        results: state.snippets.results.filter((s) => s.slug != snippet.slug),
+        count: state.snippets.count - 1,
       },
     })),
 }));

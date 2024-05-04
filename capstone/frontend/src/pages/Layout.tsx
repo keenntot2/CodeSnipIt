@@ -1,5 +1,6 @@
-import { Box, Button, Grid, GridItem, Icon } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Hide, Icon } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { Navigate, Outlet } from "react-router-dom";
 import LanguageList from "../components/LanguageList";
 import NavBar from "../components/NavBar";
@@ -7,7 +8,6 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
 import useUserStore from "../hooks/useUserStore";
 import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
-import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 const Layout = () => {
   const { data, isError, isLoading, isSuccess } = useUser();
@@ -34,12 +34,17 @@ const Layout = () => {
       <Box mb={10}>
         <NavBar />
       </Box>
-      <Grid templateAreas={`"side main"`} gridTemplateColumns={"300px 1fr"}>
-        <GridItem>
-          <LanguageList />
-        </GridItem>
-        <GridItem>
-          <Box paddingInline={5} ml={5}>
+      <Grid
+        templateAreas={{ base: `'main'`, lg: `'aside main'` }}
+        gridTemplateColumns={{ base: "1fr", lg: "300px 1fr" }}
+      >
+        <Hide below="lg">
+          <GridItem area="aside">
+            <LanguageList />
+          </GridItem>
+        </Hide>
+        <GridItem area="main">
+          <Box paddingInline={5} ml={{ lg: 5 }} w="100%">
             <Outlet />
             <Button
               position="fixed"

@@ -6,11 +6,13 @@ import useSnippetList from "../hooks/useSnippetList";
 import useSnippetListStore from "../hooks/useSnippetListStore";
 import useSnippetStore from "../hooks/useSnippetStore";
 import { FaFileCode } from "react-icons/fa";
-import shortenText, { MIN_CHAR } from "../utils/shortenText";
+import shortenText from "../utils/shortenText";
 
 interface Props {
   language: string;
 }
+
+const MIN_CHAR = 15;
 
 const SnippetList = ({ language }: Props) => {
   const { data, isSuccess, isLoading } = useSnippetList();
@@ -38,7 +40,7 @@ const SnippetList = ({ language }: Props) => {
               key={snippet.id}
               label={snippet.title}
               placement="right"
-              openDelay={500}
+              openDelay={600}
               hasArrow
               isDisabled={snippet.title.length <= MIN_CHAR}
             >
@@ -59,7 +61,7 @@ const SnippetList = ({ language }: Props) => {
               >
                 <Icon as={FaFileCode} boxSize={5} mr={2} />
 
-                <Text>{shortenText(snippet.title)}</Text>
+                <Text>{shortenText(snippet.title, MIN_CHAR)}</Text>
               </Button>
             </Tooltip>
           ))}

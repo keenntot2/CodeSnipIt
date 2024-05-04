@@ -89,74 +89,72 @@ const SnippetPage = () => {
     return <Text>Invalid page.</Text>;
 
   return (
-    <Box>
-      <Box>
-        {snippet && (
-          <>
-            <HStack
-              paddingBlock={3}
-              paddingInline={5}
-              backgroundColor={headingBcolor}
-              borderRadius="10px 10px 0px 0px"
-              justifyContent="space-between"
-            >
+    <Box width="100%">
+      {snippet && (
+        <>
+          <HStack
+            paddingBlock={3}
+            paddingInline={5}
+            backgroundColor={headingBcolor}
+            borderRadius="10px 10px 0px 0px"
+            justifyContent="space-between"
+          >
+            {!isEdit ? (
+              <Heading as="h1" size="md">
+                {snippet?.title}
+              </Heading>
+            ) : (
+              <EditTitle />
+            )}
+            <HStack>
               {!isEdit ? (
-                <Heading as="h1" size="md">
-                  {snippet?.title}
-                </Heading>
+                <>
+                  <Button onClick={() => setIsEdit(true)}>
+                    <Icon as={FaRegEdit} />
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      if (snippet?.code)
+                        navigator.clipboard.writeText(snippet?.code);
+                    }}
+                  >
+                    <HStack>
+                      <Icon as={IoMdCopy} boxSize={5} />
+                    </HStack>
+                  </Button>
+                  <DeleteSnippetAlert snippet={snippet} />
+                </>
               ) : (
-                <EditTitle />
+                <>
+                  <DiscardEditAlert
+                    title={snippet?.title}
+                    code={snippet?.code}
+                  />
+                  <SaveSnippetAlert />
+                </>
               )}
-              <HStack>
-                {!isEdit ? (
-                  <>
-                    <Button onClick={() => setIsEdit(true)}>
-                      <Icon as={FaRegEdit} />
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        if (snippet?.code)
-                          navigator.clipboard.writeText(snippet?.code);
-                      }}
-                    >
-                      <HStack>
-                        <Icon as={IoMdCopy} boxSize={5} />
-                      </HStack>
-                    </Button>
-                    <DeleteSnippetAlert snippet={snippet} />
-                  </>
-                ) : (
-                  <>
-                    <DiscardEditAlert
-                      title={snippet?.title}
-                      code={snippet?.code}
-                    />
-                    <SaveSnippetAlert />
-                  </>
-                )}
-              </HStack>
             </HStack>
+          </HStack>
 
-            <Box
-              padding={5}
-              backgroundColor="rgb(1, 22, 39)"
-              borderRadius="0px 0px 10px 10px"
-            >
-              {!isEdit ? (
-                <SyntaxHighlighter
-                  language={snippet?.language}
-                  style={nightOwl}
-                  showLineNumbers
-                >
-                  {snippet?.code}
-                </SyntaxHighlighter>
-              ) : (
-                <EditCodeBlock />
-              )}
-            </Box>
-          </>
-        )}
-      </Box>
+          <Box
+            padding={5}
+            backgroundColor="rgb(1, 22, 39)"
+            borderRadius="0px 0px 10px 10px"
+          >
+            {!isEdit ? (
+              <SyntaxHighlighter
+                language={snippet?.language}
+                style={nightOwl}
+                showLineNumbers
+              >
+                {snippet?.code}
+              </SyntaxHighlighter>
+            ) : (
+              <EditCodeBlock />
+            )}
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

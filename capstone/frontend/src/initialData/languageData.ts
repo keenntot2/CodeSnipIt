@@ -30,3 +30,27 @@ export const languageData = {
     { id: 24, language: "Dart", slug: "dart" },
   ],
 };
+
+export const languageMap: { [k: string]: string } = {
+  python: "Python",
+  javascript: "JavaScript",
+  java: "Java",
+  csharp: "C#",
+  cpp: "C++",
+  ruby: "Ruby",
+  swift: "Swift",
+  kotlin: "Kotlin",
+  php: "PHP",
+  typescript: "TypeScript",
+  go: "Go",
+  rust: "Rust",
+  html: "HTML",
+  css: "CSS",
+  sql: "SQL",
+  matlab: "MATLAB",
+  r: "R",
+  shell: "Shell Scripting Languages",
+  perl: "Perl",
+  scala: "Scala",
+  dart: "Dart",
+};
