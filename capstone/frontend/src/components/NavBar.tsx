@@ -4,9 +4,11 @@ import { Navigate, useNavigate } from "react-router-dom";
 import useLogout from "../hooks/useLogout";
 import useUserStore from "../hooks/useUserStore";
 import ColorModeSwitch from "./ColorModeSwitch";
+import useLanguageStore from "../hooks/useLanguageStore";
 
 const NavBar = () => {
   const { mutate, isSuccess, isPending } = useLogout();
+  const setLanguage = useLanguageStore((s) => s.setLanguage);
   const user = useUserStore((s) => s.user);
   const navigate = useNavigate();
 
@@ -26,7 +28,14 @@ const NavBar = () => {
   return (
     <HStack justifyContent={"space-between"}>
       <HStack spacing={2}>
-        <Button variant="ghost" padding={2} onClick={() => navigate("/")}>
+        <Button
+          variant="ghost"
+          padding={2}
+          onClick={() => {
+            setLanguage("");
+            navigate("/");
+          }}
+        >
           <Icon as={FaHome} boxSize={5} />
         </Button>
         <Text>Hi, {`${user.first_name} ${user.last_name}`}</Text>

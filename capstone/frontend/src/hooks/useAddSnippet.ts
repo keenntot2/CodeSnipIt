@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import fetchAllResponse from "../entities/FetchAllResponse";
 import APIClient from "../services/apiClient";
-import useSnippetListStore from "./useSnippetListStore";
 import useIsEditStore from "./useIsEditStore";
 import useSnippetStore from "./useSnippetStore";
 
@@ -26,7 +25,6 @@ const apiClient = new APIClient<SnippetMutate, Snippet>("/add-snippet");
 
 const useAddSnippet = () => {
   const queryClient = useQueryClient();
-  const addSnippets = useSnippetListStore((s) => s.addSnippets);
   const { setSnippet } = useSnippetStore();
   const setSlug = useIsEditStore((s) => s.setSlug);
   return useMutation<Snippet, AxiosError, SnippetMutate>({
@@ -34,9 +32,7 @@ const useAddSnippet = () => {
     onSuccess: (data) => {
       setSnippet(data);
       setSlug({ languageSlug: data.language, snippetSlug: data.slug });
-      const snippetData = queryClient.getQueryData<fetchAllResponse<Snippet>>([
-        "snippets",
-      ]);
+
       queryClient.setQueryData<fetchAllResponse<Snippet>>(
         ["snippets"],
         (snippets) => ({
@@ -45,13 +41,6 @@ const useAddSnippet = () => {
           results: [data, ...(snippets?.results || [])],
         })
       );
-
-      if (snippetData?.results) {
-        addSnippets({
-          ...snippetData,
-          results: [data, ...snippetData.results],
-        });
-      }
     },
   });
 };

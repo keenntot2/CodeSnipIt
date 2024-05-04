@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import Layout from "./pages/Layout";
-import HomePage from "./pages/HomePage";
-import RegisterPage from "./pages/RegisterPage";
 import AddSnippetPage from "./pages/AddSnippetPage";
+import HomePage from "./pages/HomePage";
+import Layout from "./pages/Layout";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import SnippetPage from "./pages/SnippetPage";
 
 const router = createBrowserRouter([
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-
+      { path: ":languageSlug", element: <HomePage /> },
       { path: ":languageSlug/add-snippet", element: <AddSnippetPage /> },
       { path: ":languageSlug/:snippetSlug", element: <SnippetPage /> },
     ],

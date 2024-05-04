@@ -3,7 +3,6 @@ import { AxiosError } from "axios";
 import fetchAllResponse from "../entities/FetchAllResponse";
 import APIClient from "../services/apiClient";
 import { Snippet } from "./useAddSnippet";
-import useSnippetListStore from "./useSnippetListStore";
 import useSnippetStore from "./useSnippetStore";
 
 export interface PatchSnippetMutate {
@@ -21,8 +20,6 @@ const usePatchSnippet = (slug?: string) => {
   );
 
   const queryClient = useQueryClient();
-  const udpateSnippets = useSnippetListStore((s) => s.updateSnippet);
-  const addSnippets = useSnippetListStore((s) => s.addSnippets);
   const updateSnippet = useSnippetStore((s) => s.updateSnippet);
 
   return useMutation<
@@ -37,12 +34,6 @@ const usePatchSnippet = (slug?: string) => {
         "snippets",
       ]);
       updateSnippet(variables);
-      udpateSnippets({
-        ...(prevSnippets?.results.find((s) => s.slug === slug) ||
-          ({} as Snippet)),
-        title: variables.title,
-        code: variables.code,
-      });
       queryClient.setQueryData<fetchAllResponse<Snippet>>(
         ["snippets"],
         (snippets) => ({
@@ -65,7 +56,6 @@ const usePatchSnippet = (slug?: string) => {
         ["snippets"],
         context.prevSnippets
       );
-      addSnippets(context.prevSnippets);
     },
   });
 };

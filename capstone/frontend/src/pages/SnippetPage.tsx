@@ -24,12 +24,12 @@ import { Snippet } from "../hooks/useAddSnippet";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import { Language } from "../hooks/useLanguage";
-import useSnippetListStore from "../hooks/useSnippetListStore";
+import useSnippetList from "../hooks/useSnippetList";
 import useSnippetStore from "../hooks/useSnippetStore";
 
 const SnippetPage = () => {
   const snippetStore = useSnippetStore((s) => s.snippet);
-  const { snippets } = useSnippetListStore();
+  const { data, isSuccess } = useSnippetList();
   const { reset, setCode, setTitle } = useAddSnippetValueStore();
   const { isEdit, setIsEdit } = useIsEditStore();
   const [snippet, setSnippet] = useState<Snippet>();
@@ -49,8 +49,8 @@ const SnippetPage = () => {
     if (snippetStore) {
       setSnippet(snippetStore);
     }
-    if (snippets.results && !snippetStore) {
-      const findSnippet = snippets.results.find(
+    if (data?.results && !snippetStore) {
+      const findSnippet = data.results.find(
         (s) => s.slug == params.snippetSlug
       );
       if (!findSnippet) {
@@ -58,7 +58,7 @@ const SnippetPage = () => {
       }
       setSnippet(findSnippet);
     }
-  }, [snippets, params, snippetStore]);
+  }, [isSuccess, params, snippetStore]);
 
   useEffect(() => {
     setStateParams({ isLanguage: true, isSnippet: true });

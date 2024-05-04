@@ -1,11 +1,10 @@
 import { Button, Icon, Spinner, Text, Tooltip } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import useSnippetList from "../hooks/useSnippetList";
-import useSnippetListStore from "../hooks/useSnippetListStore";
-import useSnippetStore from "../hooks/useSnippetStore";
+
 import { FaFileCode } from "react-icons/fa";
+import useSnippetStore from "../hooks/useSnippetStore";
 import shortenText from "../utils/shortenText";
 
 interface Props {
@@ -16,17 +15,11 @@ const MIN_CHAR = 15;
 
 const SnippetList = ({ language }: Props) => {
   const { data, isSuccess, isLoading } = useSnippetList();
-  const addSnippets = useSnippetListStore((s) => s.addSnippets);
+
   const navigate = useNavigate();
   const params = useParams<Readonly<LanguageSlugParams>>();
   const { isEdit, setSlug } = useIsEditStore();
   const setSnippet = useSnippetStore((s) => s.setSnippet);
-
-  useEffect(() => {
-    if (isSuccess) {
-      addSnippets(data);
-    }
-  }, [isSuccess]);
 
   if (isLoading) return <Spinner />;
 
