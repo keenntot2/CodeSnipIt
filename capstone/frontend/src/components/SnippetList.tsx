@@ -35,6 +35,7 @@ const SnippetList = ({ language }: Props) => {
           .filter((snippet) => snippet.language === language)
           .map((snippet) => (
             <Tooltip
+              key={snippet.id}
               label={snippet.title}
               placement="right"
               openDelay={500}
@@ -44,7 +45,6 @@ const SnippetList = ({ language }: Props) => {
               <Button
                 variant="ghost"
                 isActive={params.snippetSlug === snippet.slug}
-                key={snippet.id}
                 size="sm"
                 onClick={() => {
                   setSlug({

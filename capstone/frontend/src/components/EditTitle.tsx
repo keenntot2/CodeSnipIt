@@ -9,6 +9,8 @@ const EditTitle = () => {
     setTitle(e.target.value);
     if (e.target.value.length == 0) {
       setTitleError(true);
+    } else {
+      setTitleError(false);
     }
   };
 

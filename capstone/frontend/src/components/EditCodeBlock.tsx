@@ -24,7 +24,10 @@ const EditCodeBlock = () => {
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length == 0) {
       setCodeError(true);
+    } else {
+      setCodeError(false);
     }
+
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
