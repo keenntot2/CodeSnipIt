@@ -4,7 +4,7 @@ import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import useSnippetList from "../hooks/useSnippetList";
 
 import { FaFileCode } from "react-icons/fa";
-import useSnippetStore from "../hooks/useSnippetStore";
+
 import shortenText from "../utils/shortenText";
 
 interface Props {
@@ -19,7 +19,6 @@ const SnippetList = ({ language }: Props) => {
   const navigate = useNavigate();
   const params = useParams<Readonly<LanguageSlugParams>>();
   const { isEdit, setSlug } = useIsEditStore();
-  const setSnippet = useSnippetStore((s) => s.setSnippet);
 
   if (isLoading) return <Spinner />;
 
@@ -46,7 +45,7 @@ const SnippetList = ({ language }: Props) => {
                     languageSlug: snippet.language,
                     snippetSlug: snippet.slug,
                   });
-                  setSnippet(snippet);
+
                   if (!isEdit) {
                     navigate(`/${snippet.language}/${snippet.slug}`);
                   }

@@ -30,7 +30,7 @@ const HomePage = () => {
         setSnippets(sortedSnippets);
       }
     }
-  }, [params.languageSlug, isSuccess]);
+  }, [params.languageSlug, isSuccess, data]);
 
   return (
     <>
