@@ -5,6 +5,8 @@ import Layout from "./pages/Layout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import SnippetPage from "./pages/SnippetPage";
+import InvalidLanguageError from "./utils/InvalidLanguageError";
+import InvalidLanguageSnippet from "./utils/InvalidLanguageSnippet";
 
 const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -17,9 +19,21 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-      { path: ":languageSlug", element: <HomePage /> },
-      { path: ":languageSlug/add-snippet", element: <AddSnippetPage /> },
-      { path: ":languageSlug/:snippetSlug", element: <SnippetPage /> },
+      {
+        path: ":languageSlug",
+        element: <HomePage />,
+        errorElement: <InvalidLanguageError />,
+      },
+      {
+        path: ":languageSlug/add-snippet",
+        element: <AddSnippetPage />,
+        errorElement: <InvalidLanguageError />,
+      },
+      {
+        path: ":languageSlug/:snippetSlug",
+        element: <SnippetPage />,
+        errorElement: <InvalidLanguageSnippet />,
+      },
     ],
   },
 ]);

@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAddSnippet from "../hooks/useAddSnippet";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
-import { languageData } from "../initialData/languageData";
+import { languageData, languageMap } from "../initialData/languageData";
 
 const AddSnippetPage = () => {
   const {
@@ -34,7 +34,7 @@ const AddSnippetPage = () => {
   const [isConflict, setIsConflict] = useState(false);
   const [noOfLines, setNoOfLines] = useState(5);
   const [isDisabled, setIsDisabled] = useState(true);
-  const params = useParams();
+  const params = useParams<Readonly<{ languageSlug: string }>>();
 
   const navigate = useNavigate();
 
@@ -44,7 +44,6 @@ const AddSnippetPage = () => {
   );
   const borderColor = useColorModeValue("#3182ce", "#63b3ed");
   const errorBorderColor = useColorModeValue("#E53E3E", "#FC8181");
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -125,6 +124,13 @@ const AddSnippetPage = () => {
       });
     }
   };
+
+  if (!languageMap[params.languageSlug || ""]) {
+    throw new Response("", {
+      status: 404,
+      statusText: "Not Found.",
+    });
+  }
 
   return (
     <>

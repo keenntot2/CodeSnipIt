@@ -5,7 +5,6 @@ import {
   HStack,
   Heading,
   Icon,
-  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -83,7 +82,10 @@ const SnippetPage = () => {
   }, [isEdit]);
 
   if (!stateParams.isLanguage || !stateParams.isSnippet)
-    return <Text>Invalid page.</Text>;
+    throw new Response("", {
+      status: 404,
+      statusText: "Not Found",
+    });
 
   return (
     <Box width="100%">

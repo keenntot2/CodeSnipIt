@@ -5,10 +5,12 @@ import LanguageMenu from "../components/LanguageMenu";
 import SnippetCard from "../components/SnippetCard";
 import { Snippet } from "../hooks/useAddSnippet";
 import useSnippetList from "../hooks/useSnippetList";
+import { languageMap } from "../initialData/languageData";
 
 const HomePage = () => {
   const [snippets, setSnippets] = useState<Snippet[]>();
   const { data, isSuccess } = useSnippetList();
+  const [isLanguage, setIsLanguage] = useState(true);
 
   const parseDate = (dateString: string) => new Date(dateString).getTime();
   const params = useParams<Readonly<{ languageSlug: string }>>();
@@ -30,7 +32,16 @@ const HomePage = () => {
         setSnippets(sortedSnippets);
       }
     }
+    if (params.languageSlug && !languageMap[params.languageSlug]) {
+      setIsLanguage(false);
+    }
   }, [params.languageSlug, isSuccess, data]);
+
+  if (!isLanguage)
+    throw new Response("", {
+      status: 404,
+      statusText: "Not Found",
+    });
 
   return (
     <>
