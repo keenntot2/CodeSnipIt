@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   HStack,
@@ -25,6 +26,7 @@ import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import { Language } from "../hooks/useLanguage";
 import useSnippetList from "../hooks/useSnippetList";
+import { languageMap } from "../initialData/languageData";
 
 const SnippetPage = () => {
   const { data, isSuccess } = useSnippetList();
@@ -95,9 +97,14 @@ const SnippetPage = () => {
             justifyContent="space-between"
           >
             {!isEdit ? (
-              <Heading as="h1" size="md">
-                {snippet?.title}
-              </Heading>
+              <HStack>
+                <Heading as="h1" size="md">
+                  {snippet?.title}
+                </Heading>
+                <Badge colorScheme="green">
+                  {languageMap[snippet.language]}
+                </Badge>
+              </HStack>
             ) : (
               <EditTitle />
             )}
