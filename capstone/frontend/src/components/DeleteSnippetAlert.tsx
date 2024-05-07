@@ -8,29 +8,43 @@ import {
   AlertDialogOverlay,
   Button,
   Icon,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { MdDeleteOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Snippet } from "../hooks/useAddSnippet";
 import useDeleteSnippet from "../hooks/useDeleteSnippet";
 
 interface Props {
-  snippet?: Snippet;
+  snippet: Snippet;
+  as?: "menuItem";
+  handleDelete?: number;
 }
 
-const DeleteSnippetAlert = ({ snippet }: Props) => {
+const DeleteSnippetAlert = ({ snippet, as, handleDelete }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
   const { mutate } = useDeleteSnippet();
   const navigate = useNavigate();
+  const params = useParams<Readonly<{ languageSlug: string }>>();
+
+  useEffect(() => {
+    if (handleDelete) {
+      onOpen();
+    }
+  }, [handleDelete]);
 
   return (
     <>
-      <Button colorScheme="red" onClick={onOpen}>
-        <Icon as={MdDeleteOutline} boxSize={5} />
-      </Button>
+      {as != "menuItem" ? (
+        <Button colorScheme="red" onClick={onOpen}>
+          <Icon as={MdDeleteOutline} boxSize={5} />
+        </Button>
+      ) : (
+        <Text>Delete</Text>
+      )}
       <AlertDialog
         motionPreset="slideInBottom"
         leastDestructiveRef={cancelRef}
@@ -40,7 +54,7 @@ const DeleteSnippetAlert = ({ snippet }: Props) => {
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent>
+        <AlertDialogContent w={{ base: "300px", md: "auto" }}>
           <AlertDialogHeader>{`Delete "${snippet?.title}"?`}</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>
@@ -56,7 +70,7 @@ const DeleteSnippetAlert = ({ snippet }: Props) => {
               onClick={() => {
                 if (snippet) {
                   mutate({ slug: snippet?.slug });
-                  navigate("/");
+                  navigate(`/${params.languageSlug}`);
                 }
               }}
             >

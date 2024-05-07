@@ -52,7 +52,9 @@ const SnippetCard = ({ snippet }: Props) => {
             placement="top"
             openDelay={600}
           >
-            <Heading fontSize="xl">{shortenText(snippet.title, 15)}</Heading>
+            <Heading fontSize="xl" noOfLines={1}>
+              {snippet.title}
+            </Heading>
           </Tooltip>
           <Badge colorScheme="green">{languageMap[snippet.language]}</Badge>
         </HStack>

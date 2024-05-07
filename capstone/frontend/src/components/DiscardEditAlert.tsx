@@ -79,7 +79,7 @@ const DiscardEditAlert = ({ title, code }: Props) => {
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent>
+        <AlertDialogContent w={{ base: "300px", md: "auto" }}>
           <AlertDialogHeader>
             {isLangSlugSame ? "Discard Changes?" : "Exit edit mode?"}
           </AlertDialogHeader>

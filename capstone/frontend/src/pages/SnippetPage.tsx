@@ -1,10 +1,11 @@
 import {
-  Badge,
   Box,
   Button,
+  Divider,
   HStack,
   Heading,
   Icon,
+  Show,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -18,14 +19,15 @@ import DeleteSnippetAlert from "../components/DeleteSnippetAlert";
 import DiscardEditAlert from "../components/DiscardEditAlert";
 import EditCodeBlock from "../components/EditCodeBlock";
 import EditTitle from "../components/EditTitle";
+import LanguageIcon from "../components/LanguageIcon";
 import SaveSnippetAlert from "../components/SaveSnippetAlert";
+import SnippetMenu from "../components/SnippetMenu";
 import fetchAllResponse from "../entities/FetchAllResponse";
 import { Snippet } from "../hooks/useAddSnippet";
 import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 import useIsEditStore, { LanguageSlugParams } from "../hooks/useIsEditStore";
 import { Language } from "../hooks/useLanguage";
 import useSnippetList from "../hooks/useSnippetList";
-import { languageMap } from "../initialData/languageData";
 
 const SnippetPage = () => {
   const { data, isSuccess } = useSnippetList();
@@ -100,34 +102,24 @@ const SnippetPage = () => {
           >
             {!isEdit ? (
               <HStack>
-                <Heading as="h1" size="md">
+                <LanguageIcon language={snippet.language} />
+                <Divider
+                  orientation="vertical"
+                  flexGrow="1"
+                  alignSelf="stretch"
+                  h="auto"
+                />
+
+                <Heading as="h1" size={{ base: "sm", lg: "md" }}>
                   {snippet?.title}
                 </Heading>
-                <Badge colorScheme="green">
-                  {languageMap[snippet.language]}
-                </Badge>
               </HStack>
             ) : (
               <EditTitle />
             )}
-            <HStack>
+            <Show below="lg">
               {!isEdit ? (
-                <>
-                  <Button onClick={() => setIsEdit(true)}>
-                    <Icon as={FaRegEdit} />
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (snippet?.code)
-                        navigator.clipboard.writeText(snippet?.code);
-                    }}
-                  >
-                    <HStack>
-                      <Icon as={IoMdCopy} boxSize={5} />
-                    </HStack>
-                  </Button>
-                  <DeleteSnippetAlert snippet={snippet} />
-                </>
+                <SnippetMenu snippet={snippet} />
               ) : (
                 <>
                   <DiscardEditAlert
@@ -137,7 +129,36 @@ const SnippetPage = () => {
                   <SaveSnippetAlert />
                 </>
               )}
-            </HStack>
+            </Show>
+            <Show above="lg">
+              <HStack>
+                {!isEdit ? (
+                  <>
+                    <Button onClick={() => setIsEdit(true)}>
+                      <Icon as={FaRegEdit} />
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        navigator.clipboard.writeText(snippet?.code);
+                      }}
+                    >
+                      <HStack>
+                        <Icon as={IoMdCopy} boxSize={5} />
+                      </HStack>
+                    </Button>
+                    <DeleteSnippetAlert snippet={snippet} />
+                  </>
+                ) : (
+                  <>
+                    <DiscardEditAlert
+                      title={snippet?.title}
+                      code={snippet?.code}
+                    />
+                    <SaveSnippetAlert />
+                  </>
+                )}
+              </HStack>
+            </Show>
           </HStack>
 
           <Box

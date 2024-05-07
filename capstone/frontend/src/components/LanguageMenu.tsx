@@ -23,7 +23,7 @@ const LanguageMenu = () => {
       <MenuButton as={Button} rightIcon={<FaAngleDown />}>
         {params.languageSlug ? languageMap[params.languageSlug] : "Languages"}
       </MenuButton>
-      <MenuList>
+      <MenuList maxH={400} overflowY="scroll">
         {data.results.map((l) => (
           <MenuItem
             key={l.id}

@@ -49,7 +49,7 @@ const SaveSnippetAlert = () => {
       >
         <AlertDialogOverlay />
 
-        <AlertDialogContent>
+        <AlertDialogContent w={{ base: "300px", md: "auto" }}>
           <AlertDialogHeader>Save Changes?</AlertDialogHeader>
           <AlertDialogCloseButton />
           <AlertDialogBody>

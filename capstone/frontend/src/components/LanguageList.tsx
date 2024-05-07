@@ -54,6 +54,7 @@ const LanguageList = () => {
 
               <Button
                 variant={"outline"}
+                colorScheme="green"
                 size={"xs"}
                 gap={2}
                 mt={5}

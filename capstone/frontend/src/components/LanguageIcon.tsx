@@ -23,6 +23,11 @@ import { ComponentWithAs, Icon, IconProps } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 import MatlabIcon from "../icons/MatlabIcon";
 
+interface Props {
+  language: string;
+  boxSize?: string | number;
+}
+
 const languageIconObject: {
   [k: string]: IconType | ComponentWithAs<"svg", IconProps>;
 } = {
@@ -49,8 +54,8 @@ const languageIconObject: {
   dart: SiDart,
 };
 
-const LanguageIcon = ({ language }: { language: string }) => {
-  return <Icon as={languageIconObject[language]} />;
+const LanguageIcon = ({ language, boxSize = "1em" }: Props) => {
+  return <Icon as={languageIconObject[language]} boxSize={boxSize} />;
 };
 
 export default LanguageIcon;

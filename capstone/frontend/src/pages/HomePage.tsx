@@ -1,11 +1,13 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, Button, HStack, Show, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LanguageMenu from "../components/LanguageMenu";
 import SnippetCard from "../components/SnippetCard";
 import { Snippet } from "../hooks/useAddSnippet";
 import useSnippetList from "../hooks/useSnippetList";
 import { languageMap } from "../initialData/languageData";
+import { IoMdAdd } from "react-icons/io";
+import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 const HomePage = () => {
   const [snippets, setSnippets] = useState<Snippet[]>();
@@ -14,6 +16,8 @@ const HomePage = () => {
 
   const parseDate = (dateString: string) => new Date(dateString).getTime();
   const params = useParams<Readonly<{ languageSlug: string }>>();
+  const reset = useAddSnippetValueStore((s) => s.reset);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccess) {
@@ -46,8 +50,26 @@ const HomePage = () => {
   return (
     <>
       <Box mb={5}>
-        <LanguageMenu />
+        <HStack justifyContent="space-between">
+          <LanguageMenu />
+          {params.languageSlug && (
+            <Show below="lg">
+              <Button
+                leftIcon={<IoMdAdd />}
+                variant="outline"
+                colorScheme="green"
+                onClick={() => {
+                  navigate(`/${params.languageSlug}/add-snippet`);
+                  reset();
+                }}
+              >
+                Add snippet
+              </Button>
+            </Show>
+          )}
+        </HStack>
       </Box>
+
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
         {snippets &&
           snippets.map((snippet) => (

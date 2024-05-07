@@ -49,7 +49,7 @@ export const languageMap: { [k: string]: string } = {
   sql: "SQL",
   matlab: "MATLAB",
   r: "R",
-  shell: "Shell Scripting Languages",
+  shell: "Shell Scripting",
   perl: "Perl",
   scala: "Scala",
   dart: "Dart",

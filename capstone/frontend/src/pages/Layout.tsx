@@ -36,7 +36,7 @@ const Layout = () => {
       </Box>
       <Grid
         templateAreas={{ base: `'main'`, lg: `'aside main'` }}
-        gridTemplateColumns={{ base: "1fr", lg: "300px 1fr" }}
+        gridTemplateColumns={{ base: "100%", lg: "300px 1fr" }}
       >
         <Show above="lg">
           <GridItem area="aside">
@@ -44,7 +44,7 @@ const Layout = () => {
           </GridItem>
         </Show>
         <GridItem area="main">
-          <Box paddingInline={5} ml={{ lg: 5 }} w="100%">
+          <Box paddingInline={{ base: 0, lg: 5 }} ml={{ lg: 5 }}>
             <Outlet />
             <Button
               position="fixed"
