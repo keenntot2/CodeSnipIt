@@ -10,7 +10,11 @@ const apiClient = new APIClient<User>("/login");
 
 const useAuth = () =>
   useMutation({
-    mutationFn: apiClient.post,
+    mutationFn: (data: User) => {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      return apiClient.post(data, { signal });
+    },
   });
 
 export default useAuth;

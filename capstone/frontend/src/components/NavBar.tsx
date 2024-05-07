@@ -1,30 +1,35 @@
 import { Button, HStack, Icon, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { FaHome } from "react-icons/fa";
-import { Navigate, useNavigate } from "react-router-dom";
-import useLogout from "../hooks/useLogout";
-import useUserStore from "../hooks/useUserStore";
-import ColorModeSwitch from "./ColorModeSwitch";
+import { useNavigate } from "react-router-dom";
 import useIsEditStore from "../hooks/useIsEditStore";
+import useLogout from "../hooks/useLogout";
+import useUser from "../hooks/useUser";
+import ColorModeSwitch from "./ColorModeSwitch";
+import useIsUserEnabledStore from "../hooks/useIsUserEnabledStore";
 
 const NavBar = () => {
   const { mutate, isSuccess, isPending } = useLogout();
   const { setPrompt, isEdit } = useIsEditStore();
+  const setIsEnabled = useIsUserEnabledStore((s) => s.setIsEnabled);
 
-  const user = useUserStore((s) => s.user);
+  const { data } = useUser();
   const navigate = useNavigate();
 
-  if (isSuccess) {
-    sessionStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("lastLoginTime");
-    const intervalId = localStorage.getItem("intervalId");
-    if (intervalId) {
-      clearInterval(parseInt(intervalId));
-      localStorage.removeItem("intervalId");
+  useEffect(() => {
+    if (isSuccess) {
+      sessionStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("lastLoginTime");
+      const intervalId = localStorage.getItem("intervalId");
+      if (intervalId) {
+        clearInterval(parseInt(intervalId));
+        localStorage.removeItem("intervalId");
+      }
+      navigate("/login");
     }
-    return <Navigate to="/login" />;
-  }
+  }, [isSuccess]);
 
-  if (!user) return null;
+  if (!data) return null;
 
   return (
     <HStack justifyContent={"space-between"}>
@@ -42,7 +47,7 @@ const NavBar = () => {
         >
           <Icon as={FaHome} boxSize={5} />
         </Button>
-        <Text>Hi, {`${user.first_name} ${user.last_name}`}</Text>
+        <Text>Hi, {`${data.first_name} ${data.last_name}`}</Text>
       </HStack>
       <HStack>
         <ColorModeSwitch />
@@ -52,6 +57,7 @@ const NavBar = () => {
             if (isEdit) {
               setPrompt(true);
             } else {
+              setIsEnabled(false);
               mutate(undefined);
             }
           }}

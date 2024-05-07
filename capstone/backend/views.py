@@ -82,6 +82,7 @@ class RefreshTokenAPI(APIView):
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 class VerifyUsernameAPIView(APIView):
+    permission_classes=[IsAuthenticated]
 
     def post(self, request):
         data = request.data

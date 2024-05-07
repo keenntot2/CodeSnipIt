@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { REFRESH_TOKEN_LIFETIME } from "./useRefreshToken";
 
 export interface User {
   id: number;
@@ -14,9 +13,10 @@ const apiClient = new APIClient<User>("/user");
 const useUser = () =>
   useQuery({
     queryKey: ["user"],
-    queryFn: apiClient.get,
+    queryFn: ({ signal }) => apiClient.get({ signal }),
     retry: false,
-    staleTime: REFRESH_TOKEN_LIFETIME, // 4ms
+    refetchOnWindowFocus: false,
+    // staleTime: REFRESH_TOKEN_LIFETIME, // 4ms
   });
 
 export default useUser;

@@ -9,16 +9,26 @@ import {
 import { useRef } from "react";
 import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import useUser from "../hooks/useUser";
+import useIsUserEnabledStore from "../hooks/useIsUserEnabledStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 const LoginPage = () => {
   const { mutate, isError, isPending, isSuccess } = useAuth();
+  const { isSuccess: isUser } = useUser();
+  const isEnabled = useIsUserEnabledStore((s) => s.isEnabled);
+  const queryClient = useQueryClient();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
-  if (isSuccess || isLoggedIn) {
+  if (!isEnabled) {
+    queryClient.removeQueries({ queryKey: ["user"], exact: true });
+  }
+
+  if (isSuccess || isLoggedIn || isUser) {
     const lastLoginTime = new Date().getTime();
     localStorage.setItem("lastLoginTime", lastLoginTime.toString());
     return <Navigate to="/" />;

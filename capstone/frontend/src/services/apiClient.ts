@@ -12,10 +12,11 @@ class APIClient<T = undefined, D = undefined> {
     this.endpoint = endpoint;
   }
 
-  get = () => axiosInstance.get<T>(this.endpoint).then((res) => res.data);
+  get = (config?: AxiosRequestConfig) =>
+    axiosInstance.get<T>(this.endpoint, config).then((res) => res.data);
 
-  post = (data: T) =>
-    axiosInstance.post<D>(this.endpoint, data).then((res) => res.data);
+  post = (data: T, config?: AxiosRequestConfig) =>
+    axiosInstance.post<D>(this.endpoint, data, config).then((res) => res.data);
 
   getAll = (config?: AxiosRequestConfig) =>
     axiosInstance.get<T>(this.endpoint, config).then((res) => res.data);

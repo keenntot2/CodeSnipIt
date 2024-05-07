@@ -1,4 +1,4 @@
-import { Box, Button, Grid, GridItem, Hide, Icon } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Icon, Show } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
 import { Navigate, Outlet } from "react-router-dom";
@@ -38,11 +38,11 @@ const Layout = () => {
         templateAreas={{ base: `'main'`, lg: `'aside main'` }}
         gridTemplateColumns={{ base: "1fr", lg: "300px 1fr" }}
       >
-        <Hide below="lg">
+        <Show above="lg">
           <GridItem area="aside">
             <LanguageList />
           </GridItem>
-        </Hide>
+        </Show>
         <GridItem area="main">
           <Box paddingInline={5} ml={{ lg: 5 }} w="100%">
             <Outlet />
