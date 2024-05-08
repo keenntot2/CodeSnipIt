@@ -29,7 +29,7 @@ const NavBar = () => {
         >
           <Icon as={FaHome} boxSize={5} />
         </Button>
-        <Text>Hi, {`${data.first_name} ${data.last_name}`}</Text>
+        <Text>Hi, {`${data.first_name.split(" ")[0]}!`}</Text>
       </HStack>
       <HStack>
         <SettingsButton />

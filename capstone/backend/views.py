@@ -218,8 +218,7 @@ class PatchAccountAPI(APIView):
             if (info == 'name'):
                 user.first_name = data['firstName']
                 user.last_name = data['lastName']
-                # user.save()
-                print(UserSerializer(user).data)
+                user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         except User.DoesNotExist:
