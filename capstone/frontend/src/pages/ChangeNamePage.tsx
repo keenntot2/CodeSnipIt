@@ -5,11 +5,11 @@ import {
   FormErrorMessage,
   Input,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import NameChangeDiscardButton from "../components/NameChangeDiscardButton";
 import useChangeNameStore from "../hooks/useChangeNameStore";
@@ -24,9 +24,10 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 const ChangeNamePage = () => {
-  const { mutate, isSuccess, isError } = usePatchAccount("name");
+  const { mutate } = usePatchAccount("name");
   const { setFirstName, setLastName } = useChangeNameStore();
-  const toast = useToast();
+
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -36,6 +37,7 @@ const ChangeNamePage = () => {
 
   const onSubmit = (data: Schema) => {
     mutate(data);
+    navigate("/account");
   };
 
   useEffect(() => {
@@ -45,36 +47,6 @@ const ChangeNamePage = () => {
   useEffect(() => {
     setLastName(watch("lastName"));
   }, [watch("lastName")]);
-
-  useEffect(() => {
-    if (isSuccess)
-      toast({
-        description: "Your account has been successfully updated.",
-        status: "success",
-        duration: 2000,
-        position: "top",
-        isClosable: true,
-        containerStyle: {
-          width: { base: "250px", lg: "max-content" },
-          minW: "none",
-        },
-      });
-
-    if (isError)
-      toast({
-        title: "Error",
-        description:
-          "It seems there has been a problem while updating your account. Please try again later.",
-        status: "error",
-        duration: 4000,
-        position: "top",
-        isClosable: true,
-        containerStyle: {
-          width: { base: "250px", lg: "max-content" },
-          minW: "none",
-        },
-      });
-  }, [isSuccess, isError]);
 
   return (
     <>
