@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Divider,
-  Flex,
   Grid,
   GridItem,
   HStack,
@@ -11,7 +10,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { IoIosArrowBack } from "react-icons/io";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useSnippetList from "../hooks/useSnippetList";
 import useUser from "../hooks/useUser";
@@ -99,13 +97,16 @@ const AccountSettingsPage = () => {
                 </Button>
               </VStack>
             ) : (
-              <Box h="100%" w="100%" display="flex" flexDirection="column">
-                <Button onClick={() => navigate("/account")} w="max-content">
-                  <IoIosArrowBack />
-                </Button>
-                <Flex h="100%" justifyContent="center" alignItems="center">
-                  <Outlet />
-                </Flex>
+              <Box
+                h="100%"
+                w="100%"
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                position="relative"
+              >
+                <Outlet />
               </Box>
             )}
           </Box>
