@@ -11,7 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdDarkMode, MdLightMode, MdLogout } from "react-icons/md";
+import {
+  MdDarkMode,
+  MdLightMode,
+  MdLogout,
+  MdManageAccounts,
+} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import useIsEditStore from "../hooks/useIsEditStore";
 import useIsUserEnabledStore from "../hooks/useIsUserEnabledStore";
@@ -42,6 +47,12 @@ const SettingsButton = () => {
         <IoSettingsOutline />
       </MenuButton>
       <MenuList>
+        <MenuItem
+          icon={<MdManageAccounts />}
+          onClick={() => navigate("/account")}
+        >
+          Account settings
+        </MenuItem>
         <MenuItem
           onClick={toggleColorMode}
           closeOnSelect={false}

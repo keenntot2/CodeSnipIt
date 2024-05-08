@@ -167,8 +167,8 @@ class ViewSnippetList(generics.ListAPIView):
 
     
     def get_queryset(self):
-        access_64 = self.request.COOKIES.get('access')
-        access = AccessToken(access_64)
+        access_b64 = self.request.COOKIES.get('access')
+        access = AccessToken(access_b64)
         user_id = access['user_id']
 
         try:
@@ -204,3 +204,25 @@ class SnippetAPI(APIView):
             return Response(serializer.data)
         except Snippet.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+class PatchAccountAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    def patch(self, request, info):
+        data = request.data
+        access_b64 = request.COOKIES.get('access')
+        access = AccessToken(access_b64)
+        user_id = access['user_id']
+
+        try:
+            user = User.objects.get(pk=user_id)
+            if (info == 'name'):
+                user.first_name = data['firstName']
+                user.last_name = data['lastName']
+                # user.save()
+                print(UserSerializer(user).data)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except User.DoesNotExist:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        

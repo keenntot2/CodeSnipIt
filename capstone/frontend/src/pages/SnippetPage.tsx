@@ -103,12 +103,7 @@ const SnippetPage = () => {
             {!isEdit ? (
               <HStack>
                 <LanguageIcon language={snippet.language} />
-                <Divider
-                  orientation="vertical"
-                  flexGrow="1"
-                  alignSelf="stretch"
-                  h="auto"
-                />
+                <Divider orientation="vertical" alignSelf="stretch" h="auto" />
 
                 <Heading as="h1" size={{ base: "sm", lg: "md" }}>
                   {snippet?.title}

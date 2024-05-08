@@ -22,12 +22,12 @@ import useRegister from "../hooks/useRegister";
 import useVerifyUsername from "../hooks/useVerifyUsername";
 import { useNavigate } from "react-router-dom";
 
-const USERNAME_MIN_CHAR = 5;
-const PASSWORD_MIN_CHAR = 6;
+export const USERNAME_MIN_CHAR = 5;
+export const PASSWORD_MIN_CHAR = 6;
 
 const USERNAME_REGEX = new RegExp("^\\S{" + USERNAME_MIN_CHAR + ",}$");
 const PASSWORD_REGEX = new RegExp("^(?=.*\\d).{" + PASSWORD_MIN_CHAR + ",}$");
-const NAME_REGEX = /^[a-zA-Z'-]+(?:\s[a-zA-Z'-]+)*$/;
+export const NAME_REGEX = /^[a-zA-Z'-]+(?:\s[a-zA-Z'-]+)*$/;
 
 const schema = z.object({
   firstName: z.string().max(64).regex(NAME_REGEX, "Invalid name."),
