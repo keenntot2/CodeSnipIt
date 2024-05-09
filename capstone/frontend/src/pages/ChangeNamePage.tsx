@@ -4,6 +4,7 @@ import {
   FormErrorMessage,
   Input,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ export type ChangeNameSchema = z.infer<typeof schema>;
 const ChangeNamePage = () => {
   const { mutate } = usePatchAccount("name");
   const { setFirstName, setLastName } = useChangeNameStore();
+  const { onOpen } = useDisclosure();
 
   const navigate = useNavigate();
   const {
@@ -53,10 +55,16 @@ const ChangeNamePage = () => {
       <Box position="absolute" top={0} left={0}>
         <NameChangeDiscardButton />
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onOpen();
+        }}
+      >
         <VStack w={300}>
           <FormControl isInvalid={!!errors.firstName}>
             <Input
+              autoFocus
               {...register("firstName")}
               placeholder="First name"
               type="text"
@@ -71,7 +79,6 @@ const ChangeNamePage = () => {
             />
             <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
           </FormControl>
-          {/* <Button type="submit">Save</Button> */}
           <NameChangeSaveAlert handleSubmit={handleSubmit(onSubmit)} />
         </VStack>
       </form>

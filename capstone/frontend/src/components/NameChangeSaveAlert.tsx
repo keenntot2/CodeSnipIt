@@ -25,6 +25,7 @@ const NameChangeSaveAlert = ({ handleSubmit }: Props) => {
   return (
     <>
       <Button
+        type="submit"
         onClick={onOpen}
         isDisabled={!NAME_REGEX.test(firstName) || !NAME_REGEX.test(lastName)}
       >
