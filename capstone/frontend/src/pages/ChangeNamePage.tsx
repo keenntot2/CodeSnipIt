@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   FormErrorMessage,
   Input,
@@ -12,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import NameChangeDiscardButton from "../components/NameChangeDiscardButton";
+import NameChangeSaveAlert from "../components/NameChangeSaveAlert";
 import useChangeNameStore from "../hooks/useChangeNameStore";
 import usePatchAccount from "../hooks/usePatchAccount";
 import { NAME_REGEX } from "./RegisterPage";
@@ -21,7 +21,7 @@ const schema = z.object({
   lastName: z.string().max(64).regex(NAME_REGEX, "Invalid name."),
 });
 
-type Schema = z.infer<typeof schema>;
+export type ChangeNameSchema = z.infer<typeof schema>;
 
 const ChangeNamePage = () => {
   const { mutate } = usePatchAccount("name");
@@ -33,9 +33,9 @@ const ChangeNamePage = () => {
     register,
     formState: { errors },
     watch,
-  } = useForm<Schema>({ resolver: zodResolver(schema) });
+  } = useForm<ChangeNameSchema>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: Schema) => {
+  const onSubmit = (data: ChangeNameSchema) => {
     mutate(data);
     navigate("/account");
   };
@@ -71,7 +71,8 @@ const ChangeNamePage = () => {
             />
             <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
           </FormControl>
-          <Button type="submit">Save</Button>
+          {/* <Button type="submit">Save</Button> */}
+          <NameChangeSaveAlert handleSubmit={handleSubmit(onSubmit)} />
         </VStack>
       </form>
     </>
