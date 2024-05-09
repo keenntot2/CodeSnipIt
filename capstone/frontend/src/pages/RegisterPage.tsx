@@ -26,7 +26,9 @@ export const USERNAME_MIN_CHAR = 5;
 export const PASSWORD_MIN_CHAR = 6;
 
 const USERNAME_REGEX = new RegExp("^\\S{" + USERNAME_MIN_CHAR + ",}$");
-const PASSWORD_REGEX = new RegExp("^(?=.*\\d).{" + PASSWORD_MIN_CHAR + ",}$");
+export const PASSWORD_REGEX = new RegExp(
+  "^(?=.*\\d).{" + PASSWORD_MIN_CHAR + ",}$"
+);
 export const NAME_REGEX = /^[a-zA-Z'-]+(?:\s[a-zA-Z'-]+)*$/;
 
 const schema = z.object({

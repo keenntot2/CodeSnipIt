@@ -44,14 +44,6 @@ const AccountSettingsPage = () => {
                       color="gray.400"
                     >{`${user?.first_name} ${user?.last_name}`}</Text>
                   </Box>
-                  <Box>
-                    <Heading as="dt" fontSize="md" color="gray.600">
-                      Email:
-                    </Heading>
-                    <Text as="dd" color="gray.400">
-                      {user?.email}
-                    </Text>
-                  </Box>
                   <HStack justifyContent="start">
                     <Heading as="dt" fontSize="md" color="gray.600">
                       Snippets:
@@ -83,12 +75,7 @@ const AccountSettingsPage = () => {
                 >
                   Change name
                 </Button>
-                <Button
-                  w="100%"
-                  onClick={() => navigate("/account/change/email")}
-                >
-                  Change email
-                </Button>
+
                 <Button
                   w="100%"
                   onClick={() => navigate("/account/change/password")}

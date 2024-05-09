@@ -13,13 +13,13 @@ interface UserContext {
   user?: User;
 }
 
-const usePatchAccount = (info: string) => {
+const usePatchAccountName = () => {
   const queryClient = useQueryClient();
-  const apiClient = new APIClient<NameMutate>(`/account/patch/${info}`);
+  const apiClient = new APIClient<NameMutate>("/account/patch/name");
   const toast = useToast();
 
   return useMutation<undefined, AxiosError, NameMutate, UserContext>({
-    mutationKey: ["patch-account"],
+    mutationKey: ["patch-account-name"],
     mutationFn: (data) => {
       const controller = new AbortController();
       const signal = controller.signal;
@@ -67,4 +67,4 @@ const usePatchAccount = (info: string) => {
   });
 };
 
-export default usePatchAccount;
+export default usePatchAccountName;

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.db.utils import IntegrityError
+from django.contrib.auth.hashers import make_password, check_password
 
 from .serializers import UserSerializer, LanguageSerializer, SnippetSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
@@ -218,6 +219,16 @@ class PatchAccountAPI(APIView):
             if (info == 'name'):
                 user.first_name = data['firstName']
                 user.last_name = data['lastName']
+                user.save()
+            else:
+                old_password = data['oldPassword']
+                new_password = data['newPassword']
+                confirm_password = data['confirmPassword']
+                if not check_password(old_password, user.password):
+                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+                if new_password != confirm_password:  
+                    return Response(status=status.HTTP_400_BAD_REQUEST)   
+                user.password = make_password(new_password)
                 user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -14,7 +14,7 @@ import { z } from "zod";
 import NameChangeDiscardButton from "../components/NameChangeDiscardButton";
 import NameChangeSaveAlert from "../components/NameChangeSaveAlert";
 import useChangeNameStore from "../hooks/useChangeNameStore";
-import usePatchAccount from "../hooks/usePatchAccount";
+import usePatchAccountName from "../hooks/usePatchAccountName";
 import { NAME_REGEX } from "./RegisterPage";
 
 const schema = z.object({
@@ -25,7 +25,7 @@ const schema = z.object({
 export type ChangeNameSchema = z.infer<typeof schema>;
 
 const ChangeNamePage = () => {
-  const { mutate } = usePatchAccount("name");
+  const { mutate } = usePatchAccountName();
   const { setFirstName, setLastName } = useChangeNameStore();
   const { onOpen } = useDisclosure();
 
@@ -79,7 +79,9 @@ const ChangeNamePage = () => {
             />
             <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
           </FormControl>
-          <NameChangeSaveAlert handleSubmit={handleSubmit(onSubmit)} />
+          <Box mt={5}>
+            <NameChangeSaveAlert handleSubmit={handleSubmit(onSubmit)} />
+          </Box>
         </VStack>
       </form>
     </>

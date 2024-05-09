@@ -5,7 +5,7 @@ from .models import Language, Snippet
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name']
+        fields = ['id', 'username', 'first_name', 'last_name']
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
