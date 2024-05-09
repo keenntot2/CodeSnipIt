@@ -52,7 +52,7 @@ const ChangeNamePage = () => {
 
   return (
     <>
-      <Box position="absolute" top={0} left={0}>
+      <Box position="absolute" top={0} left={0} ml={3}>
         <NameChangeDiscardButton />
       </Box>
       <form

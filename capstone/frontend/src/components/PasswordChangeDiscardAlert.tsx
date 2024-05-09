@@ -31,6 +31,7 @@ const PasswordChangeDiscardAlert = ({ watch }: Watch) => {
   return (
     <>
       <Button
+        size="sm"
         onClick={() => {
           if (watch.newPassword || watch.confirmPassword || watch.oldPassword) {
             onOpen();
@@ -38,8 +39,9 @@ const PasswordChangeDiscardAlert = ({ watch }: Watch) => {
             navigate("/account");
           }
         }}
+        leftIcon={<IoIosArrowBack />}
       >
-        <IoIosArrowBack />
+        Back to Account settings
       </Button>
       <AlertDialog
         motionPreset="slideInBottom"

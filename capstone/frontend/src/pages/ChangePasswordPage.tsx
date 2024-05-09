@@ -57,7 +57,7 @@ const ChangePasswordPage = () => {
 
   return (
     <>
-      <Box position="absolute" top={0} left={0}>
+      <Box position="absolute" top={0} left={0} ml={3}>
         <PasswordChangeDiscardAlert watch={watch()} />
       </Box>
       <form

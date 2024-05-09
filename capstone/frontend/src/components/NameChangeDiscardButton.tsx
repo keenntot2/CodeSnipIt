@@ -23,6 +23,7 @@ const NameChangeDiscardButton = () => {
   return (
     <>
       <Button
+        size="sm"
         onClick={() => {
           if (firstName || lastName) {
             onOpen();
@@ -30,8 +31,9 @@ const NameChangeDiscardButton = () => {
             navigate("/account");
           }
         }}
+        leftIcon={<IoIosArrowBack />}
       >
-        <IoIosArrowBack />
+        Back to Account settings
       </Button>
       <AlertDialog
         motionPreset="slideInBottom"

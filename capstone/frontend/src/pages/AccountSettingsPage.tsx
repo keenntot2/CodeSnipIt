@@ -58,7 +58,35 @@ const AccountSettingsPage = () => {
             </HStack>
           </GridItem>
         </Show>
-        <GridItem area="main">
+
+        <GridItem area="main" display="flex" flexDirection="column">
+          <Show below="lg">
+            <Box px={3}>
+              <Heading color="gray.400" fontSize="2xl">
+                Account Info:
+              </Heading>
+              <VStack alignItems="start" alignSelf="center" w="100%" p={5}>
+                <Box>
+                  <Heading as="dt" fontSize="md" color="gray.600">
+                    Name:
+                  </Heading>
+                  <Text
+                    as="dd"
+                    color="gray.400"
+                  >{`${user?.first_name} ${user?.last_name}`}</Text>
+                </Box>
+                <HStack justifyContent="start">
+                  <Heading as="dt" fontSize="md" color="gray.600">
+                    Snippets:
+                  </Heading>
+                  <Text as="dd" color="gray.400">
+                    {snippets?.count}
+                  </Text>
+                </HStack>
+              </VStack>
+              <Divider mb={5} />
+            </Box>
+          </Show>
           <Box
             paddingInline={{ base: 0, lg: 5 }}
             ml={{ lg: 5 }}
