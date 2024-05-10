@@ -3,10 +3,13 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   Icon,
   Input,
   InputGroup,
   InputRightElement,
+  ListItem,
+  UnorderedList,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -19,7 +22,7 @@ import { z } from "zod";
 import PasswordChangeDiscardAlert from "../components/PasswordChangeDiscardAlert";
 import PasswordChangeSaveAlert from "../components/PasswordChangeSaveAlert";
 import usePatchAccountPassword from "../hooks/usePatchAccountPassword";
-import { PASSWORD_REGEX } from "./RegisterPage";
+import { PASSWORD_MIN_CHAR, PASSWORD_REGEX } from "./RegisterPage";
 
 const schema = z.object({
   oldPassword: z.string().min(1, "Please enter your old password."),
@@ -71,6 +74,7 @@ const ChangePasswordPage = () => {
             isInvalid={!!errors.oldPassword || error?.response?.status === 401}
           >
             <Input
+              autoFocus
               {...register("oldPassword")}
               placeholder="Confirm password"
               type="password"
@@ -84,7 +88,6 @@ const ChangePasswordPage = () => {
             <InputGroup>
               <Input
                 {...register("newPassword")}
-                autoFocus
                 placeholder="Password"
                 type={show ? "text" : "password"}
               />
@@ -98,6 +101,16 @@ const ChangePasswordPage = () => {
                 </Flex>
               </InputRightElement>
             </InputGroup>
+            <FormHelperText>
+              <UnorderedList>
+                <ListItem>
+                  Minimum of at least {PASSWORD_MIN_CHAR} characters.
+                </ListItem>
+                <ListItem>
+                  Must contain of at least one numerical character.
+                </ListItem>
+              </UnorderedList>
+            </FormHelperText>
             <FormErrorMessage>{errors.newPassword?.message}</FormErrorMessage>
           </FormControl>
           <FormControl
