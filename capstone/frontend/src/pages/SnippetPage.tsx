@@ -2,10 +2,12 @@ import {
   Box,
   Button,
   Divider,
+  Flex,
   HStack,
   Heading,
   Icon,
   Show,
+  Spinner,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -30,7 +32,7 @@ import { Language } from "../hooks/useLanguage";
 import useSnippetList from "../hooks/useSnippetList";
 
 const SnippetPage = () => {
-  const { data, isSuccess } = useSnippetList();
+  const { data, isSuccess, isLoading } = useSnippetList();
   const { reset, setCode, setTitle } = useAddSnippetValueStore();
   const { isEdit, setIsEdit } = useIsEditStore();
   const [snippet, setSnippet] = useState<Snippet>();
@@ -91,6 +93,11 @@ const SnippetPage = () => {
 
   return (
     <Box width="100%">
+      {isLoading && (
+        <Flex w="100%" justifyContent="center">
+          <Spinner size="lg" />
+        </Flex>
+      )}
       {snippet && (
         <>
           <HStack

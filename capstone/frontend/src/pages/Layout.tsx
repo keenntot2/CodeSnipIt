@@ -6,10 +6,11 @@ import {
   GridItem,
   Icon,
   Show,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import LanguageList from "../components/LanguageList";
 import NavBar from "../components/NavBar";
 import useRefreshToken from "../hooks/useRefreshToken";
@@ -18,29 +19,47 @@ import useUserStore from "../hooks/useUserStore";
 import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
 
 const Layout = () => {
-  const { data, isError, isLoading, isSuccess } = useUser();
+  const { data, isError, isSuccess } = useUser();
   const setUser = useUserStore((s) => s.setUser);
   const { refetch } = useRefreshToken();
   const location = useLocation();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (isError) {
+      sessionStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("lastLoginTime");
+      const intervalId = localStorage.getItem("intervalId");
+      if (intervalId) {
+        clearInterval(parseInt(intervalId));
+        localStorage.removeItem("intervalId");
+      }
+      toast({
+        title: "Error",
+        description:
+          "It seems there has been a problem on the server. Please try again later.",
+        status: "error",
+        duration: 4000,
+        position: "top",
+        isClosable: true,
+        containerStyle: {
+          width: { base: "250px", lg: "max-content" },
+          minW: "none",
+        },
+      });
+      navigate("/login");
+    }
     if (isSuccess) {
       setUser(data);
       sessionStorage.setItem("isLoggedIn", "true");
       checkBackgroundRequestTime(refetch);
     }
-  }, [isSuccess]);
-
-  if (isLoading) return null;
-  if (isError) {
-    if (sessionStorage.getItem("isLoggedIn"))
-      sessionStorage.removeItem("isLoggedIn");
-    return <Navigate to="/login" />;
-  }
+  }, [isSuccess, isError]);
 
   return (
     <>
-      <Flex p={5} flexDirection="column" h="100dvh">
+      <Flex p={5} flexDirection="column" minH="100dvh">
         <Box mb={10}>
           <NavBar />
         </Box>

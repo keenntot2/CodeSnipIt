@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { REFRESH_TOKEN_LIFETIME } from "./useRefreshToken";
+import { AxiosError } from "axios";
 
 export interface User {
   id: number;
@@ -12,7 +13,7 @@ export interface User {
 const apiClient = new APIClient<User>("/user");
 
 const useUser = () =>
-  useQuery({
+  useQuery<User, AxiosError, User>({
     queryKey: ["user"],
     queryFn: ({ signal }) => apiClient.get({ signal }),
     retry: false,

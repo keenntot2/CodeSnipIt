@@ -1,4 +1,12 @@
-import { Box, Button, HStack, Show, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Show,
+  SimpleGrid,
+  Spinner,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LanguageMenu from "../components/LanguageMenu";
@@ -11,7 +19,7 @@ import useAddSnippetValueStore from "../hooks/useAddSnippetValueStore";
 
 const HomePage = () => {
   const [snippets, setSnippets] = useState<Snippet[]>();
-  const { data, isSuccess } = useSnippetList();
+  const { data, isSuccess, isLoading } = useSnippetList();
   const [isLanguage, setIsLanguage] = useState(true);
 
   const parseDate = (dateString: string) => new Date(dateString).getTime();
@@ -69,6 +77,12 @@ const HomePage = () => {
           )}
         </HStack>
       </Box>
+
+      {isLoading && (
+        <Flex justifyContent="center">
+          <Spinner size="lg" />
+        </Flex>
+      )}
 
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
         {snippets &&
