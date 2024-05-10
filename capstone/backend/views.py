@@ -8,7 +8,6 @@ from .serializers import UserSerializer, LanguageSerializer, SnippetSerializer
 from .permissions import IsAuthenticated, HasRefreshToken
 from .utils import set_cookie_token, get_tokens_for_user,delete_cookie_token
 from .models import Language, Snippet
-from .pagination import LanguageResultsSetPagination
 
 from rest_framework import status, generics, viewsets
 from rest_framework.views import APIView
@@ -126,7 +125,6 @@ class LanguageList(generics.ListAPIView):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = LanguageResultsSetPagination
 
 class AddSnippetAPI(APIView):
     permission_classes=[IsAuthenticated]
