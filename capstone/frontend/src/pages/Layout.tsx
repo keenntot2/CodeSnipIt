@@ -10,16 +10,18 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import LanguageList from "../components/LanguageList";
 import NavBar from "../components/NavBar";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
 import useUserStore from "../hooks/useUserStore";
 import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
+import useLogout from "../hooks/useLogout";
 
 const Layout = () => {
-  const { data, isError, isSuccess } = useUser();
+  const { data, isError, isSuccess, error } = useUser();
+  const { mutate } = useLogout();
   const setUser = useUserStore((s) => s.setUser);
   const { refetch } = useRefreshToken();
   const location = useLocation();
@@ -35,27 +37,33 @@ const Layout = () => {
         clearInterval(parseInt(intervalId));
         localStorage.removeItem("intervalId");
       }
-      toast({
-        title: "Error",
-        description:
-          "It seems there has been a problem on the server. Please try again later.",
-        status: "error",
-        duration: 4000,
-        position: "top",
-        isClosable: true,
-        containerStyle: {
-          width: { base: "250px", lg: "max-content" },
-          minW: "none",
-        },
-      });
+      if (error.response?.status != 401) {
+        toast({
+          title: "Error",
+          description:
+            "It seems there has been a problem on the server. Please try again later.",
+          status: "error",
+          duration: 4000,
+          position: "top",
+          isClosable: true,
+          containerStyle: {
+            width: { base: "250px", lg: "max-content" },
+            minW: "none",
+          },
+        });
+      }
+      mutate(undefined);
       navigate("/login");
     }
     if (isSuccess) {
       setUser(data);
-      sessionStorage.setItem("isLoggedIn", "true");
       checkBackgroundRequestTime(refetch);
     }
   }, [isSuccess, isError]);
+
+  if (!sessionStorage.getItem("isLoggedIn")) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>

@@ -6,31 +6,28 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import useUser from "../hooks/useUser";
-import useIsUserEnabledStore from "../hooks/useIsUserEnabledStore";
-import { useQueryClient } from "@tanstack/react-query";
+import useIsLoggedIn from "../hooks/useLoggedIn";
 
 const LoginPage = () => {
   const { mutate, isError, isPending, isSuccess } = useAuth();
-  const { isSuccess: isUser } = useUser();
-  const isEnabled = useIsUserEnabledStore((s) => s.isEnabled);
-  const queryClient = useQueryClient();
+  const { mutate: mutateIsLoggedIn } = useIsLoggedIn();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn") ? true : false;
 
-  if (!isEnabled) {
-    queryClient.removeQueries({ queryKey: ["user"], exact: true });
-  }
+  useEffect(() => {
+    mutateIsLoggedIn(undefined);
+  }, []);
 
-  if (isSuccess || isLoggedIn || isUser) {
+  if (isSuccess || isLoggedIn) {
     const lastLoginTime = new Date().getTime();
     localStorage.setItem("lastLoginTime", lastLoginTime.toString());
+    sessionStorage.setItem("isLoggedIn", "true");
     return <Navigate to="/" />;
   }
 

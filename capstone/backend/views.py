@@ -37,6 +37,18 @@ class UserAPIView(APIView):
             return response
         except TokenError:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
+    
+    def post(self,request):
+        access_token_b64 = request.COOKIES.get('access') 
+
+        if access_token_b64 is not None:
+            try:
+                AccessToken(access_token_b64)
+                return Response(status=status.HTTP_200_OK)
+            except TokenError:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
         
 class LoginView(APIView):
     def post(self, request):
@@ -61,8 +73,9 @@ class LogoutAPIView(APIView):
     def post(self, request):
         response = Response()
         refresh = request.COOKIES.get('refresh')
-        token = RefreshToken(refresh)
-        token.blacklist()
+        if refresh is not None:
+            token = RefreshToken(refresh)
+            token.blacklist()
         delete_cookie_token(response, 'ACCESS')
         delete_cookie_token(response, 'REFRESH')
         return response

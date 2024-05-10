@@ -9,7 +9,6 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
 import {
   MdDarkMode,
@@ -19,28 +18,15 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import useIsEditStore from "../hooks/useIsEditStore";
-import useIsUserEnabledStore from "../hooks/useIsUserEnabledStore";
 import useLogout from "../hooks/useLogout";
 
 const SettingsButton = () => {
-  const { mutate, isSuccess, isPending } = useLogout();
+  const { mutate, isPending } = useLogout();
   const { setPrompt, isEdit } = useIsEditStore();
-  const setIsEnabled = useIsUserEnabledStore((s) => s.setIsEnabled);
+
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (isSuccess) {
-      sessionStorage.removeItem("isLoggedIn");
-      localStorage.removeItem("lastLoginTime");
-      const intervalId = localStorage.getItem("intervalId");
-      if (intervalId) {
-        clearInterval(parseInt(intervalId));
-        localStorage.removeItem("intervalId");
-      }
-      navigate("/login");
-    }
-  }, [isSuccess]);
   return (
     <Menu autoSelect={false}>
       <MenuButton as={Button}>
@@ -73,7 +59,6 @@ const SettingsButton = () => {
             if (isEdit) {
               setPrompt(true);
             } else {
-              setIsEnabled(false);
               mutate(undefined);
             }
           }}

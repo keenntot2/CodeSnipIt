@@ -9,6 +9,16 @@ const useLogout = () => {
 
   return useMutation({
     mutationFn: apiClient.post,
+    onSuccess: () => {
+      sessionStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("lastLoginTime");
+      const intervalId = localStorage.getItem("intervalId");
+      if (intervalId) {
+        clearInterval(parseInt(intervalId));
+        localStorage.removeItem("intervalId");
+      }
+      navigate("/login");
+    },
     onError: () => {
       sessionStorage.removeItem("isLoggedIn");
       localStorage.removeItem("lastLoginTime");

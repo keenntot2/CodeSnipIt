@@ -18,6 +18,7 @@ const useUser = () =>
     queryFn: ({ signal }) => apiClient.get({ signal }),
     retry: false,
     refetchOnWindowFocus: false,
+
     staleTime: REFRESH_TOKEN_LIFETIME, // 4ms
   });
 
