@@ -13,7 +13,8 @@ import useIsLoggedIn from "../hooks/useLoggedIn";
 
 const LoginPage = () => {
   const { mutate, isError, isPending, isSuccess } = useAuth();
-  const { mutate: mutateIsLoggedIn } = useIsLoggedIn();
+  const { mutate: mutateIsLoggedIn, isPending: isCheckingUser } =
+    useIsLoggedIn();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -29,6 +30,10 @@ const LoginPage = () => {
     localStorage.setItem("lastLoginTime", lastLoginTime.toString());
     sessionStorage.setItem("isLoggedIn", "true");
     return <Navigate to="/" />;
+  }
+
+  if (isCheckingUser) {
+    return null;
   }
 
   return (

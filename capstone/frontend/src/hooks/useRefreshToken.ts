@@ -9,9 +9,6 @@ const useRefreshToken = () =>
   useQuery({
     queryKey: ["refreshToken"],
     queryFn: () => apiClient.get(),
-    refetchInterval: REFRESH_TOKEN_LIFETIME,
-    refetchIntervalInBackground: true,
-    refetchOnMount: true,
     refetchOnWindowFocus: false,
     staleTime: REFRESH_TOKEN_LIFETIME,
     enabled: false,
