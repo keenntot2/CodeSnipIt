@@ -10,14 +10,15 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import LanguageList from "../components/LanguageList";
 import NavBar from "../components/NavBar";
+import useLogout from "../hooks/useLogout";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
 import useUserStore from "../hooks/useUserStore";
 import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
-import useLogout from "../hooks/useLogout";
+import getCookie from "../utils/getCookie";
 
 const Layout = () => {
   const { data, isError, isSuccess, error } = useUser();
@@ -30,7 +31,6 @@ const Layout = () => {
 
   useEffect(() => {
     if (isError) {
-      sessionStorage.removeItem("isLoggedIn");
       localStorage.removeItem("lastLoginTime");
       const intervalId = localStorage.getItem("intervalId");
       if (intervalId) {
@@ -61,9 +61,11 @@ const Layout = () => {
     }
   }, [isSuccess, isError]);
 
-  if (!sessionStorage.getItem("isLoggedIn")) {
-    return <Navigate to="/login" />;
-  }
+  useEffect(() => {
+    if (!getCookie("isLoggedIn")) {
+      mutate(undefined);
+    }
+  }, []);
 
   return (
     <>

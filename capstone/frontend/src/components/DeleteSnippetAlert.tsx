@@ -10,6 +10,7 @@ import {
   Icon,
   Text,
   useDisclosure,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { MdDeleteOutline } from "react-icons/md";
@@ -39,9 +40,11 @@ const DeleteSnippetAlert = ({ snippet, as, handleDelete }: Props) => {
   return (
     <>
       {as != "menuItem" ? (
-        <Button colorScheme="red" onClick={onOpen}>
-          <Icon as={MdDeleteOutline} boxSize={5} />
-        </Button>
+        <Tooltip label="Delete" hasArrow placement="top">
+          <Button colorScheme="red" onClick={onOpen}>
+            <Icon as={MdDeleteOutline} boxSize={5} />
+          </Button>
+        </Tooltip>
       ) : (
         <Text>Delete</Text>
       )}

@@ -1,51 +1,78 @@
-import { HStack, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Button,
+  Divider,
+  HStack,
+  Heading,
+  Icon,
+  Tooltip,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { FaRegEdit } from "react-icons/fa";
+import { IoMdCopy } from "react-icons/io";
+import { MdDeleteOutline } from "react-icons/md";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import LanguageIcon from "../components/LanguageIcon";
 
-interface Props {
-  code?: string;
-}
-
-const CodeBlock = ({ code }: Props) => {
-  const [noOfLines, setNoOfLines] = useState(0);
-  const codeRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (codeRef.current) {
-      const height = codeRef.current.clientHeight;
-      const lineHeight = parseInt(getComputedStyle(codeRef.current).lineHeight);
-      const noOfLines = Math.floor(height / lineHeight);
-      setNoOfLines(noOfLines);
-    }
-  }, [code]);
+const CodeBlock = () => {
+  const headingBcolor = useColorModeValue(
+    "RGBA(0, 0, 0, 0.36)",
+    "rgba(255,255,255,0.16)"
+  );
 
   return (
-    <HStack
-      backgroundColor="rgb(1, 22, 39)"
-      alignItems="start"
-      padding={10}
-      width="100%"
-      borderRadius="0px 0px 10px 10px"
-    >
-      <VStack spacing={0}>
-        {[...Array(noOfLines).keys()].map((index) => (
-          <Text key={index} color="gray.400" lineHeight="30px">
-            {index + 1}
-          </Text>
-        ))}
-      </VStack>
-      <Text
-        as="code"
-        color="white"
-        p="10px"
-        whiteSpace="pre-wrap"
-        ref={codeRef}
-        paddingBlock={0}
-        lineHeight="30px"
-        ml={5}
+    <>
+      <HStack
+        paddingBlock={2}
+        paddingInline={2}
+        backgroundColor={headingBcolor}
+        borderRadius="10px 10px 0px 0px"
+        justifyContent="space-between"
       >
-        {code}
-      </Text>
-    </HStack>
+        <HStack ml={2}>
+          <LanguageIcon language={"python"} />
+          <Divider orientation="vertical" alignSelf="stretch" h="auto" />
+          <Heading as="h1" size="sm">
+            Hello, World!
+          </Heading>
+        </HStack>
+        <HStack>
+          <Tooltip label="Edit" placement="top" hasArrow>
+            <Button size="sm">
+              <Icon as={FaRegEdit} />
+            </Button>
+          </Tooltip>
+          <Tooltip label="Copy" placement="top" hasArrow>
+            <Button
+              size="sm"
+              onClick={() => {
+                navigator.clipboard.writeText('print("Hello, World!")');
+              }}
+            >
+              <HStack>
+                <Icon as={IoMdCopy} boxSize={5} />
+              </HStack>
+            </Button>
+          </Tooltip>
+          <Tooltip label="Delete" placement="top" hasArrow>
+            <Button colorScheme="red" size="sm">
+              <Icon as={MdDeleteOutline} boxSize={5} />
+            </Button>
+          </Tooltip>
+        </HStack>
+      </HStack>
+      <Box
+        fontSize="xs"
+        padding={5}
+        backgroundColor="rgb(1, 22, 39)"
+        borderRadius="0px 0px 10px 10px"
+      >
+        <SyntaxHighlighter language={"python"} style={nightOwl} showLineNumbers>
+          {`print("Hello, World!")`}
+        </SyntaxHighlighter>
+      </Box>
+    </>
   );
 };
 

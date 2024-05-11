@@ -9,6 +9,7 @@ import {
   Show,
   Spinner,
   useColorModeValue,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -136,18 +137,22 @@ const SnippetPage = () => {
               <HStack>
                 {!isEdit ? (
                   <>
-                    <Button onClick={() => setIsEdit(true)}>
-                      <Icon as={FaRegEdit} />
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        navigator.clipboard.writeText(snippet?.code);
-                      }}
-                    >
-                      <HStack>
-                        <Icon as={IoMdCopy} boxSize={5} />
-                      </HStack>
-                    </Button>
+                    <Tooltip label="Edit" hasArrow placement="top">
+                      <Button onClick={() => setIsEdit(true)}>
+                        <Icon as={FaRegEdit} />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip label="Copy" hasArrow placement="top">
+                      <Button
+                        onClick={() => {
+                          navigator.clipboard.writeText(snippet?.code);
+                        }}
+                      >
+                        <HStack>
+                          <Icon as={IoMdCopy} boxSize={5} />
+                        </HStack>
+                      </Button>
+                    </Tooltip>
                     <DeleteSnippetAlert snippet={snippet} />
                   </>
                 ) : (

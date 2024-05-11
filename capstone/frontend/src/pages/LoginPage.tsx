@@ -1,78 +1,72 @@
 import {
-  Button,
+  Box,
+  Divider,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  Input,
+  Grid,
+  GridItem,
+  HStack,
+  Heading,
+  Show,
+  Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useRef } from "react";
-import { Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import useIsLoggedIn from "../hooks/useLoggedIn";
+import CodeBlock from "../components/CodeBlock";
+import LoginForm from "../components/LoginForm";
 
 const LoginPage = () => {
-  const { mutate, isError, isPending, isSuccess } = useAuth();
-  const { mutate: mutateIsLoggedIn, isPending: isCheckingUser } =
-    useIsLoggedIn();
-
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn") ? true : false;
-
-  useEffect(() => {
-    mutateIsLoggedIn(undefined);
-  }, []);
-
-  if (isSuccess || isLoggedIn) {
-    const lastLoginTime = new Date().getTime();
-    localStorage.setItem("lastLoginTime", lastLoginTime.toString());
-    sessionStorage.setItem("isLoggedIn", "true");
-    return <Navigate to="/" />;
-  }
-
-  if (isCheckingUser) {
-    return null;
-  }
-
   return (
-    <Flex padding={5} h="100dvh" alignItems="center" justifyContent="center">
-      <form
-        className="authForm"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (usernameRef.current?.value && passwordRef.current?.value) {
-            mutate({
-              username: usernameRef.current?.value,
-              password: passwordRef.current?.value,
-            });
-          }
-        }}
+    <Flex paddingBlock={5} h="100dvh">
+      <Grid
+        w="100%"
+        templateAreas={{ base: `'form'`, lg: `"hero form"` }}
+        gridTemplateColumns={{ base: "100%", lg: "65% 1fr" }}
       >
-        <FormControl isInvalid={isError}>
-          <VStack>
-            <Input ref={usernameRef} placeholder="Username" id="username" />
-            <Input
-              ref={passwordRef}
-              placeholder="Password"
-              type="password"
-              id="password"
-            />
-            {isError && (
-              <FormErrorMessage>Invalid username or password.</FormErrorMessage>
-            )}
-            <Button
-              mt={5}
-              type="submit"
-              isLoading={isPending}
-              loadingText="Logging in"
+        <Show above="lg">
+          <GridItem area="hero">
+            <HStack
+              w="100%"
+              justifyContent="space-between"
+              h="100%"
+              spacing={0}
             >
-              Login
-            </Button>
-          </VStack>
-        </FormControl>
-      </form>
+              <Flex h="100%" w="100%" justifyContent="center">
+                <VStack
+                  spacing="50px"
+                  borderRadius={20}
+                  h="100%"
+                  w="700px"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Heading
+                    alignSelf="start"
+                    background="whiteAlpha.200"
+                    p={5}
+                    borderRadius={10}
+                  >{`CodeSnipIt()`}</Heading>
+                  <Box w="400px">
+                    <CodeBlock />
+                  </Box>
+                  <Text fontSize="xl" alignSelf="end">
+                    "Code made easy, one snippet at a time."
+                  </Text>
+                </VStack>
+              </Flex>
+
+              <Divider orientation="vertical" h="auto" alignSelf="stretch" />
+            </HStack>
+          </GridItem>
+        </Show>
+
+        <GridItem
+          area="form"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <LoginForm />
+        </GridItem>
+      </Grid>
     </Flex>
   );
 };

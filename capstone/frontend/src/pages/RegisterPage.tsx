@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   FormControl,
@@ -21,6 +22,8 @@ import { z } from "zod";
 import useRegister from "../hooks/useRegister";
 import useVerifyUsername from "../hooks/useVerifyUsername";
 import { useNavigate } from "react-router-dom";
+import useIsLoggedIn from "../hooks/useLoggedIn";
+import DiscardRegisterAlert from "../components/DiscardRegisterAlert";
 
 export const USERNAME_MIN_CHAR = 5;
 export const PASSWORD_MIN_CHAR = 6;
@@ -64,8 +67,15 @@ const RegisterPage = () => {
   } = useRegister();
   const [username, setUsername] = useState<string>("");
 
+  const { mutate: mutateIsLoggedIn, isPending: isCheckingUser } =
+    useIsLoggedIn();
+
   const toast = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    mutateIsLoggedIn(undefined);
+  }, []);
 
   if (registerSuccess) {
     setTimeout(() => {
@@ -122,8 +132,21 @@ const RegisterPage = () => {
     }
   }, [username || undefined]);
 
+  if (isCheckingUser) {
+    return null;
+  }
+
   return (
-    <Flex padding={5} h="100dvh" alignItems="center" justifyContent="center">
+    <Flex
+      padding={5}
+      h="100dvh"
+      alignItems="center"
+      justifyContent="center"
+      position="relative"
+    >
+      <Box position="absolute" left={5} top={5}>
+        <DiscardRegisterAlert />
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)} className="authForm">
         <VStack gap={5}>
           <FormControl

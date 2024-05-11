@@ -10,7 +10,7 @@ const useLogout = () => {
   return useMutation({
     mutationFn: apiClient.post,
     onSuccess: () => {
-      sessionStorage.removeItem("isLoggedIn");
+      document.cookie = `isLoggedIn=; max-age=0; path=/;`;
       localStorage.removeItem("lastLoginTime");
       const intervalId = localStorage.getItem("intervalId");
       if (intervalId) {
@@ -20,7 +20,7 @@ const useLogout = () => {
       navigate("/login");
     },
     onError: () => {
-      sessionStorage.removeItem("isLoggedIn");
+      document.cookie = `isLoggedIn=; max-age=0; path=/;`;
       localStorage.removeItem("lastLoginTime");
       const intervalId = localStorage.getItem("intervalId");
       if (intervalId) {

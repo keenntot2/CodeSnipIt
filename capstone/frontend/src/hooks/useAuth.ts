@@ -15,6 +15,9 @@ const useAuth = () =>
       const signal = controller.signal;
       return apiClient.post(data, { signal });
     },
+    onSuccess: () => {
+      document.cookie = `isLoggedIn=true; max-age=${5 * 60}; path:/`;
+    },
   });
 
 export default useAuth;
