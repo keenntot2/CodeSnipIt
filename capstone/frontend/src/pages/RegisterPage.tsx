@@ -147,8 +147,8 @@ const RegisterPage = () => {
       <Box position="absolute" left={5} top={5}>
         <DiscardRegisterAlert />
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)} className="authForm">
-        <VStack gap={5}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <VStack gap={5} justifyContent="center" alignItems="center" w={300}>
           <FormControl
             isInvalid={
               !!errors.firstName ||
@@ -162,7 +162,6 @@ const RegisterPage = () => {
                 {...register("firstName")}
                 placeholder="First name"
                 id="firstname"
-                w="90%"
               />
               {!!watch("firstName") && NAME_REGEX.test(watch("firstName")) && (
                 <Icon as={FaCheckCircle} color="green.400"></Icon>
@@ -184,7 +183,6 @@ const RegisterPage = () => {
                 {...register("lastName")}
                 placeholder="Last name"
                 id="lastname"
-                w="90%"
               />
               {!!watch("lastName") && NAME_REGEX.test(watch("lastName")) && (
                 <Icon as={FaCheckCircle} color="green.400"></Icon>
@@ -208,7 +206,6 @@ const RegisterPage = () => {
                 {...register("username")}
                 placeholder="Username"
                 id="username"
-                w="90%"
                 onChange={(e) => {
                   const username = e.target.value;
                   setUsername(username);
@@ -250,7 +247,6 @@ const RegisterPage = () => {
                 placeholder="Password"
                 type="password"
                 id="password"
-                w="90%"
               />
               {PASSWORD_REGEX.test(watch("password")) && (
                 <Icon as={FaCheckCircle} color="green.400"></Icon>
@@ -282,7 +278,6 @@ const RegisterPage = () => {
                 placeholder="Confirm Password"
                 type="password"
                 id="confirmationpassword"
-                w="90%"
               />
               {watch("password") == watch("confirmationPassword") &&
                 PASSWORD_REGEX.test(watch("confirmationPassword")) && (
