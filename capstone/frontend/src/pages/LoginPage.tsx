@@ -13,36 +13,38 @@ import { useEffect, useRef, useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import Hero from "../components/Hero";
 import LoginForm from "../components/LoginForm";
+import { useMotionValueEvent, useScroll } from "framer-motion";
 
 const LoginPage = () => {
   const loginRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const [opacity, setOpacity] = useState(1);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    console.log("Page scroll: ", latest);
+
+    if (heroRef.current) {
+      const { top, height } = heroRef.current?.getBoundingClientRect() || {
+        top: null,
+        height: null,
+      };
+      if (top && height) {
+        if (Math.abs(top) >= height * 0.6) {
+          setOpacity(0);
+        } else {
+          setOpacity(1);
+        }
+      }
+    }
+  });
 
   useEffect(() => {
     window.history.scrollRestoration = "manual";
-
-    setTimeout(() => {
-      if (heroRef.current) {
-        window.onscroll = () => {
-          const { top, height } = heroRef.current?.getBoundingClientRect() || {
-            top: null,
-            height: null,
-          };
-          if (top && height) {
-            if (Math.abs(top) < 100) {
-              setOpacity(1);
-            } else {
-              setOpacity((height * 0.8 - Math.abs(top)) / height);
-            }
-          }
-        };
-      }
-    }, 1);
   }, []);
 
   return (
-    <Flex minH="100dvh">
+    <Flex minH="100svh">
       <Grid
         w="100%"
         templateAreas={{ base: `'form'`, lg: `"hero form"` }}
@@ -56,7 +58,7 @@ const LoginPage = () => {
 
         <GridItem area="form">
           <Show below="lg">
-            <VStack w="100%" h="100dvh" p={5} ref={heroRef}>
+            <VStack w="100%" h="100svh" p={5} ref={heroRef}>
               <Hero />
               <Button
                 opacity={opacity}
@@ -65,7 +67,7 @@ const LoginPage = () => {
                 borderRadius={20}
                 onClick={() => {
                   window.scrollTo({
-                    top: loginRef.current?.offsetTop,
+                    top: heroRef.current?.offsetHeight,
                     behavior: "smooth",
                   });
                 }}
@@ -78,9 +80,10 @@ const LoginPage = () => {
             </VStack>
           </Show>
           <Box
+            overflow="hidden"
             ref={loginRef}
             w="100%"
-            h="100dvh"
+            h="100svh"
             display="flex"
             justifyContent="center"
             alignItems="center"
