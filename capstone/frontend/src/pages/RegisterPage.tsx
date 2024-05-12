@@ -12,18 +12,16 @@ import {
   Spinner,
   UnorderedList,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { z } from "zod";
+import DiscardRegisterAlert from "../components/DiscardRegisterAlert";
+import useIsLoggedIn from "../hooks/useLoggedIn";
 import useRegister from "../hooks/useRegister";
 import useVerifyUsername from "../hooks/useVerifyUsername";
-import { useNavigate } from "react-router-dom";
-import useIsLoggedIn from "../hooks/useLoggedIn";
-import DiscardRegisterAlert from "../components/DiscardRegisterAlert";
 
 export const USERNAME_MIN_CHAR = 5;
 export const PASSWORD_MIN_CHAR = 6;
@@ -60,35 +58,15 @@ type Schema = z.infer<typeof schema>;
 
 const RegisterPage = () => {
   const { mutate, isSuccess, isPending, error } = useVerifyUsername();
-  const {
-    mutate: registerUser,
-    isSuccess: registerSuccess,
-    isPending: isRegistering,
-  } = useRegister();
+  const { mutate: registerUser, isPending: isRegistering } = useRegister();
   const [username, setUsername] = useState<string>("");
 
   const { mutate: mutateIsLoggedIn, isPending: isCheckingUser } =
     useIsLoggedIn();
 
-  const toast = useToast();
-  const navigate = useNavigate();
-
   useEffect(() => {
     mutateIsLoggedIn(undefined);
   }, []);
-
-  if (registerSuccess) {
-    setTimeout(() => {
-      toast({
-        title: "Account setup is complete.",
-        description: "You'll be guided to the login page in a moment.",
-        status: "success",
-        duration: 2000,
-        position: "top",
-        onCloseComplete: () => navigate("/login"),
-      });
-    }, 500);
-  }
 
   let timeoutId: number;
 

@@ -1,0 +1,107 @@
+[
+  {
+    "model": "backend.Language",
+    "pk": 1,
+    "fields": { "language": "Python", "slug": "python" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 2,
+    "fields": { "language": "JavaScript", "slug": "javascript" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 3,
+    "fields": { "language": "Java", "slug": "java" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 4,
+    "fields": { "language": "C#", "slug": "csharp" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 5,
+    "fields": { "language": "C++", "slug": "cpp" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 6,
+    "fields": { "language": "Ruby", "slug": "ruby" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 7,
+    "fields": { "language": "Swift", "slug": "swift" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 8,
+    "fields": { "language": "Kotlin", "slug": "kotlin" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 9,
+    "fields": { "language": "PHP", "slug": "php" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 10,
+    "fields": { "language": "TypeScript", "slug": "typescript" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 11,
+    "fields": { "language": "Go", "slug": "go" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 12,
+    "fields": { "language": "Rust", "slug": "rust" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 13,
+    "fields": { "language": "HTML", "slug": "html" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 14,
+    "fields": { "language": "CSS", "slug": "css" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 15,
+    "fields": { "language": "SQL", "slug": "sql" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 16,
+    "fields": { "language": "MATLAB", "slug": "matlab" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 17,
+    "fields": { "language": "R", "slug": "r" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 18,
+    "fields": { "language": "Shell Scripting Languages", "slug": "shell" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 19,
+    "fields": { "language": "Perl", "slug": "perl" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 20,
+    "fields": { "language": "Scala", "slug": "scala" }
+  },
+  {
+    "model": "backend.Language",
+    "pk": 21,
+    "fields": { "language": "Dart", "slug": "dart" }
+  }
+]
