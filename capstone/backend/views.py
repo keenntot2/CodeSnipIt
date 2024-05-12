@@ -80,20 +80,6 @@ class LogoutAPIView(APIView):
         delete_cookie_token(response, 'REFRESH')
         return response
 
-class RefreshTokenAPI(APIView):
-    permission_classes = [HasRefreshToken]
-
-    def get(self, request):
-        refresh = request.COOKIES.get('refresh')
-
-        try:
-            response = Response()
-            new_access_token = str(RefreshToken(refresh).access_token)
-            set_cookie_token(response, new_access_token, 'ACCESS')
-            return response
-        except TokenError:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-
 class VerifyUsernameAPIView(APIView):
 
     def post(self, request):

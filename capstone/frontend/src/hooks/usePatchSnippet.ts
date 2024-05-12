@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 import fetchAllResponse from "../entities/FetchAllResponse";
 import APIClient from "../services/apiClient";
 import { Snippet } from "./useAddSnippet";
+import getDateTimeNow from "../utils/getDateTimeNow";
 
 export interface PatchSnippetMutate {
   title: string;
@@ -38,7 +39,12 @@ const usePatchSnippet = (slug?: string) => {
           results:
             snippets?.results.map((s) => {
               if (s.slug === slug) {
-                return { ...s, title: variables.title, code: variables.code };
+                return {
+                  ...s,
+                  title: variables.title,
+                  code: variables.code,
+                  edited_at: getDateTimeNow(),
+                };
               }
               return s;
             }) || [],

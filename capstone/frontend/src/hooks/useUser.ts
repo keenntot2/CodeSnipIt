@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { REFRESH_TOKEN_LIFETIME } from "./useRefreshToken";
 import { AxiosError } from "axios";
+import APIClient from "../services/apiClient";
 
 export interface User {
   id: number;
@@ -9,6 +8,8 @@ export interface User {
   first_name: string;
   last_name: string;
 }
+
+const CHECK_USER_INTERVAL = 5 * 60 * 1000;
 
 const apiClient = new APIClient<User>("/user");
 
@@ -19,7 +20,7 @@ const useUser = () =>
     retry: false,
     refetchOnWindowFocus: false,
 
-    staleTime: REFRESH_TOKEN_LIFETIME, // 4ms
+    staleTime: CHECK_USER_INTERVAL, // 5mins
   });
 
 export default useUser;

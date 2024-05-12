@@ -16,7 +16,7 @@ const useAuth = () =>
       return apiClient.post(data, { signal });
     },
     onSuccess: () => {
-      document.cookie = `isLoggedIn=true; max-age=${5 * 60}; path:/`;
+      document.cookie = `isLoggedIn=true; max-age=${30 * 24 * 60 * 60}; path:/`; //max-age = 30days
     },
   });
 

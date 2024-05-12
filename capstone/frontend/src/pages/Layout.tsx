@@ -14,17 +14,13 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import LanguageList from "../components/LanguageList";
 import NavBar from "../components/NavBar";
 import useLogout from "../hooks/useLogout";
-import useRefreshToken from "../hooks/useRefreshToken";
 import useUser from "../hooks/useUser";
-import useUserStore from "../hooks/useUserStore";
-import checkBackgroundRequestTime from "../utils/checkBackgroundRequestTime";
 import getCookie from "../utils/getCookie";
 
 const Layout = () => {
-  const { data, isError, isSuccess, error } = useUser();
+  const { isError, isSuccess, error } = useUser();
   const { mutate } = useLogout();
-  const setUser = useUserStore((s) => s.setUser);
-  const { refetch } = useRefreshToken();
+
   const location = useLocation();
   const toast = useToast();
   const navigate = useNavigate();
@@ -54,10 +50,6 @@ const Layout = () => {
       }
       mutate(undefined);
       navigate("/login");
-    }
-    if (isSuccess) {
-      setUser(data);
-      checkBackgroundRequestTime(refetch);
     }
   }, [isSuccess, isError]);
 
