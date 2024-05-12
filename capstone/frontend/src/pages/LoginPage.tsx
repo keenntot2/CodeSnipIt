@@ -14,6 +14,7 @@ import { FaAngleDown } from "react-icons/fa6";
 import Hero from "../components/Hero";
 import LoginForm from "../components/LoginForm";
 import { useMotionValueEvent, useScroll } from "framer-motion";
+import ColorModeSwitch from "../components/ColorModeSwitch";
 
 const LoginPage = () => {
   const loginRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,10 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <Flex minH="100svh">
+    <Flex minH="100svh" position="relative">
+      <Box position={"absolute"} top={5} left={5}>
+        <ColorModeSwitch />
+      </Box>
       <Grid
         w="100%"
         templateAreas={{ base: `'form'`, lg: `"hero form"` }}

@@ -1,17 +1,19 @@
 import {
-  HStack,
-  Flex,
-  VStack,
-  Heading,
-  Divider,
   Box,
-  Text,
+  Divider,
+  Flex,
+  HStack,
+  Heading,
   Show,
+  Text,
+  VStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import CodeBlock from "./CodeBlock";
 
 const Hero = () => {
+  const titleBgColor = useColorModeValue("gray.200", "whiteAlpha.200");
   return (
     <HStack w="100%" justifyContent="space-between" h="100%" spacing={0}>
       <Flex h="100%" w="100%" justifyContent="center">
@@ -25,7 +27,7 @@ const Hero = () => {
         >
           <Heading
             alignSelf="start"
-            background="whiteAlpha.200"
+            background={titleBgColor}
             p={5}
             borderRadius={10}
           >{`CodeSnipIt()`}</Heading>
