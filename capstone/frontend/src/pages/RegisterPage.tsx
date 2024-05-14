@@ -5,9 +5,10 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
-  HStack,
   Icon,
   Input,
+  InputGroup,
+  InputRightElement,
   ListItem,
   Spinner,
   UnorderedList,
@@ -130,16 +131,20 @@ const RegisterPage = () => {
                 : false)
             }
           >
-            <HStack>
+            <InputGroup>
               <Input
                 {...register("firstName")}
                 placeholder="First name"
                 id="firstname"
               />
-              {!!watch("firstName") && NAME_REGEX.test(watch("firstName")) && (
-                <Icon as={FaCheckCircle} color="green.400"></Icon>
-              )}
-            </HStack>
+              <InputRightElement>
+                {!!watch("firstName") &&
+                  NAME_REGEX.test(watch("firstName")) && (
+                    <Icon as={FaCheckCircle} color="green.400"></Icon>
+                  )}
+              </InputRightElement>
+            </InputGroup>
+
             <FormErrorMessage>
               {errors.firstName?.message || "Invalid name."}
             </FormErrorMessage>
@@ -151,16 +156,18 @@ const RegisterPage = () => {
               (watch("lastName") ? !NAME_REGEX.test(watch("lastName")) : false)
             }
           >
-            <HStack>
+            <InputGroup>
               <Input
                 {...register("lastName")}
                 placeholder="Last name"
                 id="lastname"
               />
-              {!!watch("lastName") && NAME_REGEX.test(watch("lastName")) && (
-                <Icon as={FaCheckCircle} color="green.400"></Icon>
-              )}
-            </HStack>
+              <InputRightElement>
+                {!!watch("lastName") && NAME_REGEX.test(watch("lastName")) && (
+                  <Icon as={FaCheckCircle} color="green.400"></Icon>
+                )}
+              </InputRightElement>
+            </InputGroup>
 
             <FormErrorMessage>
               {errors.lastName?.message || "Invalid name."}
@@ -174,7 +181,7 @@ const RegisterPage = () => {
               (username.length >= 1 && !isMin)
             }
           >
-            <HStack>
+            <InputGroup>
               <Input
                 {...register("username")}
                 placeholder="Username"
@@ -185,15 +192,17 @@ const RegisterPage = () => {
                   clearTimeout(timeoutId);
                 }}
               />
-              {isCheck && <Icon as={FaCheckCircle} color="green.400"></Icon>}
+              <InputRightElement>
+                {isCheck && <Icon as={FaCheckCircle} color="green.400"></Icon>}
+                {isPending && username.length >= USERNAME_MIN_CHAR && (
+                  <Spinner color="green.400" />
+                )}
+                {usernameTaken && (
+                  <Icon as={FaExclamationCircle} color="red.400" />
+                )}
+              </InputRightElement>
+            </InputGroup>
 
-              {isPending && username.length >= USERNAME_MIN_CHAR && (
-                <Spinner color="green.400" />
-              )}
-              {usernameTaken && (
-                <Icon as={FaExclamationCircle} color="red.400" />
-              )}
-            </HStack>
             <FormHelperText>
               <UnorderedList>
                 <ListItem>
@@ -214,17 +223,20 @@ const RegisterPage = () => {
           </FormControl>
 
           <FormControl isInvalid={!!errors.password}>
-            <HStack>
+            <InputGroup>
               <Input
                 {...register("password")}
                 placeholder="Password"
                 type="password"
                 id="password"
               />
-              {PASSWORD_REGEX.test(watch("password")) && (
-                <Icon as={FaCheckCircle} color="green.400"></Icon>
-              )}
-            </HStack>
+              <InputRightElement>
+                {PASSWORD_REGEX.test(watch("password")) && (
+                  <Icon as={FaCheckCircle} color="green.400"></Icon>
+                )}
+              </InputRightElement>
+            </InputGroup>
+
             <FormHelperText>
               <UnorderedList>
                 <ListItem>
@@ -245,18 +257,21 @@ const RegisterPage = () => {
                 !!watch("confirmationPassword"))
             }
           >
-            <HStack>
+            <InputGroup>
               <Input
                 {...register("confirmationPassword")}
                 placeholder="Confirm Password"
                 type="password"
                 id="confirmationpassword"
               />
-              {watch("password") == watch("confirmationPassword") &&
-                PASSWORD_REGEX.test(watch("confirmationPassword")) && (
-                  <Icon as={FaCheckCircle} color="green.400"></Icon>
-                )}
-            </HStack>
+              <InputRightElement>
+                {watch("password") == watch("confirmationPassword") &&
+                  PASSWORD_REGEX.test(watch("confirmationPassword")) && (
+                    <Icon as={FaCheckCircle} color="green.400"></Icon>
+                  )}
+              </InputRightElement>
+            </InputGroup>
+
             <FormErrorMessage>
               {errors.confirmationPassword?.message ||
                 "Please ensure that your confirmation password matches your original password."}
