@@ -9,7 +9,7 @@ export interface User {
   last_name: string;
 }
 
-const CHECK_USER_INTERVAL = 5 * 60 * 1000;
+const CHECK_USER_INTERVAL = 24 * 60 * 60 * 1000;
 
 const apiClient = new APIClient<User>("/user");
 
@@ -19,7 +19,6 @@ const useUser = () =>
     queryFn: ({ signal }) => apiClient.get({ signal }),
     retry: false,
     refetchOnWindowFocus: false,
-
     staleTime: CHECK_USER_INTERVAL, // 5mins
   });
 

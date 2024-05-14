@@ -9,7 +9,8 @@ const useSnippetList = () =>
   useQuery({
     queryKey: ["snippets"],
     queryFn: ({ signal }) => apiClient.getAll({ signal }),
-    staleTime: 4 * 60 * 1000,
+    staleTime: 24 * 60 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 
 export default useSnippetList;

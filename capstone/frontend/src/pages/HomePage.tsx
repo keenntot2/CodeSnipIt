@@ -63,6 +63,7 @@ const HomePage = () => {
           {params.languageSlug && (
             <Show below="lg">
               <Button
+                alignSelf="end"
                 leftIcon={<IoMdAdd />}
                 variant="outline"
                 colorScheme="green"
@@ -78,18 +79,18 @@ const HomePage = () => {
         </HStack>
       </Box>
 
-      {isLoading && (
+      {isLoading ? (
         <Flex justifyContent="center">
           <Spinner size="lg" />
         </Flex>
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+          {snippets &&
+            snippets.map((snippet) => (
+              <SnippetCard snippet={snippet} key={snippet.id} />
+            ))}
+        </SimpleGrid>
       )}
-
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
-        {snippets &&
-          snippets.map((snippet) => (
-            <SnippetCard snippet={snippet} key={snippet.id} />
-          ))}
-      </SimpleGrid>
     </>
   );
 };

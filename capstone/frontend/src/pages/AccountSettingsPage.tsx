@@ -7,6 +7,7 @@ import {
   HStack,
   Heading,
   Show,
+  Skeleton,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -17,8 +18,8 @@ import useUser from "../hooks/useUser";
 const AccountSettingsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { data: user } = useUser();
-  const { data: snippets } = useSnippetList();
+  const { data: user, isLoading: isLoadingUser } = useUser();
+  const { data: snippets, isLoading } = useSnippetList();
 
   return (
     <Box flexGrow="1" display="flex" flexDirection="column">
@@ -39,18 +40,27 @@ const AccountSettingsPage = () => {
                     <Heading as="dt" fontSize="md" color="gray.600">
                       Name:
                     </Heading>
-                    <Text
-                      as="dd"
-                      color="gray.400"
-                    >{`${user?.first_name} ${user?.last_name}`}</Text>
+                    <Skeleton isLoaded={!isLoadingUser} borderRadius={5}>
+                      <Text
+                        as="dd"
+                        color="gray.400"
+                      >{`${user?.first_name} ${user?.last_name}`}</Text>
+                    </Skeleton>
                   </Box>
                   <HStack justifyContent="start">
                     <Heading as="dt" fontSize="md" color="gray.600">
                       Snippets:
                     </Heading>
-                    <Text as="dd" color="gray.400">
-                      {snippets?.count}
-                    </Text>
+                    <Skeleton
+                      isLoaded={!isLoading}
+                      borderRadius={5}
+                      w={5}
+                      h={5}
+                    >
+                      <Text as="dd" color="gray.400">
+                        {snippets?.count}
+                      </Text>
+                    </Skeleton>
                   </HStack>
                 </VStack>
               </VStack>
