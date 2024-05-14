@@ -17,11 +17,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import { Navigate } from "react-router-dom";
 import { z } from "zod";
 import DiscardRegisterAlert from "../components/DiscardRegisterAlert";
-import useIsLoggedIn from "../hooks/useLoggedIn";
 import useRegister from "../hooks/useRegister";
 import useVerifyUsername from "../hooks/useVerifyUsername";
+import getCookie from "../utils/getCookie";
 
 export const USERNAME_MIN_CHAR = 5;
 export const PASSWORD_MIN_CHAR = 6;
@@ -60,13 +61,7 @@ const RegisterPage = () => {
   const { mutate, isSuccess, isPending, error } = useVerifyUsername();
   const { mutate: registerUser, isPending: isRegistering } = useRegister();
   const [username, setUsername] = useState<string>("");
-
-  const { mutate: mutateIsLoggedIn, isPending: isCheckingUser } =
-    useIsLoggedIn();
-
-  useEffect(() => {
-    mutateIsLoggedIn(undefined);
-  }, []);
+  const isLoggedIn = getCookie("isLoggedIn");
 
   let timeoutId: number;
 
@@ -110,8 +105,10 @@ const RegisterPage = () => {
     }
   }, [username || undefined]);
 
-  if (isCheckingUser) {
-    return null;
+  if (isSuccess || isLoggedIn) {
+    const lastLoginTime = new Date().getTime();
+    localStorage.setItem("lastLoginTime", lastLoginTime.toString());
+    return <Navigate to="/" />;
   }
 
   return (

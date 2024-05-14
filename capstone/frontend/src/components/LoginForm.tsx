@@ -1,37 +1,27 @@
 import {
-  VStack,
-  FormControl,
-  Input,
-  FormErrorMessage,
   Button,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  VStack,
 } from "@chakra-ui/react";
-import { useRef, useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useRef } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import useIsLoggedIn from "../hooks/useLoggedIn";
 import getCookie from "../utils/getCookie";
 
 const LoginForm = () => {
   const { mutate, isError, isPending, isSuccess } = useAuth();
-  const { mutate: mutateIsLoggedIn, isPending: isCheckingUser } =
-    useIsLoggedIn();
+
   const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const isLoggedIn = getCookie("isLoggedIn");
 
-  useEffect(() => {
-    mutateIsLoggedIn(undefined);
-  }, []);
-
   if (isSuccess || isLoggedIn) {
     const lastLoginTime = new Date().getTime();
     localStorage.setItem("lastLoginTime", lastLoginTime.toString());
     return <Navigate to="/" />;
-  }
-
-  if (isCheckingUser) {
-    return null;
   }
 
   return (
