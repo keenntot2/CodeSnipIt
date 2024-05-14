@@ -76,7 +76,7 @@ const ChangePasswordPage = () => {
             <Input
               autoFocus
               {...register("oldPassword")}
-              placeholder="Confirm password"
+              placeholder="Old password"
               type="password"
             />
             <FormErrorMessage>
