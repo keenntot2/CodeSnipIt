@@ -22,9 +22,7 @@ const LoginPage = () => {
   const [opacity, setOpacity] = useState(1);
   const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    console.log("Page scroll: ", latest);
-
+  useMotionValueEvent(scrollY, "change", () => {
     if (heroRef.current) {
       const { top, height } = heroRef.current?.getBoundingClientRect() || {
         top: null,

@@ -2,11 +2,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* .authForm {
-  height: max-content;
-  width: 300px;
-} */
-
 .code-form {
   display: flex;
   flex-direction: column;
