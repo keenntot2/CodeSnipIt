@@ -105,9 +105,7 @@ const RegisterPage = () => {
     }
   }, [username || undefined]);
 
-  if (isSuccess || isLoggedIn) {
-    const lastLoginTime = new Date().getTime();
-    localStorage.setItem("lastLoginTime", lastLoginTime.toString());
+  if (isLoggedIn) {
     return <Navigate to="/" />;
   }
 

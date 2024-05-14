@@ -19,8 +19,6 @@ const LoginForm = () => {
   const isLoggedIn = getCookie("isLoggedIn");
 
   if (isSuccess || isLoggedIn) {
-    const lastLoginTime = new Date().getTime();
-    localStorage.setItem("lastLoginTime", lastLoginTime.toString());
     return <Navigate to="/" />;
   }
 
