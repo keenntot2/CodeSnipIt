@@ -57,6 +57,7 @@ These features collectively make CodeSnipIt a robust and versatile tool for deve
 ## Features
 
 - Save code snippets with titles.
+- Manage code snippets (edit, copy, and delete).
 - Categorize snippets by language.
 - Scroll to top button.
 - Syntax highlighting for 21 programming languages.
