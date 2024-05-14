@@ -68,64 +68,64 @@ These features collectively make CodeSnipIt a robust and versatile tool for deve
 ## Screenshots
 
 - **_Login Page_**
-  | | | |
-  | ------- | ------- | ------- |
-  | Desktop | Mobile |
-  | ![login](/screenshots/login_desk.png)| ![hero](/screenshots/login_hero_m.png) | ![login](/screenshots/login_m.png) |
+
+  | Desktop                               | Mobile (Hero)                          | Mobile (Login Form)                |
+  | ------------------------------------- | -------------------------------------- | ---------------------------------- |
+  | ![login](/screenshots/login_desk.png) | ![hero](/screenshots/login_hero_m.png) | ![login](/screenshots/login_m.png) |
 
 - **_Registration Page_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![register](/screenshots/register_desk.png)| ![register_mobile](/screenshots/reg_mobile.png) |
+
+  | Desktop                                     | Mobile                                          |
+  | ------------------------------------------- | ----------------------------------------------- |
+  | ![register](/screenshots/register_desk.png) | ![register_mobile](/screenshots/reg_mobile.png) |
 
 - **_Home Page_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![homepage](/screenshots/homepage_desk.png)| ![homepage_mobile](/screenshots/homepage_mobile.png) |
+
+  | Desktop                                     | Mobile                                               |
+  | ------------------------------------------- | ---------------------------------------------------- |
+  | ![homepage](/screenshots/homepage_desk.png) | ![homepage_mobile](/screenshots/homepage_mobile.png) |
 
 - **_Filtered by language_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![filter](/screenshots/filter_language.png)| ![filter_mobile](/screenshots/filter_language_m.png) |
+
+  | Desktop                                     | Mobile                                               |
+  | ------------------------------------------- | ---------------------------------------------------- |
+  | ![filter](/screenshots/filter_language.png) | ![filter_mobile](/screenshots/filter_language_m.png) |
 
 - **_Snippet Page_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![snippet_page](/screenshots/snippet_page_desk.png)| ![snippet_page_mobile](/screenshots/snippet_page_m.png) |
+
+  | Desktop                                             | Mobile                                                  |
+  | --------------------------------------------------- | ------------------------------------------------------- |
+  | ![snippet_page](/screenshots/snippet_page_desk.png) | ![snippet_page_mobile](/screenshots/snippet_page_m.png) |
 
 - **_Edit Snippet_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![edit](/screenshots/edit.png)| ![edit_mobile](/screenshots/edit_m.png) |
+
+  | Desktop                        | Mobile                                  |
+  | ------------------------------ | --------------------------------------- |
+  | ![edit](/screenshots/edit.png) | ![edit_mobile](/screenshots/edit_m.png) |
 
 - **_Add Snippet Page_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![addsnippet_page](/screenshots/addsnippet.png)| ![addsnippet_page_mobile](/screenshots/addsnippet_m.png) |
+
+  | Desktop                                         | Mobile                                                   |
+  | ----------------------------------------------- | -------------------------------------------------------- |
+  | ![addsnippet_page](/screenshots/addsnippet.png) | ![addsnippet_page_mobile](/screenshots/addsnippet_m.png) |
 
 - **_Account Settings Page_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![acct_settings_page](/screenshots/acct_settings.png)| ![acct_settings_page_mobile](/screenshots/acct_settings_m.png) |
+
+  | Desktop                                               | Mobile                                                         |
+  | ----------------------------------------------------- | -------------------------------------------------------------- |
+  | ![acct_settings_page](/screenshots/acct_settings.png) | ![acct_settings_page_mobile](/screenshots/acct_settings_m.png) |
 
 - **_Account Name Change_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![name_change](/screenshots/change_name.png)| ![name_change_m](/screenshots/change_name_m.png) |
+
+  | Desktop                                      | Mobile                                           |
+  | -------------------------------------------- | ------------------------------------------------ |
+  | ![name_change](/screenshots/change_name.png) | ![name_change_m](/screenshots/change_name_m.png) |
 
 - **_Account Password Change_**
-  | | |
-  | ------- | ------- |
-  | Desktop | Mobile |
-  | ![password_change](/screenshots/change_pass.png)| ![password_change_m](/screenshots/change_pass_m.png) |
+
+  | Desktop                                          | Mobile                                               |
+  | ------------------------------------------------ | ---------------------------------------------------- |
+  | ![password_change](/screenshots/change_pass.png) | ![password_change_m](/screenshots/change_pass_m.png) |
 
 ## Installation
 
